@@ -30,7 +30,7 @@ const DetailProduct = () => {
                 
                 console.log('Haciendo petición para ID:', productId);
                 
-                const response = await api.get(`/products/product/${productId}/`);
+                const response = await axios.get(`http://127.0.0.1:8000/api/products/detail/${productId}/`);
                 
                 console.log('Respuesta:', response.data);
                 setProduct(response.data);
