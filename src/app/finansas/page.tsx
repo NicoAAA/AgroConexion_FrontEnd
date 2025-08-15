@@ -51,9 +51,7 @@ export default function UserStats() {
   if (!hasMounted) {
     return (
       <div className="min-h-screen flex">
-        <Sidebar />
         <div className="flex flex-col flex-1">
-          <Navbar />
           <main className="mt-16 ml-64 p-6 bg-gradient-to-br from-slate-50 to-slate-100 flex-1">
             <div className="flex items-center justify-center h-40">
               <div className="animate-pulse text-gray-400">Cargando...</div>
@@ -67,9 +65,7 @@ export default function UserStats() {
   if (loading) {
     return (
       <div className="min-h-screen flex">
-        <Sidebar />
         <div className="flex flex-col flex-1">
-          <Navbar />
           <main className="mt-16 ml-64 p-6 bg-gradient-to-br from-slate-50 to-slate-100 flex-1">
             <div className="max-w-7xl mx-auto py-10">
               <div className="flex items-center justify-center h-40">
@@ -88,9 +84,7 @@ export default function UserStats() {
   if (!stats) {
     return (
       <div className="min-h-screen flex">
-        <Sidebar />
         <div className="flex flex-col flex-1">
-          <Navbar />
           <main className="mt-16 ml-64 p-6 bg-gradient-to-br from-slate-50 to-slate-100 flex-1">
             <div className="max-w-7xl mx-auto py-10">
               <div className="bg-red-50 border border-red-200 rounded-xl p-6 text-center">
@@ -106,9 +100,7 @@ export default function UserStats() {
 
   return (
     <div className="min-h-screen flex">
-      <Sidebar />
       <div className="flex flex-col flex-1">
-        <Navbar />
         <main className="mt-16 ml-64 p-6 bg-gradient-to-br from-slate-50 to-slate-100 flex-1">
           <div className="max-w-7xl mx-auto py-10">
             {/* Header */}

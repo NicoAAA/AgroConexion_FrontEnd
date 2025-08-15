@@ -53,31 +53,31 @@ export const CategoryShowcase = () => {
       name: 'Frutas 🍎',
       imageUrl: '/categories/frutas.jpg',
       icon: Apple,
-      href: '/products?category=frutas',
+      href: '/categories/1',
     },
     {
       name: 'Verduras 🥕',
       imageUrl: '/categories/verduras.jpg',
       icon: Carrot,
-      href: '/products?category=verduras',
+      href: '/categories/2',
     },
     {
       name: 'Lácteos 🧀',
       imageUrl: '/categories/lacteos.jpg',
       icon: Milk,
-      href: '/products?category=lacteos',
+      href: '/categories/4',
     },
     {
       name: 'Pescados 🐟',
       imageUrl: '/categories/pescado.jpg',
       icon: Fish,
-      href: '/products?category=pescado',
+      href: '/categories/5',
     },
     {
       name: 'Hierbas 🌿',
       imageUrl: '/categories/hierbas.jpg',
       icon: Leaf,
-      href: '/products?category=hierbas',
+      href: '/categories/15',
     },
   ]
 

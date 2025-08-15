@@ -3,6 +3,8 @@
 import api from '@/lib/axios';
 import { Categories } from '@/types/product.types';
 import { useEffect, useState, useRef } from 'react';
+import Link from 'next/link';
+import axios from 'axios';
 
 const GetAllCategories = () => {
   const [category, setCategory] = useState<Categories[]>([]);
@@ -14,7 +16,7 @@ const GetAllCategories = () => {
   useEffect(() => {
     const GetCategory = async () => {
       try {
-        const response = await api.get(URL);
+        const response = await axios.get("http://127.0.0.1:8000/api/products/categories/");
         setCategory(response.data);
       } catch (error) {
         console.error('Error fetching categories:', error);
@@ -67,12 +69,12 @@ const GetAllCategories = () => {
           <ul className="py-2 text-sm text-gray-700 dark:text-gray-200">
             {category.map((cat) => (
               <li key={cat.id}>
-                <a
+                <Link
                   title={cat.description}
                   className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white cursor-pointer"
-                >
+                  href={`/categories/${cat.id}`}>
                   {cat.name}
-                </a>
+                </Link>
               </li>
             ))}
           </ul>

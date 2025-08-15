@@ -9,7 +9,6 @@ import { zodResolver } from '@hookform/resolvers/zod';
 // Navegacion del usuario
 import Link from 'next/link';
 import { Eye, EyeOff, LogIn } from 'lucide-react';
-
 import { useLogin } from '@/features/auth/hooks/useLogin';
 import { LoginFormData, loginSchema } from '@/features/auth/utils/validation';
 import { ROUTES } from '@/lib/constants';
@@ -132,7 +131,7 @@ export function LoginForm() {
         <div className="mt-6 text-center">
           <p className="text-sm text-gray-600">
             ¿No tienes cuenta?{' '}
-            <Link href={ROUTES.REGISTER} className="font-medium text-blue-600 hover:text-blue-500">
+            <Link href={ROUTES.HOME} className="font-medium text-blue-600 hover:text-blue-500">
               Regístrate aquí
             </Link>
           </p>

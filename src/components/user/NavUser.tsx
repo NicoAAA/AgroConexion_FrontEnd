@@ -81,11 +81,15 @@ const NavUser = () => {
                 </li>
                 <li className="px-4 py-2 hover:bg-gray-50 flex items-center gap-2 cursor-pointer">
                   <ShoppingBag className="w-4 h-4 text-green-600" />
+                  <Link href={ROUTES.PRODUCTOS}>
                   Mis Productos
+                  </Link>
                 </li>
                 <li className="px-4 py-2 hover:bg-gray-50 flex items-center gap-2 cursor-pointer">
                   <FileText className="w-4 h-4 text-green-600" />
+                  <Link href={ROUTES.FACTURACION}>
                   Facturas
+                  </Link>
                 </li>
                 <li>
                   <button

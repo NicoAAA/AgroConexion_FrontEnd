@@ -228,12 +228,6 @@ const DetailProduct = () => {
                                 <span className="text-3xl font-bold text-green-600">
                                     ${product.price.toLocaleString('es-CO')}
                                 </span>
-                                <span className="text-lg text-gray-500 line-through">
-                                    ${(product.price * 1.2).toLocaleString('es-CO')}
-                                </span>
-                                <span className="bg-red-100 text-red-800 text-sm font-semibold px-2.5 py-1 rounded-full">
-                                    -20%
-                                </span>
                             </div>
                         </div>
 
