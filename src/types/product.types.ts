@@ -46,3 +46,20 @@ export interface NewProduct {
   images: Image[]
   category: CategoryProducs[]
 }
+
+export type ImageProducsTop = {
+    id: number
+    image: string
+}
+
+export type TopProducts = {
+    id: number
+    name: string
+    description: string
+    price: number
+    stock: number
+    unit_of_measure: string
+    date_of_registration: string
+    state: string
+    images:  ImageProducsTop[]
+}

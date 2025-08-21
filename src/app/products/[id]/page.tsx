@@ -3,11 +3,11 @@ import { useEffect, useState } from 'react';
 import axios from 'axios';
 import Image from 'next/image';
 import { Product } from '@/types/product.types';
-import api from '@/lib/axios';
 import { useParams } from 'next/navigation';
 import AgregarCarrito from '@/components/cart/agregar';
 import BuyProduct from '@/components/cart/ComprarProducto';
-
+import Link from 'next/link';
+import ComentsProduct from '@/components/comments/comments';
 const DetailProduct = () => {
     const [product, setProduct] = useState<Product | null>(null);
     const [error, setError] = useState<string>('');
@@ -16,6 +16,18 @@ const DetailProduct = () => {
     const [imageLoaded, setImageLoaded] = useState<boolean>(false);
     const [thumbnailsLoaded, setThumbnailsLoaded] = useState<{ [key: number]: boolean }>({});
     
+    const [errorMsg, setErrorMsg] = useState<string | null>(null);
+     // Cada vez que aparece un error, lo borramos después de 3 segundos
+    useEffect(() => {
+        if (errorMsg) {
+        const timer = setTimeout(() => {
+            setErrorMsg(null);
+        }, 3000); // ⏱️ 3 segundos
+
+        return () => clearTimeout(timer); // limpiar si cambia antes de tiempo
+        }
+    }, [errorMsg]);
+
     const params = useParams();
     const productId = params.id;
     
@@ -95,11 +107,11 @@ const DetailProduct = () => {
             <div className="bg-white shadow-sm border-b border-gray-200">
                 <div className="container mx-auto px-6 py-4 max-w-7xl">
                     <nav className="flex items-center space-x-2 text-sm text-gray-600 mt-16">
-                        <span className="hover:text-blue-600 cursor-pointer transition-colors">Inicio</span>
+                        <Link href='/'><span className="hover:text-blue-600 cursor-pointer transition-colors">Inicio</span></Link>
                         <svg className="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5l7 7-7 7" />
                         </svg>
-                        <span className="hover:text-blue-600 cursor-pointer transition-colors">Productos</span>
+                        <Link href={'/products'}><span className="hover:text-blue-600 cursor-pointer transition-colors">Productos</span></Link>
                         <svg className="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5l7 7-7 7" />
                         </svg>
@@ -265,7 +277,19 @@ const DetailProduct = () => {
                         <div className="space-y-4">
                             <div className="flex space-x-4">
                                 
-                                <AgregarCarrito productId={product.id} />
+                                    <div className="space-y-4">
+                                        <AgregarCarrito 
+                                            productId={42} 
+                                            onError={(msg) => setErrorMsg(msg)} // guardamos el error
+                                        />
+
+                                        {/* Mensaje de error en pantalla */}
+                                        {errorMsg && (
+                                            <div className="p-3 bg-red-100 border border-red-400 text-red-700 rounded-lg">
+                                            {errorMsg}
+                                            </div>
+                                        )}
+                                        </div>
                                 
                                 <button className="bg-white text-gray-700 py-4 px-6 rounded-xl hover:bg-gray-50 transition-all duration-200 font-semibold border border-gray-300 shadow-sm hover:shadow-md transform hover:-translate-y-1">
                                     <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -289,6 +313,10 @@ const DetailProduct = () => {
                         </div>
                     </div>
                 </div>
+            </div>
+
+            <div>
+                <ComentsProduct/>
             </div>
         </>
     );
