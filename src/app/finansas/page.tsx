@@ -32,7 +32,7 @@ export default function UserStats() {
 
     const fetchStats = async () => {
       try {
-        const res = await api.get('/users/invoices/invoice/stats/');
+        const res = await api.get('/invoices/stats/');
         setStats(res.data);
       } catch (error) {
         console.error('Error al cargar las estadísticas', error);
@@ -101,16 +101,10 @@ export default function UserStats() {
   return (
     <div className="min-h-screen flex">
       <div className="flex flex-col flex-1">
-        <main className="mt-16 ml-64 p-6 bg-gradient-to-br from-slate-50 to-slate-100 flex-1">
-          <div className="max-w-7xl mx-auto py-10">
-            {/* Header */}
-            <div className="mb-8">
-              <h1 className="text-3xl font-bold text-gray-900 mb-2">Panel de Estadísticas</h1>
-              <p className="text-gray-600">Resumen de tu actividad comercial</p>
-            </div>
-
+        <main className="p-6 bg-gradient-to-br from-slate-50 to-slate-100 flex-1">
+          <div className="max-w-6xl mx-auto py-10 flex flex-col items-center">
             {/* Stats Grid */}
-            <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6 w-full">
               <StatCard
                 icon={<ShoppingCart className="w-8 h-8" />}
                 title="Total Gastado"
@@ -146,8 +140,8 @@ export default function UserStats() {
             </div>
 
             {/* Additional Info Cards */}
-            <div className="mt-8 grid grid-cols-1 lg:grid-cols-2 gap-6">
-              <div className="bg-white rounded-2xl shadow-sm border border-gray-200 p-6">
+            <div className="mt-10 grid grid-cols-1 lg:grid-cols-2 gap-6 w-full">
+              <div className="bg-white rounded-2xl shadow-sm border border-gray-200 p-6 h-full hover:shadow-md hover:scale-[1.02] transition-transform">
                 <div className="flex items-center space-x-3 mb-4">
                   <div className="p-2 bg-purple-100 rounded-lg">
                     <DollarSign className="w-6 h-6 text-purple-600" />
@@ -174,7 +168,7 @@ export default function UserStats() {
                 </div>
               </div>
 
-              <div className="bg-white rounded-2xl shadow-sm border border-gray-200 p-6">
+              <div className="bg-white rounded-2xl shadow-sm border border-gray-200 p-6 h-full hover:shadow-md hover:scale-[1.02] transition-transform">
                 <div className="flex items-center space-x-3 mb-4">
                   <div className="p-2 bg-indigo-100 rounded-lg">
                     <Star className="w-6 h-6 text-indigo-600" />
@@ -205,6 +199,7 @@ export default function UserStats() {
             </div>
           </div>
         </main>
+
       </div>
     </div>
   );

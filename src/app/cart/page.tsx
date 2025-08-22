@@ -2,8 +2,6 @@
 import { useState, useEffect } from 'react';
 import api from '@/lib/axios';
 import Image from 'next/image';
-import { Sidebar } from '@/components/layout/sidebar';
-import { Navbar } from '@/components/layout/navbar';
 import { Minus, Plus } from 'lucide-react';
 import EliminarProducto from '@/components/cart/eliminar';
 import BuyCart from '@/components/cart/ComprarCarrito'
@@ -14,7 +12,7 @@ const GetCarrito = () => {
   // Obtener productos del carrito
   const fetchCart = async () => {
     try {
-      const response = await api.get('/users/cart/user/cart/');
+      const response = await api.get('/cart/my-cart/');
       setCartProducts(response.data.products);
     } catch (error) {
       console.error('Error al obtener el carrito', error);

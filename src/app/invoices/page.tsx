@@ -43,7 +43,7 @@ const ListInvoices = () => {
 
     const fetchInvoices = async () => {
       try {
-        const response = await api.get('/users/invoices/list-invoice/');
+        const response = await api.get('/invoices/list-invoice/');
         setInvoices(response.data);
       } catch (error) {
         toast.error('Error al cargar las facturas');

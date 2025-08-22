@@ -7,14 +7,14 @@ import api from '@/lib/axios'
 
 const ListProducts = () => {
   
-  const URL = '/products/list-products/';
+  const URL = 'http://127.0.0.1:8000/api/products/list-products/';
   const [products, setProducts] = useState<Product[]>([]);
   const [errores, setError] = useState('');
 
   useEffect(() => {
     const GetAllProducts = async () => {
-      const response = await api.get(URL);
       try {
+        const response = await axios.get(URL);
         setProducts(response.data);
       } catch (error) {
         if (axios.isAxiosError(error)) {

@@ -9,7 +9,7 @@ import { ProductSection } from '@/components/home/ProductSection'
 import { HomeIntro } from '@/components/home/HomeIntro'
 import { TickerText } from '@/components/ui/TickerText'
 import { CategoryShowcase } from '@/components/home/CategoryShowcase'
-
+import TopProductsBuy from '@/components/home/ProductsTopSeller'
 export default function HomePage() {
   const [products, setProducts] = useState<Product[]>([])
   const [errores, setErrores] = useState('')
@@ -17,7 +17,7 @@ export default function HomePage() {
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        const res = await api.get('/products/list-products/')
+        const res = await axios.get('http://127.0.0.1:8000/api/products/list-products/')
         setProducts(res.data)
       } catch (err) {
         const msg = axios.isAxiosError(err)
@@ -66,11 +66,7 @@ export default function HomePage() {
 
       <ProductSection title="🛒 Ofertas" productos={ofertas} />
       <TickerText items={mensajes} speed={70} />
-      <ProductSection
-        title="🔥 Lo más vendido"
-        productos={masVendidos}
-        bg="bg-gradient-to-br from-green-100 via-white to-green-50"
-      />
+      <TopProductsBuy/>
       <TickerText items={mensajes} speed={70} />
       <ProductSection title="🌱 Recomendados" productos={recomendados} />
 
