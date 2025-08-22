@@ -48,7 +48,7 @@ export const useLogin = () => {
       // Mensaje de exito
       toast.success('¡Inicio de sesión exitoso!');
       // Redirecciondel usuario
-      router.push(ROUTES.PRODUCTOS);
+      router.push(ROUTES.HOME);
       
     } catch (error: any) {
       // Obtenemos el tipo de error
