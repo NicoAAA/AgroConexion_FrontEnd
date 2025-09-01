@@ -1,134 +1,230 @@
-import { useEffect, useState } from "react"
-import {Comment} from '@/types/comments.type'
-import axios from "axios"
-import { useParams } from 'next/navigation';
-import Image from "next/image";
-import { responseCookiesToRequestCookies } from "next/dist/server/web/spec-extension/adapters/request-cookies";
-const ComentsProduct = () => {
-    const [comments, setComments] = useState<Comment[]>([])
-    const product = useParams();
-    const product_id = Number(product.id)
-    console.log(product_id.valueOf)
-    useEffect(()=>{
-        const GetCommment = async() => {
-            try {
-                const response = await axios.get(`http://127.0.0.1:8000/api/comments/product-comments/${product_id}/`)
-                console.log("Comentarios API:", response.data);
-                setComments(response.data)
-                
-            } catch (error: any) {
-                if (error.response?.data){
-                    const apiErrors = error.response.data
-                    console.log(apiErrors)
-                    if (apiErrors.message){
-                        return(
-                            <div>
-                                <h2>Este producto no tiene comentarios</h2>
-                            </div>
-                        )
-                    }
-                }
-            }
-        }
-        GetCommment()
-    },[product_id])
-    return (
-  <div className="space-y-6">
-    {comments.length === 0 ? (
-      <div className="flex flex-col items-center justify-center py-12">
-        <div className="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mb-4">
-          <svg 
-            className="w-8 h-8 text-gray-400" 
-            fill="none" 
-            stroke="currentColor" 
-            viewBox="0 0 24 24"
-          >
-            <path 
-              strokeLinecap="round" 
-              strokeLinejoin="round" 
-              strokeWidth={2} 
-              d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" 
-            />
-          </svg>
-        </div>
-        <p className="text-gray-500 font-medium">No hay comentarios aún</p>
-        <p className="text-gray-400 text-sm mt-1">Sé el primero en comentar</p>
-      </div>
-    ) : (
-      <div className="space-y-4">
-        {comments.map((com) => (
-          <div
-            key={com.id}
-            className="group relative bg-white border border-gray-200 rounded-2xl p-5 shadow-sm hover:shadow-md hover:border-gray-300 transition-all duration-200"
-          >
-            {/* Header con usuario */}
-            <div className="flex items-center gap-3 mb-4">
-              <div className="relative">
-                <Image
-                  className="rounded-full border-2 border-gray-100 shadow-sm"
-                  width={48}
-                  height={48}
-                  src={`http://127.0.0.1:8000${com.user.profile_image}`}
-                  alt={com.user.username}
-                />
-                <div className="absolute -bottom-1 -right-1 w-4 h-4 bg-green-500 rounded-full border-2 border-white"></div>
-              </div>
-              <div className="flex-1">
-                <h4 className="font-semibold text-gray-900 hover:text-blue-600 cursor-pointer transition-colors">
-                  {com.user.username}
-                </h4>
-              </div>
-            </div>
+"use client";
 
-            {/* Contenido del comentario */}
-            <div className="mb-4">
-              <p className="text-gray-700 leading-relaxed">
-                {com.comment}
-              </p>
-            </div>
+import { useEffect, useState } from "react";
+import axios from "axios";
+import { Send, Trash2, Edit2, Check, X } from "lucide-react";
+import api from "@/lib/axios";
+import { toast } from "sonner";
 
-            {/* Imágenes del comentario */}
-            {com.images.length > 0 && (
-              <div className="mb-4">
-                <div className={`grid gap-2 ${
-                  com.images.length === 1 ? 'grid-cols-1' : 
-                  com.images.length === 2 ? 'grid-cols-2' :
-                  com.images.length === 3 ? 'grid-cols-3' :
-                  'grid-cols-2'
-                }`}>
-                  {com.images.slice(0, 4).map((img, index) => (
-                    <div 
-                      key={img.id}
-                      className="relative group/img cursor-pointer overflow-hidden rounded-xl"
-                    >
-                      <Image
-                        className="w-full h-32 object-cover transition-transform duration-300 group-hover/img:scale-105"
-                        width={200}
-                        height={128}
-                        src={`http://127.0.0.1:8000${img.image}`}
-                        alt="Imagen comentario"
-                      />
-                      {/* Overlay para más imágenes */}
-                      {index === 3 && com.images.length > 4 && (
-                        <div className="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center">
-                          <span className="text-white font-semibold text-lg">
-                            +{com.images.length - 4}
-                          </span>
-                        </div>
-                      )}
-                      {/* Overlay hover */}
-                      <div className="absolute inset-0 bg-black opacity-0 group-hover/img:opacity-20 transition-opacity duration-300" />
-                    </div>
-                  ))}
-                </div>
-              </div>
-            )}
-          </div>
-        ))}
-      </div>
-    )}
-  </div>
-);
+interface Comment {
+  id: number;
+  comment: string;
+  user?: {
+    id: number;
+    username: string;
+    profile_image?: string;
+  };
 }
 
-export default ComentsProduct
+interface ComentsProductProps {
+  productId: number;
+}
+
+const ComentsProduct: React.FC<ComentsProductProps> = ({ productId }) => {
+  const [comments, setComments] = useState<Comment[]>([]);
+  const [newComment, setNewComment] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [editingId, setEditingId] = useState<number | null>(null);
+  const [editingText, setEditingText] = useState("");
+
+  const getFullImageUrl = (path: string) =>
+    path?.startsWith("http") ? path : `http://127.0.0.1:8000${path}`;
+
+  // Obtener comentarios
+  const fetchComments = async () => {
+    try {
+      const res = await axios.get(
+        `http://127.0.0.1:8000/api/comments/product-comments/${productId}/`
+      );
+      setComments(res.data);
+    } catch (error: any) {
+      console.error("Error cargando comentarios:", error);
+      toast.error("No se pudieron cargar los comentarios. Intenta recargar la página.");
+    }
+  };
+
+  useEffect(() => {
+    if (productId) fetchComments();
+  }, [productId]);
+
+  // Crear nuevo comentario
+  const handleAddComment = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!newComment.trim()) return;
+
+    try {
+      setLoading(true);
+      await api.post("/comments/new-comment/", {
+        product: productId,
+        comment: newComment,
+      });
+      setNewComment("");
+      toast.success("Comentario agregado 🌱");
+      fetchComments();
+    } catch (error: any) {
+      console.error("Error agregando comentario:", error.response?.data || error);
+      toast.error("No se pudo agregar el comentario. Verifica tu conexión.");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // Editar comentario
+  const handleEditComment = (commentId: number, currentText: string) => {
+    setEditingId(commentId);
+    setEditingText(currentText);
+  };
+
+  const handleSaveEdit = async (commentId: number) => {
+    if (!editingText.trim()) return;
+
+    try {
+      await api.put(`/comments/edit-comment/${commentId}/`, {
+        comment: editingText,
+      });
+      toast.success("Comentario actualizado ✨");
+      setEditingId(null);
+      setEditingText("");
+      fetchComments();
+    } catch (error: any) {
+      console.error("Error editando comentario:", error.response?.data || error);
+      toast.error("No se pudo actualizar el comentario. Intenta de nuevo.");
+    }
+  };
+
+  const handleCancelEdit = () => {
+    setEditingId(null);
+    setEditingText("");
+  };
+
+  // Eliminar comentario
+  const handleDeleteComment = async (commentId: number) => {
+    try {
+      await api.delete(`/comments/delete-comment/${commentId}/`);
+      toast.success("Comentario eliminado 🗑️");
+      setComments(comments.filter((c) => c.id !== commentId));
+    } catch (error: any) {
+      console.error("Error eliminando comentario:", error.response?.data || error);
+      toast.error("No se pudo eliminar el comentario. Intenta nuevamente.");
+    }
+  };
+
+  return (
+    <div className="bg-white rounded-2xl shadow-lg p-6 mt-6">
+      <h2 className="text-xl font-semibold mb-4 text-green-700">
+        Opiniones de otros usuarios 🌱
+      </h2>
+
+      {comments.length > 0 ? (
+        <ul className="space-y-4">
+          {comments.map((c) => (
+            <li
+              key={c.id}
+              className="flex items-start space-x-4 p-4 bg-gray-50 rounded-xl border hover:shadow-md transition"
+            >
+              {/* Avatar */}
+              {c.user?.profile_image ? (
+                <img
+                  src={getFullImageUrl(c.user.profile_image)}
+                  alt={c.user.username}
+                  className="w-10 h-10 rounded-full border-2 border-green-400 object-cover"
+                />
+              ) : (
+                <div className="w-10 h-10 rounded-full bg-green-600 flex items-center justify-center text-white font-bold">
+                  {c.user?.username?.charAt(0).toUpperCase() ?? "U"}
+                </div>
+              )}
+
+              {/* Contenido */}
+              <div className="flex-1">
+                <div className="flex justify-between items-center">
+                  <span className="font-semibold text-gray-800">
+                    {c.user?.username || "Usuario"}
+                  </span>
+                  <span className="text-xs text-gray-500">
+                    {new Date().toLocaleDateString()}
+                  </span>
+                </div>
+
+                {editingId === c.id ? (
+                  <div className="flex gap-2 mt-1">
+                    <input
+                      type="text"
+                      value={editingText}
+                      onChange={(e) => setEditingText(e.target.value)}
+                      className="flex-1 px-3 py-1 border rounded-xl focus:outline-none focus:ring-2 focus:ring-green-500"
+                    />
+                    <button
+                      onClick={() => handleSaveEdit(c.id)}
+                      className="p-2 text-green-600 hover:bg-green-100 rounded-xl transition"
+                      title="Guardar"
+                    >
+                      <Check size={16} />
+                    </button>
+                    <button
+                      onClick={handleCancelEdit}
+                      className="p-2 text-red-500 hover:bg-red-100 rounded-xl transition"
+                      title="Cancelar"
+                    >
+                      <X size={16} />
+                    </button>
+                  </div>
+                ) : (
+                  <p className="text-gray-700 mt-1">{c.comment}</p>
+                )}
+              </div>
+
+              {/* Acciones */}
+              <div className="flex space-x-2">
+                <button
+                  onClick={() => handleDeleteComment(c.id)}
+                  className="p-2 rounded-full text-red-500 hover:bg-red-100 transition"
+                  title="Eliminar"
+                >
+                  <Trash2 size={16} />
+                </button>
+                <button
+                  onClick={() =>
+                    handleEditComment(c.id, c.comment)
+                  }
+                  className="p-2 rounded-full text-blue-500 hover:bg-blue-100 transition"
+                  title="Editar"
+                >
+                  <Edit2 size={16} />
+                </button>
+              </div>
+            </li>
+          ))}
+        </ul>
+      ) : (
+        <p className="text-gray-500 italic text-sm">
+          Aún no hay comentarios. ¡Sé el primero en opinar! ✨
+        </p>
+      )}
+
+      {/* Formulario nuevo comentario */}
+      <form
+        onSubmit={handleAddComment}
+        className="mt-6 flex items-center space-x-2"
+      >
+        <input
+          type="text"
+          value={newComment}
+          onChange={(e) => setNewComment(e.target.value)}
+          placeholder="Escribe tu comentario..."
+          className="flex-1 px-4 py-2 border rounded-xl focus:outline-none focus:ring-2 focus:ring-green-500 text-sm"
+        />
+        <button
+          type="submit"
+          disabled={loading}
+          className="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-xl flex items-center space-x-2 transition disabled:opacity-50"
+        >
+          <Send size={16} />
+          <span>{loading ? "Enviando..." : "Enviar"}</span>
+        </button>
+      </form>
+    </div>
+  );
+};
+
+export default ComentsProduct;

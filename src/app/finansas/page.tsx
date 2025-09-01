@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react';
 import api from '@/lib/axios';
 import { Loader2, TrendingUp, TrendingDown, ShoppingCart, Wallet, DollarSign, Package, Star } from 'lucide-react';
 import { Sidebar } from '@/components/layout/sidebar';
-import { Navbar } from '@/components/layout/navbar';
+import { Navbar } from '@/components/home/navbar';
 
 interface Product {
   name: string;

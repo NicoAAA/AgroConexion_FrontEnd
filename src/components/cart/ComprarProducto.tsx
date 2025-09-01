@@ -11,9 +11,14 @@ const BuyProduct = ({ productId }: { productId: number }) => {
   const [loading, setLoading] = useState(false);
 
   const handleBuy = async () => {
+    if (quantity < 1) {
+      toast.error("❌ La cantidad debe ser mayor a 0");
+      return;
+    }
+
     setLoading(true);
     try {
-      const response = await api.post("/users/invoices/create/", {
+      const response = await api.post("/invoices/create/", {
         method: "efectivo", // o 'tarjeta_debito'
         items: [{ product_id: productId, quantity }],
       });
@@ -21,8 +26,18 @@ const BuyProduct = ({ productId }: { productId: number }) => {
       toast.success("🌾 ¡Producto comprado con éxito!");
       console.log(response.data);
     } catch (error: any) {
-      toast.error("❌ Error al comprar producto");
-      console.error(error.response?.data || error.message);
+      // Manejo de errores más detallado
+      if (error.response) {
+        const status = error.response.status;
+        const data = error.response.data;
+        if (status === 400) toast.error("⚠️ Datos inválidos. Verifica la cantidad o el producto");
+        else if (status === 401) toast.error("🔒 Debes iniciar sesión para comprar");
+        else if (status === 404) toast.error("❌ Producto no encontrado");
+        else toast.error(`❌ Error inesperado: ${data?.message || data || error.message}`);
+      } else {
+        toast.error(`❌ Error de conexión: ${error.message}`);
+      }
+      console.error(error);
     } finally {
       setLoading(false);
     }

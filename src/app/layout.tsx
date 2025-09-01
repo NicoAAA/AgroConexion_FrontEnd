@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import { Navbar } from "@/components/layout/navbar";
-import { Toaster } from 'sonner';
+import { Toaster } from 'react-hot-toast'; // solo usa una librería
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -15,11 +15,26 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="es">
-      <body className="bg-white text-black m-0 p-0 ">
-        <Navbar/>
+      <body className="bg-white text-black m-0 p-0">
+        <Navbar />
         <main className="bg-white text-black w-full">
           {children}
         </main>
+
+        {/* Toaster para notificaciones */}
+        <Toaster
+          position="top-right"
+          reverseOrder={false}
+          toastOptions={{
+            style: {
+              borderRadius: '12px',
+              background: '#f0fff4', // verde claro de tu tema
+              color: '#065f46', // verde oscuro de tu tema
+              padding: '12px 16px',
+              fontWeight: '500',
+            },
+          }}
+        />
       </body>
     </html>
   );

@@ -6,7 +6,7 @@ import {isAuthenticated, getStoredTokens} from '@/lib/auth'
 import axios from 'axios';
 import api from '@/lib/axios'
 import { Sidebar } from '@/components/layout/sidebar';
-import { Navbar } from '@/components/layout/navbar';
+import { Navbar } from '@/components/home/navbar';
 
 const CreateProduct = ()=>{
     const router = useRouter()

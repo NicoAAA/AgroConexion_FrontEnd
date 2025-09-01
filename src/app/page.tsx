@@ -1,7 +1,6 @@
 'use client'
 
 import { useEffect, useState } from 'react'
-import api from '@/lib/axios'
 import axios from 'axios'
 import { Product } from '@/types/product.types'
 import { Carousel } from '@/components/home/Carousel'
@@ -9,7 +8,9 @@ import { ProductSection } from '@/components/home/ProductSection'
 import { HomeIntro } from '@/components/home/HomeIntro'
 import { TickerText } from '@/components/ui/TickerText'
 import { CategoryShowcase } from '@/components/home/CategoryShowcase'
+import Footer from '@/components/home/footer'
 import TopProductsBuy from '@/components/home/ProductsTopSeller'
+
 export default function HomePage() {
   const [products, setProducts] = useState<Product[]>([])
   const [errores, setErrores] = useState('')
@@ -26,7 +27,6 @@ export default function HomePage() {
         setErrores(msg)
       }
     }
-
     fetchProducts()
   }, [])
 
@@ -57,24 +57,31 @@ export default function HomePage() {
   ]
 
   return (
-    <div className="flex flex-col gap-8 pb-8 bg-gradient-to-br from-green-100 via-white to-green-50">
-      <HomeIntro />
+    <div className="flex flex-col min-h-screen bg-gradient-to-br from-green-100 via-white to-green-50">
+      
+      {/* Contenido principal */}
+      <main className="flex-1 flex flex-col gap-8 pb-8">
+        <HomeIntro />
 
-      <div className="px-4">
-        <Carousel slides={selectedSlides} />
-      </div>
+        <div className="px-4">
+          <Carousel slides={selectedSlides} />
+        </div>
 
-      <ProductSection title="🛒 Ofertas" productos={ofertas} />
-      <TickerText items={mensajes} speed={70} />
-      <TopProductsBuy/>
-      <TickerText items={mensajes} speed={70} />
-      <ProductSection title="🌱 Recomendados" productos={recomendados} />
+        <ProductSection title="🛒 Ofertas" productos={ofertas} />
+        <TickerText items={mensajes} speed={70} />
+        <TopProductsBuy />
+        <TickerText items={mensajes} speed={70} />
+        <ProductSection title="🌱 Recomendados" productos={recomendados} />
 
-      {errores && (
-        <p className="text-center text-red-500 font-medium mt-4">{errores}</p>
-      )}
+        {errores && (
+          <p className="text-center text-red-500 font-medium mt-4">{errores}</p>
+        )}
 
-      <CategoryShowcase />
+        <CategoryShowcase />
+      </main>
+
+      {/* Footer siempre abajo */}
+      <Footer />
     </div>
   )
 }

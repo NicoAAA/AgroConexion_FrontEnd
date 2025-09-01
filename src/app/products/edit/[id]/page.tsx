@@ -6,7 +6,7 @@ import { Product, Categories, UnitOfMeasure } from '@/types/product.types';
 import api from '@/lib/axios';
 import { useParams, useRouter } from 'next/navigation';
 import { Sidebar } from '@/components/layout/sidebar';
-import { Navbar } from '@/components/layout/navbar';
+import { Navbar } from '@/components/home/navbar';
 import toast from 'react-hot-toast';
 
 const EditProduct = () => {
