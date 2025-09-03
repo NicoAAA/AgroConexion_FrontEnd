@@ -9,6 +9,7 @@ import SearchBar from '../search/SearchBar'
 import { ShoppingCart } from 'lucide-react'
 import { useState, useEffect } from 'react'
 import api from '@/lib/axios'
+import Notifications from '../notification/notification'
 
 export function Navbar() {
   const [cartCount, setCartCount] = useState(0)
@@ -65,7 +66,7 @@ export function Navbar() {
             className="text-white hover:text-gray-200 transition"
           />
         </Link>
-
+        <Notifications/>
         {/* Menú de usuario */}
         <NavUser />
       </div>
