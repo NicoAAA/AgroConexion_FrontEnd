@@ -16,4 +16,6 @@ export const ROUTES = {
   NEWPRODUCT: '/products/new',
   FACTURACION: '/invoices',
   ESTADISTICAS: '/finansas',
+  PERFIL: '/profile',
+  FAVORITOS: '/favorites'
 } as const;

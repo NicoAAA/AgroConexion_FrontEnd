@@ -56,39 +56,39 @@ const Notifications = () => {
   }, [token])
 
   // WebSocket para notificaciones en tiempo real
-    useEffect(() => {
+  useEffect(() => {
     if (!token) return
 
     const socket = new WebSocket(`ws://127.0.0.1:8000/ws/notificaciones/?token=${token}`)
 
     socket.onopen = () => {
-        console.log("🔌 WebSocket conectado")
+      console.log("🔌 WebSocket conectado")
     }
 
     socket.onmessage = (event) => {
-        try {
-          const data = JSON.parse(event.data)
-          console.log(data)
-          const notif = data.data
-          console.log(notif)
-          setNotifications(prev => [notif, ...prev])
-        } catch (err) {
-          console.error("❌ Error al parsear mensaje:", err)
-        }
+      try {
+        const data = JSON.parse(event.data)
+        console.log(data)
+        const notif = data.data
+        console.log(notif)
+        setNotifications(prev => [notif, ...prev])
+      } catch (err) {
+        console.error("❌ Error al parsear mensaje:", err)
+      }
     }
 
     socket.onerror = (error) => {
-        console.error("❌ Error en WebSocket:", error)
+      console.error("❌ Error en WebSocket:", error)
     }
 
     socket.onclose = (event) => {
-        console.log("🔌 WebSocket desconectado", event.reason)
+      console.log("🔌 WebSocket desconectado", event.reason)
     }
 
     return () => {
-        socket.close()
+      socket.close()
     }
-    }, [token])
+  }, [token])
 
 
   const getFullImageUrl = (path: string) =>
@@ -115,7 +115,7 @@ const Notifications = () => {
       <button
         onClick={() => setOpen(!open)}
         aria-expanded={open}
-        className="bg-gradient-to-r from-green-600 to-green-700 text-white px-5 py-2.5 rounded-xl font-semibold hover:from-green-700 hover:to-green-800 transition flex items-center gap-2 shadow-md"
+        className="bg-gradient-to-r from-green-600 to-green-700 text-white px-4 sm:px-5 py-2.5 rounded-xl font-semibold hover:from-green-700 hover:to-green-800 transition flex items-center gap-2 shadow-md"
         type="button"
       >
         <div className="relative">
@@ -126,9 +126,13 @@ const Notifications = () => {
             </span>
           )}
         </div>
-        Notificaciones
+
+        {/* Texto solo visible en pantallas medianas en adelante */}
+        <span className="hidden sm:inline">Notificaciones</span>
+
+        {/* Flecha también oculta en móviles */}
         <svg
-          className={`w-4 h-4 transform transition-transform ${open ? "rotate-180" : ""}`}
+          className={`hidden sm:block w-4 h-4 transform transition-transform ${open ? "rotate-180" : ""}`}
           xmlns="http://www.w3.org/2000/svg"
           fill="none"
           viewBox="0 0 10 6"
@@ -143,10 +147,11 @@ const Notifications = () => {
         </svg>
       </button>
 
+
       {/* Dropdown */}
       {open && (
-        <div className="absolute right-0 top-full mt-3 w-[24rem] bg-white rounded-2xl shadow-2xl border-2 border-green-300 z-20 animate-fade-slide">
-          <div className="p-4 max-h-[28rem] overflow-y-auto 
+        <div className="absolute right-0 top-full mt-3 w-[90vw] sm:w-[24rem] bg-white rounded-2xl shadow-2xl border-2 border-green-300 z-20 animate-fade-slide">
+          <div className="p-4 max-h-[60vh] sm:max-h-[28rem] overflow-y-auto 
             scrollbar-thin scrollbar-thumb-green-400 scrollbar-track-green-100 
             hover:scrollbar-thumb-green-500 rounded-b-2xl"
           >
@@ -174,7 +179,7 @@ const Notifications = () => {
                             alt={`${n.title}`}
                             width={40}
                             height={50}
-                            className="rounded-l-2xl"
+                            className="rounded-l-2xl object-cover sm:w-10 sm:h-12 w-8 h-10"
                           />
                         )}
                         <div>

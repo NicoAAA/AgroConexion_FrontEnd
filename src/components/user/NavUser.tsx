@@ -4,7 +4,9 @@ import { useEffect, useRef, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import Image from 'next/image'
 import { toast } from 'react-hot-toast'
-import { LogOut, LogIn, UserPlus, UserCircle, ShoppingBag, FileText, BarChart } from 'lucide-react'
+import { 
+  LogOut, LogIn, UserPlus, ShoppingBag, FileText, BarChart, Apple 
+} from 'lucide-react'
 import { useAuth } from '@/features/auth/hooks/useAuth'
 import { ROUTES } from '@/lib/constants'
 import Link from 'next/link'
@@ -58,43 +60,44 @@ const NavUser = () => {
                 alt={user.userName}
                 width={50}
                 height={50}
-                className="rounded-full border-2 border-green-500 shadow-md object-cover transition duration-300"
+                className="rounded-full border-2 border-green-600 shadow-md object-cover transition duration-300"
               />
             ) : (
-              <div className="w-10 h-10 bg-blue-600 rounded-full flex items-center justify-center text-white font-bold text-base shadow-md">
+              <div className="w-10 h-10 bg-green-600 rounded-full flex items-center justify-center text-white font-bold text-base shadow-md">
                 {user.userName?.charAt(0).toUpperCase() ?? 'U'}
               </div>
             )}
           </button>
 
           {open && (
-            <div className="absolute right-0 top-14 w-56 bg-white rounded-xl shadow-xl z-50 border border-gray-200 animate-fade-in-up">
-              <div className="p-4 border-b text-sm text-gray-800 font-semibold">
-                👤 {user.userName}
+            <div className="absolute right-0 top-14 w-60 bg-white rounded-xl shadow-lg z-50 border border-gray-200 overflow-hidden">
+              {/* Cabecera */}
+              <div className="p-4 bg-green-50 border-b text-sm text-gray-800 font-semibold flex items-center gap-2">
+                <Link href={ROUTES.PERFIL}>🌱 {user.userName} - Perfil</Link>
               </div>
-              <ul className="text-sm text-gray-700 py-2">
-                <li className="px-4 py-2 hover:bg-gray-50 flex items-center gap-2 cursor-pointer">
+              
+              {/* Opciones */}
+              <ul className="text-sm text-gray-700">
+                <li className="px-4 py-3 hover:bg-green-50 flex items-center gap-2 cursor-pointer transition">
                   <BarChart className="w-4 h-4 text-green-600" />
-                  <Link href={ROUTES.ESTADISTICAS}>
-                    Estadísticas
-                  </Link>
+                  <Link href={ROUTES.ESTADISTICAS}>Estadísticas</Link>
                 </li>
-                <li className="px-4 py-2 hover:bg-gray-50 flex items-center gap-2 cursor-pointer">
+                <li className="px-4 py-3 hover:bg-green-50 flex items-center gap-2 cursor-pointer transition">
                   <ShoppingBag className="w-4 h-4 text-green-600" />
-                  <Link href={ROUTES.PRODUCTOS}>
-                  Mis Productos
-                  </Link>
+                  <Link href={ROUTES.FAVORITOS}>Mis favoritos</Link>
                 </li>
-                <li className="px-4 py-2 hover:bg-gray-50 flex items-center gap-2 cursor-pointer">
+                <li className="px-4 py-3 hover:bg-green-50 flex items-center gap-2 cursor-pointer transition">
                   <FileText className="w-4 h-4 text-green-600" />
-                  <Link href={ROUTES.FACTURACION}>
-                  Facturas
-                  </Link>
+                  <Link href={ROUTES.FACTURACION}>Facturas</Link>
                 </li>
-                <li>
+                <li className="px-4 py-3 hover:bg-green-50 flex items-center gap-2 cursor-pointer transition">
+                  <Apple className="w-4 h-4 text-green-600" />
+                  <Link href={ROUTES.NEWPRODUCT}>Nuevo producto</Link>
+                </li>
+                <li className="border-t">
                   <button
                     onClick={handleLogout}
-                    className="w-full text-left px-4 py-2 mt-2 hover:bg-red-50 flex items-center gap-2 text-red-600 transition"
+                    className="w-full text-left px-4 py-3 hover:bg-red-50 flex items-center gap-2 text-red-600 transition"
                   >
                     <LogOut className="w-4 h-4" />
                     Cerrar sesión
@@ -108,18 +111,18 @@ const NavUser = () => {
         <>
           <button
             onClick={handleLogin}
-            className="flex items-center gap-2 px-4 py-2 text-sm font-medium text-white bg-green-600 hover:bg-green-200 hover:text-green-800 rounded-lg shadow-sm transition"
+            className="flex items-center gap-2 px-4 py-2 text-sm font-medium text-white bg-green-600 hover:bg-green-700 rounded-lg shadow-md transition"
           >
             <LogIn className="w-4 h-4" />
-              Iniciar sesión
+            Iniciar sesión
           </button>
 
           <button
             onClick={handleRegister}
-            className="bg-white flex items-center gap-2 px-4 py-2 text-sm font-medium text-green-700 border border-green-600 hover:bg-green-200 hover:text-green-800 rounded-lg shadow-sm transition"
+            className="bg-white flex items-center gap-2 px-4 py-2 text-sm font-medium text-green-700 border border-green-600 hover:bg-green-100 rounded-lg shadow-md transition"
           >
             <UserPlus className="w-4 h-4" />
-              Registrarse
+            Registrarse
           </button>
         </>
       )}

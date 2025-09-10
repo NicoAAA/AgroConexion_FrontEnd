@@ -49,13 +49,18 @@ const GetAllCategories = () => {
       <button
         onClick={() => setOpen(!open)}
         aria-expanded={open}
-        className="bg-gradient-to-r from-green-600 to-green-700 text-white px-5 py-2.5 rounded-xl font-semibold hover:from-green-700 hover:to-green-800 transition flex items-center gap-2 shadow-md"
+        className="bg-gradient-to-r from-green-600 to-green-700 text-white px-4 sm:px-5 py-2.5 rounded-xl font-semibold hover:from-green-700 hover:to-green-800 transition flex items-center gap-2 shadow-md"
         type="button"
       >
+        {/* Ícono siempre visible */}
         <GiFarmTractor className="text-xl" />
-        Categorías
+
+        {/* Texto solo visible en pantallas medianas en adelante */}
+        <span className="hidden sm:inline">Categorías</span>
+
+        {/* Flecha solo visible en sm+ */}
         <svg
-          className={`w-4 h-4 transform transition-transform ${
+          className={`hidden sm:block w-4 h-4 transform transition-transform ${
             open ? 'rotate-180' : ''
           }`}
           xmlns="http://www.w3.org/2000/svg"
@@ -74,9 +79,7 @@ const GetAllCategories = () => {
 
       {/* Dropdown */}
       {open && (
-        <div
-          className="absolute left-1/2 -translate-x-1/2 top-full mt-3 w-[28rem] bg-white rounded-2xl shadow-2xl border border-green-200 z-20 animate-fade-slide"
-        >
+        <div className="absolute left-1/2 -translate-x-1/2 top-full mt-3 w-[28rem] bg-white rounded-2xl shadow-2xl border border-green-200 z-20 animate-fade-slide">
           {/* Contenedor con scroll */}
           <div
             className="p-5 grid grid-cols-2 gap-2 max-h-[32.3rem] overflow-y-auto 

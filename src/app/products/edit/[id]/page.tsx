@@ -1,4 +1,7 @@
+// src/app/products/edit/[id]/page.tsx
+
 'use client'
+
 import { useEffect, useState } from 'react';
 import axios from 'axios';
 import Image from 'next/image';
@@ -6,7 +9,7 @@ import { Product, Categories, UnitOfMeasure } from '@/types/product.types';
 import api from '@/lib/axios';
 import { useParams, useRouter } from 'next/navigation';
 import { Sidebar } from '@/components/layout/sidebar';
-import { Navbar } from '@/components/home/navbar';
+import { Navbar } from '@/components/layout/navbar';
 import toast from 'react-hot-toast';
 
 const EditProduct = () => {

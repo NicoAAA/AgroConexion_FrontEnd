@@ -10,6 +10,7 @@ export interface ProductCardProps {
   description: string
   price: number;
   imageUrl: string;
+   defaultFavorite?: boolean
 }
 
 export interface Product {

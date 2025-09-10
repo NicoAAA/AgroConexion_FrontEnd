@@ -75,7 +75,7 @@ export const CategoryShowcase = () => {
     },
     {
       name: 'Hierbas 🌿',
-      imageUrl: '/categories/hierbas.jpg',
+      imageUrl: '/categories/hierbasa.jpg',
       icon: Leaf,
       href: '/categories/15',
     },

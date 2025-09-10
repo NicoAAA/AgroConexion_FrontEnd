@@ -1,4 +1,3 @@
-// src/components/cart/ComprarCarrito.tsx
 'use client'
 
 import { useState } from 'react'
@@ -11,7 +10,7 @@ import Link from 'next/link'
 interface ComprarCarritoProps {
   totalItems?: number
   totalPrice?: number
-  onCartCleared?: () => void // callback opcional para resetear carrito en frontend
+  onCartCleared?: () => void // callback opcional
 }
 
 const ComprarCarrito = ({
@@ -29,26 +28,32 @@ const ComprarCarrito = ({
 
     setLoading(true)
     try {
-      // 1. Obtener productos del carrito
+      // 1. Obtener productos
       const { data } = await api.get('/cart/my-cart/')
+      const items = Array.isArray(data) ? data : data?.products || []
 
-      // 2. Eliminar cada producto con su id
-      for (const item of data) {
+      if (items.length === 0) {
+        toast.error('Tu carrito está vacío ❌')
+        return
+      }
+
+      // 2. Eliminar cada producto
+      for (const item of items) {
+        if (!item.product?.id) continue
         await api.delete(`/cart/delete-product/${item.product.id}/`)
       }
 
-      // 3. Notificación
-      toast.success('Compra realizada con éxito 🎉')
+      // 3. Notificación de éxito + factura simulada
+      toast.success('✅ Compra realizada con éxito. Tu factura fue generada 🧾')
 
-      // 4. Resetear carrito en frontend si existe callback
+      // 4. Vaciar carrito en frontend
       if (onCartCleared) onCartCleared()
     } catch (err: any) {
       toast.error('Error al realizar la compra ❌')
-
       if (axios.isAxiosError(err)) {
-        console.error(err.response?.data || err.message)
+        console.error('❌ Error de Axios:', err.response?.data || err.message)
       } else {
-        console.error(err)
+        console.error('❌ Error inesperado:', err)
       }
     } finally {
       setLoading(false)
@@ -57,7 +62,7 @@ const ComprarCarrito = ({
 
   return (
     <div className="w-full bg-white rounded-2xl shadow-lg p-5 flex flex-col gap-4 border border-gray-100">
-      {/* Resumen del carrito */}
+      {/* Resumen */}
       <div className="flex items-center justify-between">
         <div>
           <h3 className="text-lg font-semibold text-gray-800">
@@ -75,7 +80,7 @@ const ComprarCarrito = ({
         </div>
       </div>
 
-      {/* Botón de comprar */}
+      {/* Botón principal */}
       <button
         disabled={loading || totalItems === 0}
         onClick={handleBuyCart}
@@ -94,7 +99,7 @@ const ComprarCarrito = ({
         )}
       </button>
 
-      {/* Botón para explorar más productos */}
+      {/* Botón explorar */}
       <Link
         href="/"
         className="w-full flex items-center justify-center gap-2 bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-xl font-semibold shadow-md transition"
@@ -103,9 +108,8 @@ const ComprarCarrito = ({
         Explorar más productos
       </Link>
 
-      {/* Nota */}
       <p className="text-xs text-gray-400 text-center">
-        *Elige tu método de pago en el siguiente paso
+        *Factura disponible en tu historial de compras
       </p>
     </div>
   )

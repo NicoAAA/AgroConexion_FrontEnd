@@ -23,6 +23,9 @@ export function Sidebar() {
         <Link href={ROUTES.ESTADISTICAS} className="block text-gray-700 hover:text-blue-600">
           Estadísticas
         </Link>
+        <Link href={ROUTES.NEWPRODUCT} className="block text-gray-700 hover:text-blue-600">
+          Nuevo producto
+        </Link>
       </nav>
     </aside>
   );

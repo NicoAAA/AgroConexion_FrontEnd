@@ -13,19 +13,25 @@ import Notifications from '../notification/notification'
 
 export function Navbar() {
   const [cartCount, setCartCount] = useState(0)
+  const { isAuthenticated } = useAuth()
 
   useEffect(() => {
     const fetchCart = async () => {
       try {
-        const { data } = await api.get('/cart/my-cart/')
-        setCartCount(data.length)
+        // Solo pedimos el carrito si hay usuario autenticado
+        if (isAuthenticated) {
+          const { data } = await api.get('/cart/my-cart/')
+          setCartCount(data.length)
+        } else {
+          setCartCount(0) // Si no hay sesión, contador en 0
+        } 
       } catch (error) {
         console.error('Error al obtener carrito:', error)
       }
     }
 
     fetchCart()
-  }, [])
+  }, [isAuthenticated])
 
   return (
     <nav className="top-0 left-0 right-0 z-10 h-16 flex items-center justify-between bg-green-700 shadow px-6 md:px-10">
@@ -33,7 +39,7 @@ export function Navbar() {
       <div className="flex items-center gap-4 md:gap-6">
         <Link
           href="/"
-          className="flex items-center gap-2 hover:opacity-90 transition"
+          className="hidden sm:flex items-center gap-2 hover:opacity-90 transition"
         >
           <Image
             className="rounded-full border border-white shadow-md"
@@ -42,12 +48,12 @@ export function Navbar() {
             src="/AgroConexion.svg"
             alt="Logo"
           />
-          <span className="text-white font-bold text-lg hidden sm:inline">
+          <span className="text-white font-bold text-lg hidden md:inline">
             AgroConexión
           </span>
         </Link>
 
-        <div className="hidden md:flex">
+        <div className="hidden sm:flex">
           <GetAllCategories />
         </div>
       </div>
@@ -65,6 +71,11 @@ export function Navbar() {
             size={28}
             className="text-white hover:text-gray-200 transition"
           />
+          {cartCount > 0 && (
+            <span className="absolute -top-1 -right-2 bg-red-600 text-white text-xs font-bold rounded-full w-5 h-5 flex items-center justify-center shadow">
+              {cartCount}
+            </span>
+          )}
         </Link>
         <Notifications/>
         {/* Menú de usuario */}
