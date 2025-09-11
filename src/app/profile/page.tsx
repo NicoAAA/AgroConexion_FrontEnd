@@ -2,30 +2,15 @@
 
 'use client'
 
-// Importamos dependencias necesarias
 import Image from 'next/image'
 import { Mail, Phone, MapPin, Shield, User, Lock } from 'lucide-react'
 import { useAuth } from '@/features/auth/hooks/useAuth'
 
-/**
- * Página de perfil del usuario
- * - Obtiene la información del usuario autenticado desde el hook `useAuth`.
- * - Muestra datos generales como nombre, correo, teléfono, dirección, rol, etc.
- * - Si el usuario pertenece a un grupo (agrupación campesina), muestra datos adicionales.
- */
 const ProfilePage = () => {
-  // Hook personalizado que trae la información del usuario autenticado
   const auth = useAuth()
-
-  // Verificamos si hay sesión activa
   const isAuthenticated = (auth as any).isAuthenticated
   const rawUser = (auth as any).user as any
 
-  /**
-   * Función auxiliar para obtener un campo del usuario
-   * - Intenta buscar diferentes posibles nombres de propiedad
-   *   (ya que el backend podría devolver variaciones como userName, username, etc.)
-   */
   const getField = (obj: any, ...keys: string[]) => {
     for (const k of keys) {
       if (obj && obj[k] !== undefined && obj[k] !== null) return obj[k]
@@ -33,7 +18,6 @@ const ProfilePage = () => {
     return undefined
   }
 
-  // Campos principales del perfil (se buscan en diferentes posibles claves)
   const displayName = getField(rawUser, 'userName', 'username', 'name') || 'Usuario'
   const email = getField(rawUser, 'email')
   const phone = getField(rawUser, 'phoneNumber', 'phone_number', 'phone')
@@ -44,20 +28,15 @@ const ProfilePage = () => {
   const twoFactor = !!getField(rawUser, 'twoFactorEnabled', 'two_factor_enabled')
   const groupProfile = getField(rawUser, 'groupProfile', 'group_profile')
 
-  /**
-   * Función para construir la URL completa de la imagen de perfil
-   * - Si viene una ruta relativa desde el backend, se concatena con la base URL.
-   */
   const getFullImageUrl = (path?: string) => {
     if (!path) return undefined
     return path.startsWith('http') ? path : `http://127.0.0.1:8000${path}`
   }
 
-  // Si no hay sesión activa o no existe el usuario
   if (!isAuthenticated || !rawUser) {
     return (
-      <div className="flex flex-col items-center justify-center h-screen text-gray-600">
-        <User className="w-12 h-12 text-gray-400 mb-2" />
+      <div className="flex flex-col items-center justify-center h-screen text-gray-600 dark:text-gray-300">
+        <User className="w-12 h-12 text-gray-400 dark:text-gray-500 mb-2" />
         <p>No hay información disponible del usuario.</p>
       </div>
     )
@@ -66,7 +45,10 @@ const ProfilePage = () => {
   return (
     <div className="container mx-auto max-w-5xl px-6 py-12">
       {/* ----------------- ENCABEZADO DEL PERFIL ----------------- */}
-      <div className="flex flex-col md:flex-row items-center gap-8 bg-gradient-to-r from-green-50 to-green-100 shadow-xl rounded-3xl p-8 border border-green-200">
+      <div className="flex flex-col md:flex-row items-center gap-8 bg-gradient-to-r 
+        from-green-50 to-green-100 dark:from-gray-800 dark:to-gray-900 
+        shadow-xl rounded-3xl p-8 border border-green-200 dark:border-green-700">
+        
         {/* Imagen o inicial */}
         <div className="flex-shrink-0">
           {profileImagePath ? (
@@ -78,7 +60,9 @@ const ProfilePage = () => {
               className="rounded-full border-4 border-green-600 object-cover shadow-lg"
             />
           ) : (
-            <div className="w-32 h-32 flex items-center justify-center bg-gradient-to-br from-green-600 to-green-400 text-white text-4xl font-bold rounded-full shadow-lg">
+            <div className="w-32 h-32 flex items-center justify-center 
+              bg-gradient-to-br from-green-600 to-green-400 
+              text-white text-4xl font-bold rounded-full shadow-lg">
               {displayName?.charAt(0).toUpperCase() ?? 'U'}
             </div>
           )}
@@ -86,8 +70,10 @@ const ProfilePage = () => {
 
         {/* Nombre y tipo de usuario */}
         <div className="flex-1 text-center md:text-left">
-          <h1 className="text-3xl font-extrabold text-gray-900">{displayName}</h1>
-          <p className="text-lg text-gray-600 mt-2">
+          <h1 className="text-3xl font-extrabold text-gray-900 dark:text-gray-100">
+            {displayName}
+          </h1>
+          <p className="text-lg text-gray-600 dark:text-gray-400 mt-2">
             {userType === 'group'
               ? '👥 Agrupación campesina'
               : userType === 'admin'
@@ -107,37 +93,46 @@ const ProfilePage = () => {
         ].map((item, idx) => (
           <div
             key={idx}
-            className="bg-white shadow-md hover:shadow-lg transition rounded-2xl p-5 flex items-center gap-5 border border-gray-100"
+            className="bg-white dark:bg-gray-800 shadow-md hover:shadow-lg 
+              transition rounded-2xl p-5 flex items-center gap-5 
+              border border-gray-100 dark:border-gray-700"
           >
-            <div className="w-12 h-12 flex items-center justify-center rounded-full bg-green-100 text-green-600 shadow-sm">
+            <div className="w-12 h-12 flex items-center justify-center rounded-full 
+              bg-green-100 dark:bg-green-900 text-green-600 dark:text-green-400 shadow-sm">
               <item.icon className="w-6 h-6" />
             </div>
             <div>
-              <p className="text-sm text-gray-500">{item.label}</p>
-              <p className="text-gray-800 font-semibold">{item.value}</p>
+              <p className="text-sm text-gray-500 dark:text-gray-400">{item.label}</p>
+              <p className="text-gray-800 dark:text-gray-200 font-semibold">{item.value}</p>
             </div>
           </div>
         ))}
 
-        {/* Estado de autenticación en dos pasos (2FA) */}
-        <div className="bg-white shadow-md hover:shadow-lg transition rounded-2xl p-5 flex items-center gap-5 border border-gray-100 md:col-span-2">
-          <div className="w-12 h-12 flex items-center justify-center rounded-full bg-green-100 text-green-600 shadow-sm">
+        {/* Estado 2FA */}
+        <div className="bg-white dark:bg-gray-800 shadow-md hover:shadow-lg 
+          transition rounded-2xl p-5 flex items-center gap-5 
+          border border-gray-100 dark:border-gray-700 md:col-span-2">
+          <div className="w-12 h-12 flex items-center justify-center rounded-full 
+            bg-green-100 dark:bg-green-900 text-green-600 dark:text-green-400 shadow-sm">
             <Lock className="w-6 h-6" />
           </div>
           <div>
-            <p className="text-sm text-gray-500">Autenticación en dos pasos</p>
-            <p className="text-gray-800 font-semibold">
+            <p className="text-sm text-gray-500 dark:text-gray-400">Autenticación en dos pasos</p>
+            <p className="text-gray-800 dark:text-gray-200 font-semibold">
               {twoFactor ? '✅ Activada' : '❌ Desactivada'}
             </p>
           </div>
         </div>
       </div>
 
-      {/* ----------------- INFORMACIÓN EXTRA PARA AGRUPACIONES ----------------- */}
+      {/* ----------------- INFORMACIÓN EXTRA AGRUPACIONES ----------------- */}
       {userType === 'group' && groupProfile && (
-        <div className="mt-10 bg-white shadow-lg rounded-2xl p-8 border border-gray-100">
-          <h2 className="text-xl font-bold text-green-700 mb-4">📑 Información de la Agrupación</h2>
-          <div className="grid gap-3 sm:grid-cols-2">
+        <div className="mt-10 bg-white dark:bg-gray-800 shadow-lg rounded-2xl p-8 
+          border border-gray-100 dark:border-gray-700">
+          <h2 className="text-xl font-bold text-green-700 dark:text-green-400 mb-4">
+            📑 Información de la Agrupación
+          </h2>
+          <div className="grid gap-3 sm:grid-cols-2 text-gray-700 dark:text-gray-200">
             <p><strong>NIT:</strong> {groupProfile.nit || 'No registrado'}</p>
             <p><strong>Tipo de organización:</strong> {groupProfile.organization_type || groupProfile.organizationType}</p>
             <p><strong>Representante:</strong> {groupProfile.legal_representative || groupProfile.legalRepresentative}</p>

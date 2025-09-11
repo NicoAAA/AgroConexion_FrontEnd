@@ -52,13 +52,8 @@ const GetAllCategories = () => {
         className="bg-gradient-to-r from-green-600 to-green-700 text-white px-4 sm:px-5 py-2.5 rounded-xl font-semibold hover:from-green-700 hover:to-green-800 transition flex items-center gap-2 shadow-md"
         type="button"
       >
-        {/* Ícono siempre visible */}
         <GiFarmTractor className="text-xl" />
-
-        {/* Texto solo visible en pantallas medianas en adelante */}
         <span className="hidden sm:inline">Categorías</span>
-
-        {/* Flecha solo visible en sm+ */}
         <svg
           className={`hidden sm:block w-4 h-4 transform transition-transform ${
             open ? 'rotate-180' : ''
@@ -79,20 +74,33 @@ const GetAllCategories = () => {
 
       {/* Dropdown */}
       {open && (
-        <div className="absolute left-1/2 -translate-x-1/2 top-full mt-3 w-[28rem] bg-white rounded-2xl shadow-2xl border border-green-200 z-20 animate-fade-slide">
+        <div className="absolute left-1/2 -translate-x-1/2 top-full mt-3 w-[28rem] 
+          bg-white dark:bg-gray-900 rounded-2xl shadow-2xl 
+          border border-green-200 dark:border-green-700 
+          z-20 animate-fade-slide"
+        >
           {/* Contenedor con scroll */}
           <div
             className="p-5 grid grid-cols-2 gap-2 max-h-[32.3rem] overflow-y-auto 
-            scrollbar-thin scrollbar-thumb-green-400 scrollbar-track-green-100 hover:scrollbar-thumb-green-500 rounded-b-2xl"
+            scrollbar-thin scrollbar-thumb-green-400 scrollbar-track-green-100 
+            hover:scrollbar-thumb-green-500 rounded-b-2xl 
+            dark:scrollbar-thumb-green-600 dark:scrollbar-track-gray-800"
           >
             {category.map((cat) => (
               <Link
                 key={cat.id}
                 href={`/categories/${cat.id}`}
                 title={cat.description}
-                className="flex flex-col items-center justify-center px-4 py-3 rounded-xl bg-gradient-to-br from-green-50 to-green-100 hover:from-green-100 hover:to-green-200 text-gray-800 hover:text-green-700 transition font-medium text-center shadow-sm border border-green-200"
+                className="flex flex-col items-center justify-center px-4 py-3 rounded-xl 
+                bg-gradient-to-br from-green-50 to-green-100 
+                dark:from-gray-800 dark:to-gray-700
+                hover:from-green-100 hover:to-green-200 
+                dark:hover:from-gray-700 dark:hover:to-gray-600
+                text-gray-800 dark:text-gray-200 hover:text-green-700 dark:hover:text-green-400 
+                transition font-medium text-center shadow-sm 
+                border border-green-200 dark:border-green-600"
               >
-                <GiFarmTractor className="text-green-600 text-2xl mb-1" />
+                <GiFarmTractor className="text-green-600 dark:text-green-400 text-2xl mb-1" />
                 {cat.name}
               </Link>
             ))}

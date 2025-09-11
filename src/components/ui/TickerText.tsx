@@ -7,6 +7,12 @@ interface Props {
   speed?: number // en píxeles por segundo
 }
 
+/**
+ * Barra de texto en movimiento (Ticker)
+ * - Se desplaza automáticamente con requestAnimationFrame
+ * - Se pausa al hacer hover
+ * - Colores adaptados a light/dark mode
+ */
 export const TickerText = ({ items, speed = 60 }: Props) => {
   const containerRef = useRef<HTMLDivElement>(null)
   const contentRef = useRef<HTMLDivElement>(null)
@@ -15,18 +21,18 @@ export const TickerText = ({ items, speed = 60 }: Props) => {
   const [offset, setOffset] = useState(0)
   const [contentWidth, setContentWidth] = useState(0)
 
-  // Obtener el ancho una vez el contenido esté montado
+  // Medir el ancho del contenido
   useEffect(() => {
     const timeout = setTimeout(() => {
       if (contentRef.current) {
         setContentWidth(contentRef.current.offsetWidth / 2)
       }
-    }, 100) // pequeño retraso para asegurar montaje
+    }, 100)
 
     return () => clearTimeout(timeout)
   }, [items])
 
-  // Movimiento con requestAnimationFrame
+  // Animación con requestAnimationFrame
   useEffect(() => {
     let lastTime = performance.now()
 
@@ -52,16 +58,17 @@ export const TickerText = ({ items, speed = 60 }: Props) => {
 
   return (
     <div
-      className="relative w-full overflow-hidden bg-green-600 text-white py-3 px-4 rounded-lg shadow-md cursor-pointer"
+      className="relative w-full overflow-hidden 
+                 bg-green-600 dark:bg-green-800 
+                 text-white py-3 px-4 rounded-lg shadow-md cursor-pointer 
+                 transition-colors duration-500"
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >
       <div
         ref={containerRef}
         className="whitespace-nowrap flex"
-        style={{
-          transform: `translateX(-${offset}px)`,
-        }}
+        style={{ transform: `translateX(-${offset}px)` }}
       >
         <div ref={contentRef} className="flex shrink-0 gap-8">
           {items.map((item, idx) => (

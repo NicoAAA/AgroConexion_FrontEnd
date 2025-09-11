@@ -18,13 +18,12 @@ export function Navbar() {
   useEffect(() => {
     const fetchCart = async () => {
       try {
-        // Solo pedimos el carrito si hay usuario autenticado
         if (isAuthenticated) {
           const { data } = await api.get('/cart/my-cart/')
           setCartCount(data.length)
         } else {
-          setCartCount(0) // Si no hay sesión, contador en 0
-        } 
+          setCartCount(0)
+        }
       } catch (error) {
         console.error('Error al obtener carrito:', error)
       }
@@ -34,7 +33,12 @@ export function Navbar() {
   }, [isAuthenticated])
 
   return (
-    <nav className="top-0 left-0 right-0 z-10 h-16 flex items-center justify-between bg-green-700 shadow px-6 md:px-10">
+    <nav
+      className="top-0 left-0 right-0 z-10 h-16 flex items-center justify-between 
+                 bg-green-700 dark:bg-green-900 
+                 shadow px-6 md:px-10 
+                 transition-colors duration-500"
+    >
       {/* Sección izquierda: Logo y categorías */}
       <div className="flex items-center gap-4 md:gap-6">
         <Link
@@ -42,13 +46,13 @@ export function Navbar() {
           className="hidden sm:flex items-center gap-2 hover:opacity-90 transition"
         >
           <Image
-            className="rounded-full border border-white shadow-md"
+            className="rounded-full border border-white dark:border-gray-200 shadow-md"
             width={42}
             height={42}
             src="/AgroConexion.svg"
             alt="Logo"
           />
-          <span className="text-white font-bold text-lg hidden md:inline">
+          <span className="text-white dark:text-gray-100 font-bold text-lg hidden md:inline">
             AgroConexión
           </span>
         </Link>
@@ -69,7 +73,7 @@ export function Navbar() {
         <Link href="/cart" className="relative">
           <ShoppingCart
             size={28}
-            className="text-white hover:text-gray-200 transition"
+            className="text-white dark:text-gray-100 hover:text-gray-200 dark:hover:text-gray-300 transition"
           />
           {cartCount > 0 && (
             <span className="absolute -top-1 -right-2 bg-red-600 text-white text-xs font-bold rounded-full w-5 h-5 flex items-center justify-center shadow">
@@ -77,7 +81,7 @@ export function Navbar() {
             </span>
           )}
         </Link>
-        <Notifications/>
+        <Notifications />
         {/* Menú de usuario */}
         <NavUser />
       </div>

@@ -1,4 +1,6 @@
 'use client'
+
+import Link from 'next/link'
 import ProductCard from '@/components/products/ProductCard'
 import { Product } from '@/types/product.types'
 
@@ -8,18 +10,24 @@ interface Props {
   bg?: string
 }
 
-export const ProductSection = ({ title, productos, bg = 'bg-white' }: Props) => (
+export const ProductSection = ({
+  title,
+  productos,
+  bg = 'bg-white dark:bg-gray-900',
+}: Props) => (
   <section className={`${bg} py-8 px-4`}>
     <div className="max-w-7xl mx-auto">
       {/* Título y enlace */}
       <div className="flex items-center justify-between mb-6">
-        <h2 className="text-2xl font-extrabold text-green-800 tracking-tight">{title}</h2>
-        <a
+        <h2 className="text-2xl font-extrabold text-green-800 dark:text-green-300 tracking-tight">
+          {title}
+        </h2>
+        <Link
           href="/products"
-          className="text-sm font-medium text-green-700 hover:text-green-900 hover:underline transition"
+          className="text-sm font-medium text-green-700 dark:text-green-400 hover:text-green-900 dark:hover:text-green-200 hover:underline transition"
         >
           Ver todos →
-        </a>
+        </Link>
       </div>
 
       {/* Grid responsivo */}

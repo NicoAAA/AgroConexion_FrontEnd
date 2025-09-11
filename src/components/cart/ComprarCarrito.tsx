@@ -28,25 +28,27 @@ const ComprarCarrito = ({
 
     setLoading(true)
     try {
-      // 1. Obtener productos
-      const { data } = await api.get('/cart/my-cart/')
-      const items = Array.isArray(data) ? data : data?.products || []
+      // 1️⃣ Generar factura en el backend desde el carrito
+      const { data } = await api.post('/invoices/from-cart/')
 
-      if (items.length === 0) {
-        toast.error('Tu carrito está vacío ❌')
-        return
-      }
+      // 2️⃣ Mostrar notificación con acceso directo a la factura
+      toast.success(
+        <div className="flex flex-col gap-1">
+          <span>✅ Compra realizada con éxito</span>
+          <span className="text-sm text-gray-500">
+            Factura #{data?.id} generada
+          </span>
+          <Link
+            href={`/facturas/${data?.id}`}
+            className="text-blue-600 underline text-sm hover:text-blue-800 mt-1"
+          >
+            Ver factura
+          </Link>
+        </div>,
+        { duration: 6000 }
+      )
 
-      // 2. Eliminar cada producto
-      for (const item of items) {
-        if (!item.product?.id) continue
-        await api.delete(`/cart/delete-product/${item.product.id}/`)
-      }
-
-      // 3. Notificación de éxito + factura simulada
-      toast.success('✅ Compra realizada con éxito. Tu factura fue generada 🧾')
-
-      // 4. Vaciar carrito en frontend
+      // 3️⃣ Vaciar carrito en frontend
       if (onCartCleared) onCartCleared()
     } catch (err: any) {
       toast.error('Error al realizar la compra ❌')

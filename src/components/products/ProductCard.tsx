@@ -1,4 +1,5 @@
 'use client'
+
 import React, { useState, useEffect } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
@@ -7,23 +8,33 @@ import { Heart, ShoppingCart, MessageSquare, Star } from 'lucide-react'
 import { toast } from 'sonner'
 import api from '@/lib/axios'
 
+/**
+ * ProductCard → Componente de tarjeta para mostrar información de productos.
+ *
+ * Características principales:
+ * - Imagen del producto con efecto hover (zoom-in).
+ * - Botón para favoritos ❤️ (persistencia con backend).
+ * - Botón para añadir/quitar del carrito 🛒.
+ * - Muestra calificación ⭐ y número de comentarios 💬.
+ * - Totalmente responsivo y con soporte para **modo oscuro**.
+ */
 const ProductCard: React.FC<ProductCardProps & { defaultFavorite?: boolean }> = ({
   id,
   name,
   description,
   price,
   imageUrl,
-  defaultFavorite = false, // Corazón rojo activo opcional
+  defaultFavorite = false, // Define si el producto inicia en favoritos
 }) => {
+  // ---------------- Estados ----------------
   const [isHovered, setIsHovered] = useState(false)
   const [imageLoaded, setImageLoaded] = useState(false)
-
   const [isFavorite, setIsFavorite] = useState(defaultFavorite)
   const [inCart, setInCart] = useState(false)
   const [rating, setRating] = useState<number>(0)
   const [commentsCount, setCommentsCount] = useState<number>(0)
 
-  // Actualiza isFavorite si defaultFavorite cambia dinámicamente
+  // ---------------- Efectos ----------------
   useEffect(() => {
     setIsFavorite(defaultFavorite)
   }, [defaultFavorite])
@@ -33,6 +44,9 @@ const ProductCard: React.FC<ProductCardProps & { defaultFavorite?: boolean }> = 
     fetchComments()
   }, [])
 
+  // ---------------- Funciones ----------------
+
+  /** Añadir o quitar favoritos */
   const toggleFavorite = async () => {
     try {
       if (isFavorite) {
@@ -55,16 +69,10 @@ const ProductCard: React.FC<ProductCardProps & { defaultFavorite?: boolean }> = 
       } else {
         toast.error(`❌ Error al actualizar favoritos: ${errorMessage}`)
       }
-
-      console.error('Error en toggleFavorite:', {
-        status,
-        data: err?.response?.data,
-        message: err?.message,
-        stack: err?.stack,
-      })
     }
   }
 
+  /** Añadir o quitar del carrito */
   const toggleCart = async () => {
     try {
       if (inCart) {
@@ -83,15 +91,10 @@ const ProductCard: React.FC<ProductCardProps & { defaultFavorite?: boolean }> = 
       } else {
         toast.error(`❌ Error al actualizar el carrito: ${errorMessage}`)
       }
-      console.error('Error en toggleCart:', {
-        status: err?.response?.status,
-        data: err?.response?.data,
-        message: err?.message,
-        full: err,
-      })
     }
   }
 
+  /** Obtener calificación promedio */
   const fetchRating = async () => {
     try {
       const res = await api.get(`/products/stats_rating/${id}/`)
@@ -101,6 +104,7 @@ const ProductCard: React.FC<ProductCardProps & { defaultFavorite?: boolean }> = 
     }
   }
 
+  /** Obtener cantidad de comentarios */
   const fetchComments = async () => {
     try {
       const res = await api.get(`/comments/product-comments/${id}/`)
@@ -110,17 +114,20 @@ const ProductCard: React.FC<ProductCardProps & { defaultFavorite?: boolean }> = 
     }
   }
 
+  // ---------------- Render ----------------
   return (
     <div
-      className="group relative bg-white/90 backdrop-blur-sm rounded-2xl overflow-hidden transition-all duration-500 hover:shadow-xl hover:-translate-y-1 border border-green-500"
+      className="group relative bg-white dark:bg-gray-900/90 backdrop-blur-sm rounded-2xl overflow-hidden transition-all duration-500 hover:shadow-xl hover:-translate-y-1 border border-green-500/50 dark:border-green-400/30"
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >
-      <div className="absolute inset-0 bg-gradient-to-br from-green-50/20 to-amber-50/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-10 pointer-events-none" />
+      {/* Fondo dinámico al hacer hover */}
+      <div className="absolute inset-0 bg-gradient-to-br from-green-50/20 to-amber-50/20 dark:from-green-800/20 dark:to-amber-800/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-10 pointer-events-none" />
 
-      <div className="relative w-full h-56 overflow-hidden bg-gradient-to-br from-green-50 to-amber-50">
+      {/* Imagen */}
+      <div className="relative w-full h-56 overflow-hidden bg-gradient-to-br from-green-50 to-amber-50 dark:from-gray-800 dark:to-gray-700">
         {!imageLoaded && (
-          <div className="absolute inset-0 bg-gradient-to-r from-green-100 via-amber-100 to-green-100 animate-pulse" />
+          <div className="absolute inset-0 bg-gradient-to-r from-green-100 via-amber-100 to-green-100 dark:from-gray-700 dark:via-gray-600 dark:to-gray-700 animate-pulse" />
         )}
         <Image
           src={`http://127.0.0.1:8000${imageUrl}`}
@@ -130,47 +137,56 @@ const ProductCard: React.FC<ProductCardProps & { defaultFavorite?: boolean }> = 
           onLoad={() => setImageLoaded(true)}
         />
 
-        {/* Botón favorito */}
+        {/* Botón favoritos */}
         <button
           onClick={toggleFavorite}
-          className="absolute top-4 right-4 bg-white/90 p-2 rounded-full shadow-md hover:scale-110 transition"
+          className="absolute top-4 right-4 bg-white/90 dark:bg-gray-800/90 p-2 rounded-full shadow-md hover:scale-110 transition"
         >
-          <Heart className={`w-5 h-5 ${isFavorite ? 'fill-red-500 text-red-500' : 'text-gray-600'}`} />
+          <Heart className={`w-5 h-5 ${isFavorite ? 'fill-red-500 text-red-500' : 'text-gray-600 dark:text-gray-300'}`} />
         </button>
       </div>
 
+      {/* Info del producto */}
       <div className="p-5 space-y-3">
-        <h2 className="text-lg font-bold text-gray-900 leading-snug line-clamp-2">{description}</h2>
+        <h2 className="text-lg font-bold text-gray-900 dark:text-gray-100 leading-snug line-clamp-2">
+          {description}
+        </h2>
 
+        {/* Precio y rating */}
         <div className="flex items-center justify-between">
           <span className="text-xl font-bold bg-gradient-to-r from-green-600 to-lime-600 bg-clip-text text-transparent">
             ${price}
           </span>
           <div className="flex items-center space-x-1 text-yellow-500">
             <Star className="w-4 h-4 fill-yellow-400" />
-            <span className="text-sm text-gray-700">{rating.toFixed(1)}</span>
+            <span className="text-sm text-gray-700 dark:text-gray-300">{rating.toFixed(1)}</span>
           </div>
         </div>
 
-        <div className="flex items-center text-gray-500 text-sm space-x-2">
+        {/* Comentarios */}
+        <div className="flex items-center text-gray-500 dark:text-gray-400 text-sm space-x-2">
           <MessageSquare className="w-4 h-4" />
           <span>{commentsCount} comentarios</span>
         </div>
 
+        {/* Botones */}
         <div className="flex gap-3 mt-3">
+          {/* Carrito */}
           <button
             onClick={toggleCart}
-            className={`flex-1 flex items-center justify-center gap-2 py-2.5 px-4 rounded-xl font-semibold transition-all shadow-md ${inCart
-              ? 'bg-red-500 text-white hover:bg-red-600'
-              : 'bg-gradient-to-r from-green-600 to-lime-600 text-white hover:from-green-700 hover:to-lime-700'
+            className={`flex-1 flex items-center justify-center gap-2 py-2.5 px-4 rounded-xl font-semibold transition-all shadow-md ${
+              inCart
+                ? 'bg-red-500 text-white hover:bg-red-600'
+                : 'bg-gradient-to-r from-green-600 to-lime-600 text-white hover:from-green-700 hover:to-lime-700'
             }`}
           >
             <ShoppingCart className="w-4 h-4" />
             {inCart ? 'Quitar' : 'Añadir'}
           </button>
 
+          {/* Ver más */}
           <Link href={`/products/${id}`} className="flex-1">
-            <button className="w-full bg-gray-100 hover:bg-gray-200 text-gray-700 font-semibold py-2.5 px-4 rounded-xl transition-all shadow-sm">
+            <button className="w-full bg-gray-100 hover:bg-gray-200 dark:bg-gray-700 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-200 font-semibold py-2.5 px-4 rounded-xl transition-all shadow-sm">
               Ver más
             </button>
           </Link>
