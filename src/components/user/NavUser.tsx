@@ -31,8 +31,8 @@ const NavUser = () => {
     return () => document.removeEventListener('mousedown', handleClickOutside)
   }, [open])
 
-  const handleLogout = () => {
-    logout()
+  const handleLogout = async() => {
+    await logout()
     toast.success('👋 Sesión cerrada correctamente')
     router.push('/login')
   }
@@ -54,10 +54,10 @@ const NavUser = () => {
             className="focus:outline-none transition transform hover:scale-105"
             aria-label="Menú de usuario"
           >
-            {user.userImage ? (
+            {user.profile_image ? (
               <Image
-                src={getFullImageUrl(user.userImage)}
-                alt={user.userName}
+                src={getFullImageUrl(user.profile_image)}
+                alt={user.username}
                 width={50}
                 height={50}
                 className="rounded-full border-2 border-green-600 shadow-md object-cover transition duration-300"
@@ -73,27 +73,39 @@ const NavUser = () => {
             <div className="absolute right-0 top-14 w-60 bg-white rounded-xl shadow-lg z-50 border border-gray-200 overflow-hidden">
               {/* Cabecera */}
               <div className="p-4 bg-green-50 border-b text-sm text-gray-800 font-semibold flex items-center gap-2">
-                <Link href={ROUTES.PERFIL}>🌱 {user.userName} - Perfil</Link>
+                <Link href={ROUTES.PERFIL}>🌱 {user.username}</Link>
               </div>
               
               {/* Opciones */}
               <ul className="text-sm text-gray-700">
-                <li className="px-4 py-3 hover:bg-green-50 flex items-center gap-2 cursor-pointer transition">
-                  <BarChart className="w-4 h-4 text-green-600" />
-                  <Link href={ROUTES.ESTADISTICAS}>Estadísticas</Link>
-                </li>
                 <li className="px-4 py-3 hover:bg-green-50 flex items-center gap-2 cursor-pointer transition">
                   <ShoppingBag className="w-4 h-4 text-green-600" />
                   <Link href={ROUTES.FAVORITOS}>Mis favoritos</Link>
                 </li>
                 <li className="px-4 py-3 hover:bg-green-50 flex items-center gap-2 cursor-pointer transition">
                   <FileText className="w-4 h-4 text-green-600" />
-                  <Link href={ROUTES.FACTURACION}>Facturas</Link>
+                  <Link href={ROUTES.FACTURACION}>Mis Facturas</Link>
                 </li>
-                <li className="px-4 py-3 hover:bg-green-50 flex items-center gap-2 cursor-pointer transition">
-                  <Apple className="w-4 h-4 text-green-600" />
-                  <Link href={ROUTES.NEWPRODUCT}>Nuevo producto</Link>
-                </li>
+                {user.is_seller && (
+                  <>
+                    <li className="px-4 py-3 hover:bg-green-50 flex items-center gap-2 cursor-pointer transition">
+                      <Apple className="w-4 h-4 text-green-600" />
+                      <Link href={ROUTES.NEWPRODUCT}>Nuevo producto</Link>
+                    </li>
+                    <li className="px-4 py-3 hover:bg-green-50 flex items-center gap-2 cursor-pointer transition">
+                      <Apple className="w-4 h-4 text-green-600" />
+                      <Link href={ROUTES.NEWPRODUCT}>Mis producto</Link>
+                    </li>
+                    <li className="px-4 py-3 hover:bg-green-50 flex items-center gap-2 cursor-pointer transition">
+                      <BarChart className="w-4 h-4 text-green-600" />
+                      <Link href={ROUTES.ESTADISTICAS}>Estadísticas</Link>
+                    </li>
+                    <li className="px-4 py-3 hover:bg-green-50 flex items-center gap-2 cursor-pointer transition">
+                      <FileText className="w-4 h-4 text-green-600" />
+                      <Link href={ROUTES.FACTURACION}>Ventas</Link>
+                    </li>
+                  </>
+                )}
                 <li className="border-t">
                   <button
                     onClick={handleLogout}

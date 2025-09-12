@@ -3,9 +3,9 @@ import { create } from 'zustand';
 
 // Modelo que definimos para el contexto del usuario
 import { User } from '@/types/auth.types';
-
+import  {authService} from '@/features/auth/services/authService'
 // Funciones para manejar la autenticación desde el localStorage
-import { getStoredUser, setStoredUser, clearStoredAuth } from '@/lib/auth';
+import { getStoredUser, setStoredUser, clearStoredAuth, getStoredTokens } from '@/lib/auth';
 
 // Modelo de estado para la creación del contexto de autenticación
 interface AuthState {
@@ -20,9 +20,9 @@ interface AuthState {
   // Función para cambiar el estado de carga
   setLoading: (loading: boolean) => void;
   // Función para cerrar sesión y limpiar datos
-  logout: () => void;
+  logout: () => Promise<void>
   // Función para inicializar el estado de autenticación desde localStorage
-  initializeAuth: () => void;
+  initializeAuth: () => Promise<void> 
 }
 
 // Creamos el store de Zustand con el modelo AuthState.
@@ -50,18 +50,28 @@ export const useAuth = create<AuthState>((set) => ({
   setLoading: (loading) => set({ isLoading: loading }),
 
   // Función para cerrar sesión
-  logout: () => {
-    // Limpiamos el localStorage
-    clearStoredAuth();
-    // Limpiamos el estado del contexto
-    set({ user: null, isAuthenticated: false });
+  logout: async () => {
+    try {
+      await authService.logout(); // <- petición al backend
+    } finally {
+      clearStoredAuth(); // limpia localStorage
+      set({ user: null, isAuthenticated: false });
+    }
   },
 
   // Inicializa la autenticación cargando desde localStorage
-  initializeAuth: () => {
-    const storedUser = getStoredUser();
-    if (storedUser) {
-      set({ user: storedUser, isAuthenticated: true, isLoading: false });
+  initializeAuth: async () => {
+    const { access } = getStoredTokens();
+    if (access) {
+      try {
+        const user = await authService.getUserInfo(access);
+        setStoredUser(user);
+        set({ user, isAuthenticated: true, isLoading: false });
+      } catch (error) {
+        console.error("Error al obtener info del usuario:", error);
+        clearStoredAuth();
+        set({ user: null, isAuthenticated: false, isLoading: false });
+      }
     } else {
       set({ user: null, isAuthenticated: false, isLoading: false });
     }

@@ -29,7 +29,7 @@ export const useRegister = () => {
       // Mensaje de exito
       toast.success('¡Registro exitoso! Ahora puedes iniciar sesión.');
       // Redirigimos al usuario al login
-      router.push(ROUTES.LOGIN);
+      router.push(`${ROUTES.VERIFYACCOUTN}?email=${encodeURIComponent(userData.email)}`);
       
     } catch (error: any) {
       // En caso de error

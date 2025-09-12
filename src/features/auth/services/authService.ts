@@ -1,5 +1,5 @@
 import api from '@/lib/axios';
-import {LoginRequest, RegisterRequest, LoginResponse, RegisterResponse, FormField } from '@/types/auth.types';
+import {LoginRequest, RegisterRequest, LoginResponse, RegisterResponse, FormField, User } from '@/types/auth.types';
 import { AUTH_ENDPOINTS } from '@/lib/constants';
 
 // Logica relacionada para la autenticacion del usuario
@@ -60,6 +60,16 @@ class AuthService {
         localStorage.removeItem('refresh_token');
         localStorage.removeItem('user');
         window.location.href = '/login';
+    }
+
+    // Peticion que nos permite obtenmer la informacion del usuario
+    async getUserInfo(access: string): Promise<User> {
+        const response = await api.get(AUTH_ENDPOINTS.MYINFO, {
+            headers: {
+                Authorization: `Bearer ${access}`,
+            },
+        });
+        return response.data;
     }
 }
 

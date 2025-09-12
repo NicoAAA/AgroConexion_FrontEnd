@@ -8,7 +8,7 @@ import { Eye, EyeOff, UserPlus } from 'lucide-react';
 import { useRegister } from '@/features/auth/hooks/useRegister';
 import { RegisterFormData, registerSchema } from '@/features/auth/utils/validation';
 import { ROUTES } from '@/lib/constants';
-
+import Image from 'next/image';
 export function RegisterForm() {
   const [showPassword, setShowPassword] = useState(false);
   const [showPassword2, setShowPassword2] = useState(false);
@@ -26,143 +26,131 @@ export function RegisterForm() {
     await registerUser(data);
   };
 
-  return (
-    <div className="w-full max-w-md mx-auto">
-      <div className="bg-white rounded-lg shadow-md p-8">
-        <div className="text-center mb-8">
-          <h2 className="text-2xl font-bold text-gray-900">Crear Cuenta</h2>
-          <p className="text-gray-600 mt-2">Únete a nuestra plataforma</p>
+return (
+    <main className="min-h-screen flex items-center justify-center bg-gradient-to-br from-green-400 via-white to-green-500">
+      <form
+        onSubmit={handleSubmit(onSubmit)}
+        className="bg-white/90 shadow-2xl rounded-3xl px-10 py-10 w-full max-w-md mx-auto"
+      >
+        {/* Logo + título */}
+        <div className="flex flex-col items-center mb-8">
+          <Image
+            src="/AgroConexion.svg"
+            alt="Logo"
+            height={80}
+            width={80}
+            className="rounded-full border-4 border-green-300 shadow-md bg-white"
+          />
+          <h2 className="mt-4 text-3xl font-bold tracking-wide text-gray-800">Crear Cuenta</h2>
+          <p className="text-gray-600 mt-1">Únete a nuestra plataforma</p>
         </div>
 
+        {/* Errores generales */}
         {errors.general && (
-          <div className="mb-4 p-3 bg-red-100 border border-red-400 text-red-700 rounded">
+          <div className="mb-4 p-3 bg-red-100 border border-red-400 text-red-700 rounded text-center">
             {errors.general}
           </div>
         )}
 
-        <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
-          <div>
-            <label htmlFor="username" className="block text-sm font-medium text-gray-700 mb-2">
+        {/* Campos */}
+        <div className="flex flex-col gap-5">
+          {/* Username */}
+          <div className="flex flex-col gap-1">
+            <label htmlFor="username" className="font-semibold">
               Nombre de usuario
             </label>
             <input
               id="username"
               type="text"
               {...register('username')}
-              className={`w-full px-3 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 ${
-                formErrors.username || errors.username
-                  ? 'border-red-500 focus:border-red-500'
-                  : 'border-gray-300'
+              placeholder="Username"
+              className={`rounded-lg border px-4 py-2 focus:outline-none focus:ring-2 focus:ring-green-400 transition ${
+                formErrors.username || errors.username ? 'border-red-500' : 'border-green-200'
               }`}
-              placeholder="Elige un nombre de usuario"
             />
             {formErrors.username && (
-              <p className="mt-1 text-sm text-red-600">{formErrors.username.message}</p>
+              <p className="text-sm text-red-600">{formErrors.username.message}</p>
             )}
-            {errors.username && (
-              <p className="mt-1 text-sm text-red-600">{errors.username}</p>
-            )}
+            {errors.username && <p className="text-sm text-red-600">{errors.username}</p>}
           </div>
 
-          <div>
-            <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-2">
+          {/* Email */}
+          <div className="flex flex-col gap-1">
+            <label htmlFor="email" className="font-semibold">
               Email
             </label>
             <input
               id="email"
               type="email"
               {...register('email')}
-              className={`w-full px-3 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 ${
-                formErrors.email || errors.email
-                  ? 'border-red-500 focus:border-red-500'
-                  : 'border-gray-300'
-              }`}
               placeholder="tu@email.com"
+              className={`rounded-lg border px-4 py-2 focus:outline-none focus:ring-2 focus:ring-green-400 transition ${
+                formErrors.email || errors.email ? 'border-red-500' : 'border-green-200'
+              }`}
             />
-            {formErrors.email && (
-              <p className="mt-1 text-sm text-red-600">{formErrors.email.message}</p>
-            )}
-            {errors.email && (
-              <p className="mt-1 text-sm text-red-600">{errors.email}</p>
-            )}
+            {formErrors.email && <p className="text-sm text-red-600">{formErrors.email.message}</p>}
+            {errors.email && <p className="text-sm text-red-600">{errors.email}</p>}
           </div>
 
-          <div>
-            <label htmlFor="password" className="block text-sm font-medium text-gray-700 mb-2">
+          {/* Password */}
+          <div className="flex flex-col gap-1 relative">
+            <label htmlFor="password" className="font-semibold">
               Contraseña
             </label>
-            <div className="relative">
-              <input
-                id="password"
-                type={showPassword ? 'text' : 'password'}
-                {...register('password')}
-                className={`w-full px-3 py-2 pr-10 border rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 ${
-                  formErrors.password || errors.password
-                    ? 'border-red-500 focus:border-red-500'
-                    : 'border-gray-300'
-                }`}
-                placeholder="Mínimo 8 caracteres"
-              />
-              <button
-                type="button"
-                onClick={() => setShowPassword(!showPassword)}
-                className="absolute inset-y-0 right-0 pr-3 flex items-center"
-              >
-                {showPassword ? (
-                  <EyeOff className="h-5 w-5 text-gray-400" />
-                ) : (
-                  <Eye className="h-5 w-5 text-gray-400" />
-                )}
-              </button>
-            </div>
-            {formErrors.password && (
-              <p className="mt-1 text-sm text-red-600">{formErrors.password.message}</p>
-            )}
-            {errors.password && (
-              <p className="mt-1 text-sm text-red-600">{errors.password}</p>
-            )}
+            <input
+              id="password"
+              type={showPassword ? 'text' : 'password'}
+              {...register('password')}
+              placeholder="Mínimo 8 caracteres"
+              className={`rounded-lg border px-4 py-2 pr-12 focus:outline-none focus:ring-2 focus:ring-green-400 transition ${
+                formErrors.password || errors.password ? 'border-red-500' : 'border-green-200'
+              }`}
+            />
+            <button
+              type="button"
+              onClick={() => setShowPassword((v) => !v)}
+              className="absolute right-3 top-9 text-xl focus:outline-none"
+              tabIndex={-1}
+              aria-label={showPassword ? 'Ocultar contraseña' : 'Mostrar contraseña'}
+            >
+              {showPassword ? <EyeOff className="w-6 h-6 text-gray-500" /> : <Eye className="w-6 h-6 text-gray-500" />}
+            </button>
+            {formErrors.password && <p className="text-sm text-red-600">{formErrors.password.message}</p>}
+            {errors.password && <p className="text-sm text-red-600">{errors.password}</p>}
           </div>
 
-          <div>
-            <label htmlFor="password2" className="block text-sm font-medium text-gray-700 mb-2">
-              Confirmar Contraseña
+          {/* Confirm Password */}
+          <div className="flex flex-col gap-1 relative">
+            <label htmlFor="password2" className="font-semibold">
+              Confirmar contraseña
             </label>
-            <div className="relative">
-              <input
-                id="password2"
-                type={showPassword2 ? 'text' : 'password'}
-                {...register('password2')}
-                className={`w-full px-3 py-2 pr-10 border rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 ${
-                  formErrors.password2 || errors.password2
-                    ? 'border-red-500 focus:border-red-500'
-                    : 'border-gray-300'
-                }`}
-                placeholder="Repite tu contraseña"
-              />
-              <button
-                type="button"
-                onClick={() => setShowPassword2(!showPassword2)}
-                className="absolute inset-y-0 right-0 pr-3 flex items-center"
-              >
-                {showPassword2 ? (
-                  <EyeOff className="h-5 w-5 text-gray-400" />
-                ) : (
-                  <Eye className="h-5 w-5 text-gray-400" />
-                )}
-              </button>
-            </div>
-            {formErrors.password2 && (
-              <p className="mt-1 text-sm text-red-600">{formErrors.password2.message}</p>
-            )}
-            {errors.password2 && (
-              <p className="mt-1 text-sm text-red-600">{errors.password2}</p>
-            )}
+            <input
+              id="password2"
+              type={showPassword2 ? 'text' : 'password'}
+              {...register('password2')}
+              placeholder="Repite tu contraseña"
+              className={`rounded-lg border px-4 py-2 pr-12 focus:outline-none focus:ring-2 focus:ring-green-400 transition ${
+                formErrors.password2 || errors.password2 ? 'border-red-500' : 'border-green-200'
+              }`}
+            />
+            <button
+              type="button"
+              onClick={() => setShowPassword2((v) => !v)}
+              className="absolute right-3 top-9 text-xl focus:outline-none"
+              tabIndex={-1}
+              aria-label={showPassword2 ? 'Ocultar contraseña' : 'Mostrar contraseña'}
+            >
+              {showPassword2 ? <EyeOff className="w-6 h-6 text-gray-500" /> : <Eye className="w-6 h-6 text-gray-500" />}
+            </button>
+            {formErrors.password2 && <p className="text-sm text-red-600">{formErrors.password2.message}</p>}
+            {errors.password2 && <p className="text-sm text-red-600">{errors.password2}</p>}
           </div>
 
+          {/* Botón */}
           <button
             type="submit"
             disabled={isLoading}
-            className="w-full flex justify-center items-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 disabled:opacity-50 disabled:cursor-not-allowed"
+            className="mt-6 bg-green-500 hover:bg-green-600 text-white font-bold py-2 rounded-lg shadow-md transition flex justify-center items-center"
           >
             {isLoading ? (
               <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white"></div>
@@ -173,17 +161,18 @@ export function RegisterForm() {
               </>
             )}
           </button>
-        </form>
 
-        <div className="mt-6 text-center">
-          <p className="text-sm text-gray-600">
-            ¿Ya tienes cuenta?{' '}
-            <Link href={ROUTES.LOGIN} className="font-medium text-blue-600 hover:text-blue-500">
-              Inicia sesión aquí
+          {/* Links */}
+          <div className="flex justify-between gap-4 mt-4 text-sm">
+            <Link href={ROUTES.LOGIN} className="text-blue-500 hover:text-blue-600">
+              Ya tengo cuenta
             </Link>
-          </p>
+            <Link href={ROUTES.REGISTERAGROUP} className="text-blue-500 hover:text-blue-600">
+              Registrar agrupación
+            </Link>
+          </div>
         </div>
-      </div>
-    </div>
+      </form>
+    </main>
   );
 }

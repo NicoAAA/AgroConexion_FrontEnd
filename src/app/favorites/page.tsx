@@ -62,17 +62,25 @@ const FavoritesPage = () => {
 
         // Guardamos la respuesta (lista de favoritos)
         setFavorites(response.data || [])
+        setError('')
       } catch (err: any) {
-        // Manejo de error si el usuario no está autenticado
-        if (err.response?.status === 401) {
-          toast.error('🔒 Debes iniciar sesión para ver tus favoritos')
+        console.error("❌ Error al obtener favoritos:", err)
+
+        if (err.response) {
+          // Errores que vienen del backend (status >= 400)
+          const status = err.response.status
+          const data = JSON.stringify(err.response.data, null, 2) // formateado bonito
+          setError(`Error ${status}: ${data}`)
+        } else if (err.request) {
+          // La request salió pero no hubo respuesta
+          setError("No se recibió respuesta del servidor. Verifica la conexión.")
         } else {
-          // Otros errores
-          setError(
-            err.response?.data?.detail || 'Ocurrió un error al obtener favoritos'
-          )
+          // Error al preparar la petición
+          setError(`Error al configurar la petición: ${err.message}`)
         }
-      } finally {
+
+        toast.error("⚠️ Hubo un error cargando tus favoritos, revisa consola")
+            } finally {
         setLoadingFavorites(false)
       }
     }
@@ -87,7 +95,7 @@ const FavoritesPage = () => {
     <div className="px-6 py-10">
       {/* Título de la página */}
       <div className="text-center mb-10">
-        <h1 className="text-4xl font-extrabold text-gray-800 bg-gradient-to-r from-green-600 to-emerald-500 bg-clip-text text-transparent">
+        <h1 className="text-4xl font-extrabold text-gray-800 bg-gradient-to-r from-green-600 to-emerald-500 bg-clip-text">
           ❤️ Mis favoritos
         </h1>
         <p className="text-gray-500 mt-2">
