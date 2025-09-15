@@ -28,4 +28,5 @@ export const ROUTES = {
 
   CHANGUEPASSWORD: '/password/changue-my-password',
   LOSTPASSWORD: '/password/lost-my-password',
+  RECOREVYPASSWORD: '/password/lost-my-password/recover-my-password'
 } as const;

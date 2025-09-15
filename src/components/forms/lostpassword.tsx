@@ -45,7 +45,7 @@ const RecoverPassword =()=>{
         // Mostramos mensaje por el Back
         setSuccess(response.data.message);
         // Redirigios al usuario a autenticar el usuario pasandole el email como parametro
-        router.push(`${ROUTES.LOSTPASSWORD}?email=${encodeURIComponent(form.email)}`);
+        router.push(`${ROUTES.RECOREVYPASSWORD}?email=${encodeURIComponent(form.email)}`);
         } catch (error: any) {
             console.log("Error completo:", error);
             console.log("Error response:", error.response); 
@@ -66,7 +66,7 @@ const RecoverPassword =()=>{
             <form onSubmit={handleSubmit} className="bg-white/90 shadow-2xl rounded-3xl px-10 py-10 w-full max-w-md mx-auto">
                 <div className="flex flex-col items-center mb-8">
                     <Image
-                        src='/Logo.png'
+                        src='/AgroConexion.svg'
                         alt="Logo"
                         height={80}
                         width={80}

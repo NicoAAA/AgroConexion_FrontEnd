@@ -7,11 +7,10 @@ import { useRouter } from "next/navigation";
 import { useAuth } from '@/features/auth/hooks/useAuth'
 import { ROUTES } from "@/lib/constants";
 // Funcion para verificar la cuenta recibe como parametro el email del usuario y la ruta del ENDPOINT 
-const ChanguePassword = ({ email}: VerifyAccountProps) => {
-    const { user, isAuthenticated, isLoading, logout, initializeAuth } = useAuth()
-    const URL = 'http://127.0.0.1:8000/api/users/change-password/confirm/'
-    const access = localStorage.getItem('access')
-    const refresh = localStorage.getItem('refresh')
+const ChanguePassword = ({ email, URL}: VerifyAccountProps) => {
+    const {logout} = useAuth()
+    const access = localStorage.getItem('access_token')
+    const refresh = localStorage.getItem('refresh_token')
     const router = useRouter();
     // Funcion que actualiza el estadoi del codigo
     const [code, setCode] = useState(["", "", "", "", "", ""]);
@@ -126,7 +125,7 @@ const ChanguePassword = ({ email}: VerifyAccountProps) => {
             <form onSubmit={handleSubmit} className="bg-white/90 shadow-2xl rounded-3xl px-10 py-10 w-full max-w-md mx-auto">
                 <div className="flex flex-col items-center mb-8">
                     <Image
-                        src='/Logo.png'
+                        src='/AgroConexion.svg'
                         alt="Logo"
                         height={80}
                         width={80}

@@ -2,59 +2,54 @@
 
 "use client";
 
-// Importaciones necesarias
 import { useEffect, useState } from "react";
 import axios from "axios";
+import api from "@/lib/axios";
 import Image from "next/image";
 import { Product } from "@/types/product.types";
 import { useParams } from "next/navigation";
 
-// Componentes propios
 import AgregarCarrito from "@/components/cart/agregar";
 import BuyProduct from "@/components/cart/ComprarProducto";
 import ComentsProduct from "@/components/comments/comments";
 
-// Iconos de lucide-react
-import { Home, ChevronRight, Heart, Truck, ShieldCheck } from "lucide-react";
-
-// Manejo de navegación entre páginas
+import {
+  Home,
+  ChevronRight,
+  Heart,
+  Truck,
+  ShieldCheck,
+  Tag,
+} from "lucide-react";
 import Link from "next/link";
+import RatingStats from "@/components/products/ratingProdfuct";
+import NewRating from "@/components/products/NewRating";
+
 
 const DetailProduct = () => {
-  // Estado del producto cargado desde la API
   const [product, setProduct] = useState<Product | null>(null);
+  const [loading, setLoading] = useState<boolean>(true);
+  const [error, setError] = useState<string | null>(null);
+  const [selectedImage, setSelectedImage] = useState<string>("");
+  const [imageLoaded, setImageLoaded] = useState<boolean>(false);
+  const [favorites, setFavorites] = useState<number[]>([]);
 
-  // Estados de control de la interfaz
-  const [loading, setLoading] = useState<boolean>(true); // Para mostrar "Cargando"
-  const [error, setError] = useState<string | null>(null); // Para errores en la carga
-  const [selectedImage, setSelectedImage] = useState<string>(""); // Imagen seleccionada
-  const [imageLoaded, setImageLoaded] = useState<boolean>(false); // Control del efecto de carga
-  const [favorites, setFavorites] = useState<number[]>([]); // IDs de favoritos
-
-  // Obtener el parámetro dinámico de la URL (/products/[id])
   const params = useParams();
   const productId = params.id;
 
-  /**
-   * 📌 useEffect para cargar la información del producto desde la API
-   * Cuando cambia el `productId`, se hace una petición HTTP
-   */
   useEffect(() => {
     const fetchProduct = async () => {
       try {
         setLoading(true);
-        // Llamada a la API para obtener detalles del producto
         const res = await axios.get(
           `http://127.0.0.1:8000/api/products/detail/${productId}/`
         );
         setProduct(res.data);
 
-        // Si hay imágenes, se selecciona la primera por defecto
         if (res.data.images?.length > 0) {
           setSelectedImage(res.data.images[0].image);
         }
       } catch (err) {
-        // Manejo de error si la API falla
         setError("No se pudo cargar el producto. Inténtalo más tarde.");
       } finally {
         setLoading(false);
@@ -64,33 +59,35 @@ const DetailProduct = () => {
     if (productId) fetchProduct();
   }, [productId]);
 
-  /**
-   * 📌 Manejo de favoritos (toggle)
-   * Si ya está en favoritos → eliminar
-   * Si no está → agregar
-   */
   const toggleFavorite = async () => {
-    if (!product) return;
-    try {
-      if (favorites.includes(product.id)) {
-        // Eliminar de favoritos
-        await axios.delete(
-          `http://127.0.0.1:8000/api/cart/favorites/${product.id}/`
-        );
+  if (!product) return;
+
+  try {
+    if (favorites.includes(product.id)) {
+      // Si ya está en favoritos, eliminar
+      await api.delete(`/cart/delete-favorites/${product.id}/`);
+      setFavorites(favorites.filter((id) => id !== product.id));
+    } else {
+      // Intentamos agregarlo
+      await api.post(`/cart/favorites/`, { product: product.id });
+      setFavorites([...favorites, product.id]);
+    }
+  } catch (error: any) {
+    // Revisamos si el error es 400 y corresponde a "ya agregado"
+    if (error.response?.status === 400) {
+      console.log("El producto ya estaba en favoritos, se eliminará.");
+      try {
+        await api.delete(`/cart/delete-favorites/${product.id}/`);
         setFavorites(favorites.filter((id) => id !== product.id));
-      } else {
-        // Agregar a favoritos
-        await axios.post(`http://127.0.0.1:8000/api/cart/favorites/`, {
-          product: product.id,
-        });
-        setFavorites([...favorites, product.id]);
+      } catch (deleteError) {
+        console.error("Error al eliminar favorito duplicado:", deleteError);
       }
-    } catch (error) {
+    } else {
       console.error("Error al manejar favoritos:", error);
     }
-  };
+  }
+};
 
-  // 📌 Estado de carga inicial
   if (loading) {
     return (
       <div className="flex items-center justify-center h-[60vh]">
@@ -101,7 +98,6 @@ const DetailProduct = () => {
     );
   }
 
-  // 📌 Manejo de error o producto inexistente
   if (error || !product) {
     return (
       <div className="text-center p-10">
@@ -112,17 +108,34 @@ const DetailProduct = () => {
     );
   }
 
-  // 📌 Render principal del detalle del producto
+  // 🔥 Calcular precios con oferta
+  const originalPrice = product.price;
+
+  const discountPercentage = product.offers
+    ? parseFloat(product.offers.percentage)
+    : 0;
+
+  const discountedPrice =
+    discountPercentage > 0
+      ? originalPrice - (originalPrice * discountPercentage) / 100
+      : originalPrice; // 👈 en vez de null, mantenemos el precio original
+
+  const ahorro = discountPercentage > 0 ? originalPrice - discountedPrice : 0; // 👈 si no hay oferta, no hay ahorro
+
   return (
     <>
-      {/* 🧭 Breadcrumb de navegación */}
+      {/* 🧭 Breadcrumb */}
       <div className="bg-white border-b border-gray-100">
         <div className="max-w-6xl mx-auto px-4 py-3">
           <nav className="flex items-center space-x-2 text-sm text-gray-500">
             <Home className="w-4 h-4 text-gray-400" />
-            <Link href="/" className="hover:text-blue-600">Inicio</Link>
+            <Link href="/" className="hover:text-blue-600">
+              Inicio
+            </Link>
             <ChevronRight className="w-4 h-4 text-gray-400" />
-            <Link href="/products" className="hover:text-blue-600">Productos</Link>
+            <Link href="/products" className="hover:text-blue-600">
+              Productos
+            </Link>
             <ChevronRight className="w-4 h-4 text-gray-400" />
             <span className="text-gray-800 font-medium truncate">
               {product.name}
@@ -131,13 +144,12 @@ const DetailProduct = () => {
         </div>
       </div>
 
-      {/* 📦 Contenido principal */}
+      {/* 📦 Contenido */}
       <div className="container mx-auto px-6 py-3 max-w-7xl">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
-          
-          {/* 🖼️ Galería de imágenes */}
+          {/* 🖼️ Imágenes */}
           <div className="space-y-6">
-            <div className="relative aspect-square rounded-2xl border bg-gray-100 overflow-hidden shadow-md">
+            <div className="relative aspect-square rounded-2xl border bg-gray-100 overflow-hidden shadow-lg">
               {!imageLoaded && (
                 <div className="absolute inset-0 bg-gray-200 animate-pulse" />
               )}
@@ -154,7 +166,6 @@ const DetailProduct = () => {
               )}
             </div>
 
-            {/* Miniaturas */}
             {product.images?.length > 1 && (
               <div className="flex space-x-3 overflow-x-auto pb-2">
                 {product.images.map((img) => (
@@ -164,7 +175,7 @@ const DetailProduct = () => {
                       setSelectedImage(img.image);
                       setImageLoaded(false);
                     }}
-                    className={`w-20 h-20 rounded-xl overflow-hidden border-2 ${
+                    className={`w-20 h-20 rounded-xl overflow-hidden border-2 shadow-black ${
                       selectedImage === img.image
                         ? "border-blue-500 ring-2 ring-blue-200"
                         : "border-gray-200 hover:border-gray-400"
@@ -180,17 +191,56 @@ const DetailProduct = () => {
                 ))}
               </div>
             )}
+
+            {/* 📊 Estadísticas de calificaciones debajo de la imagen */}
+            <div className="mt-6">
+              <RatingStats productId={product.id} />
+            </div>
           </div>
 
-          {/* 📝 Información del producto */}
+          {/* 📝 Información */}
           <div className="space-y-8">
             <h1 className="text-4xl font-bold text-gray-900">{product.name}</h1>
-            <p className="text-3xl font-semibold text-blue-600">
-              ${product.price.toLocaleString("es-CO")}
-            </p>
 
-            {/* Acciones (Carrito, Comprar, Favorito) */}
-            <div className="flex items-center space-x-4">
+            {/* 💰 Bloque de precios + rating + stock */}
+            <div className="p-4 bg-white rounded-xl shadow-md shadow-pink-400 flex flex-col lg:flex-row lg:items-center lg:justify-between gap-6">
+              {/* Precios */}
+              <div>
+                <div className="flex items-center gap-2">
+                  <p className="text-3xl font-bold text-blue-600">
+                    ${discountedPrice.toLocaleString("es-CO")}
+                  </p>
+                  {discountPercentage > 0 && (
+                    <span className="bg-red-100 text-red-600 text-sm px-2 py-0.5 rounded-md">
+                      -{discountPercentage}%
+                    </span>
+                  )}
+                </div>
+
+                {discountPercentage > 0 && (
+                  <>
+                    <p className="text-lg text-gray-500 line-through">
+                      ${originalPrice.toLocaleString("es-CO")}
+                    </p>
+                    <p className="text-sm text-green-600">
+                      ¡Ahorras ${ahorro.toLocaleString("es-CO")}!
+                    </p>
+                  </>
+                )}
+              </div>
+
+              {/* ⭐ Nuevo rating + stock */}
+              <div className="mt-4 space-y-3">
+                <NewRating productId={product.id} />
+                <p className="text-sm text-gray-600">
+                  Stock disponible:{" "}
+                  <span className="font-semibold">{product.stock}</span>
+                </p>
+              </div>
+            </div>
+
+            {/* 🛒 Acciones */}
+            <div className="flex items-center space-x-4 mb-6">
               <AgregarCarrito productId={product.id} />
               <BuyProduct productId={product.id} />
               <button
@@ -205,33 +255,46 @@ const DetailProduct = () => {
               </button>
             </div>
 
-            {/* Descripción */}
-            <div className="bg-gray-50 rounded-2xl p-6 border shadow-sm">
+            {/* 📜 Descripción */}
+            <div className="bg-gray-50 rounded-2xl p-6 border shadow-md shadow-black mt-6">
               <h2 className="text-lg font-semibold mb-2">Descripción</h2>
               <p className="text-gray-700">{product.description}</p>
             </div>
 
-            {/* Características adicionales */}
+            {/* 🎁 Info extra */}
             <div className="grid grid-cols-2 gap-4">
-              <div className="flex items-center space-x-3 bg-white border rounded-xl p-4 shadow-sm">
-                <Truck className="text-green-600 w-6 h-6" />
+              {product.coupon ? (
+                <div className="flex items-center space-x-3 bg-white border rounded-xl p-4 shadow-md shadow-purple-900">
+                  <Tag className="text-purple-600 w-6 h-6" />
+                  <span className="text-sm text-gray-700">
+                    ¡Cupón disponible! Compra un mínimo de $
+                    {parseFloat(
+                      product.coupon.min_purchase_amount
+                    ).toLocaleString("es-CO")}{" "}
+                    y usa el código:{" "}
+                    <span className="font-semibold">{product.coupon.code}</span>
+                  </span>
+                </div>
+              ) : (
+                <div className="flex items-center space-x-3 bg-white border rounded-xl p-4 shadow-md shadow-purple-600">
+                  <Truck className="text-green-600 w-6 h-6" />
+                  <span className="text-sm text-gray-700">
+                    Disfruta de los mejores productos
+                  </span>
+                </div>
+              )}
+
+              <div className="flex items-center space-x-3 bg-white border rounded-xl p-4 shadow-md shadow-blue-600">
+                <ShieldCheck className="text-blue-600 w-6 h-6" />
                 <span className="text-sm text-gray-700">
-                  Envío gratis en compras +$50.000
+                  Garantía de calidad
                 </span>
               </div>
-              <div className="flex items-center space-x-3 bg-white border rounded-xl p-4 shadow-sm">
-                <ShieldCheck className="text-blue-600 w-6 h-6" />
-                <span className="text-sm text-gray-700">Garantía de calidad</span>
-              </div>
             </div>
-
-            <p className="text-sm text-gray-600">
-              Stock disponible: {product.stock}
-            </p>
           </div>
         </div>
 
-        {/* 💬 Sección de comentarios */}
+        {/* 💬 Comentarios */}
         <div className="mt-16">
           <ComentsProduct productId={product.id} />
         </div>

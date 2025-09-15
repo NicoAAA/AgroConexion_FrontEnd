@@ -72,7 +72,7 @@ const BuyProduct = ({ productId }: { productId: number }) => {
     setQuantity((prev) => (prev > 1 ? prev - 1 : 1));
 
   return (
-    <div className="w-full p-4 rounded-2xl shadow-md border bg-white/90 backdrop-blur-sm space-y-4">
+    <div className="w-full p-4 rounded-2xl shadow-md border bg-white/90 backdrop-blur-sm space-y-4 shadow-green-400">
       {/* Selector de cantidad */}
       <div className="flex items-center justify-center gap-3">
         <button

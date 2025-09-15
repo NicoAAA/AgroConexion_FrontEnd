@@ -10,7 +10,7 @@ import { useRouter } from 'next/navigation';
 import { isAuthenticated as checkAuth, getStoredTokens } from '@/lib/auth';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ChevronDown, ChevronUp, ReceiptText } from 'lucide-react';
-
+import Link from 'next/link';
 /**
  * Componente principal que lista todas las facturas del usuario.
  * 
@@ -179,7 +179,7 @@ const ListInvoices = () => {
                 <ReceiptText className="text-green-700 w-6 h-6" />
               </div>
               <div>
-                <h2 className="text-lg font-bold">Factura #{invoice.id}</h2>
+                <Link href={`/invoices/${invoice.id}`}><h2 className="text-lg font-bold">Factura #{invoice.id}</h2></Link>
                 <p className="text-sm opacity-90">
                   {formatDate(invoice.date_created)}
                 </p>

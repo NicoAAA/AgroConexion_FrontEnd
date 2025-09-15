@@ -116,7 +116,7 @@ const ResetPassword = ({ email, URL }: VerifyAccountProps) => {
             <form onSubmit={handleSubmit} className="bg-white/90 shadow-2xl rounded-3xl px-10 py-10 w-full max-w-md mx-auto">
                 <div className="flex flex-col items-center mb-8">
                     <Image
-                        src='/Logo.png'
+                        src='/AgroConexion.svg'
                         alt="Logo"
                         height={80}
                         width={80}

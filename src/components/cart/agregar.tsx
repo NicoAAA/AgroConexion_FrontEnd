@@ -77,7 +77,7 @@ const AgregarCarrito = ({
       </svg>
 
       {/* Texto dinámico según estado */}
-      <span>{loading ? 'Agregando...' : 'Agregar al Carrito'}</span>
+      <span>{loading ? 'Agregando...' : 'Agregar'}</span>
     </button>
   );
 };
