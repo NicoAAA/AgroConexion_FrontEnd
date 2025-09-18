@@ -32,10 +32,10 @@ export default function NewRating({ productId }: Props) {
       )
 
       setMessage('Gracias por tu calificación')
-      setMessage('')
+      setTimeout(() => setMessage(null), 3000) 
     } catch (err) {
-      console.error(err)
       setMessage('Error al enviar la calificación. Intenta de nuevo.')
+      setTimeout(() => setMessage(null), 3000) 
     } finally {
       setSubmitting(false)
       setHovered(null)

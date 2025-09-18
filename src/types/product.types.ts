@@ -1,7 +1,16 @@
+import { string } from "zod";
+
 export interface Categories{
   id: number
   name: string
   description: string
+  image?: string
+}
+
+export interface FavoriteCategory {
+  id: number;
+  category: Categories;
+  added_at: string;
 }
 
 export interface ProductCardProps {
@@ -80,6 +89,7 @@ export type Offert = {
   percentage: string;  // Nota: viene como string de la API
   start_date: string;
   end_date: string;
+  active?: Boolean
 }
 
 export type Coupon = {
@@ -90,4 +100,5 @@ export type Coupon = {
   min_purchase_amount: string;  // Viene como string de la API
   start_date: string;
   end_date: string;
+  active?: Boolean
 }

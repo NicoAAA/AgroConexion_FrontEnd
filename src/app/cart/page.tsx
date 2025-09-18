@@ -7,7 +7,6 @@ import { useState, useEffect } from 'react'
 import api from '@/lib/axios'
 import Image from 'next/image'
 import { Minus, Plus, Trash2, Loader2 } from 'lucide-react'
-import EliminarProducto from '@/components/cart/eliminar'
 import BuyCart from '@/components/cart/ComprarCarrito'
 import { toast } from 'sonner'
 
@@ -232,8 +231,7 @@ const GetCarrito = () => {
                     </div>
 
                     {/* Acciones */}
-                    <div className="mt-4 flex items-center gap-3">
-                      <EliminarProducto productId={item.product.id} />
+                    <div className="mt-4 flex items-center gap-3 ">
                       <button
                         onClick={async () => {
                           try {

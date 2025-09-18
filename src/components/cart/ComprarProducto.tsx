@@ -58,7 +58,6 @@ const BuyProduct = ({ productId }: { productId: number }) => {
       } else {
         toast.error(`❌ Error de conexión: ${error.message}`);
       }
-      console.error("❌ Error en la compra:", error);
     } finally {
       setLoading(false);
     }

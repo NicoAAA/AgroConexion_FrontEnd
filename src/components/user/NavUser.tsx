@@ -94,16 +94,16 @@ const NavUser = () => {
                     </li>
                     <li className="px-4 py-3 hover:bg-green-50 flex items-center gap-2 cursor-pointer transition">
                       <Apple className="w-4 h-4 text-green-600" />
-                      <Link href={ROUTES.NEWPRODUCT}>Mis producto</Link>
+                      <Link href={ROUTES.MYPRODUCTS}>Mis productos</Link>
                     </li>
                     <li className="px-4 py-3 hover:bg-green-50 flex items-center gap-2 cursor-pointer transition">
                       <BarChart className="w-4 h-4 text-green-600" />
                       <Link href={ROUTES.ESTADISTICAS}>Estadísticas</Link>
                     </li>
-                    <li className="px-4 py-3 hover:bg-green-50 flex items-center gap-2 cursor-pointer transition">
+                    {/* <li className="px-4 py-3 hover:bg-green-50 flex items-center gap-2 cursor-pointer transition">
                       <FileText className="w-4 h-4 text-green-600" />
                       <Link href={ROUTES.FACTURACION}>Ventas</Link>
-                    </li>
+                    </li> */}
                   </>
                 )}
                 <li className="border-t">

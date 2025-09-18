@@ -25,6 +25,8 @@ export const ROUTES = {
   ESTADISTICAS: '/finansas',
   PERFIL: '/profile',
   FAVORITOS: '/favorites',
+  MYPRODUCTS: '/profile/Products',
+  FAVORITECATEGORIES: '/favorites/categories',
 
   CHANGUEPASSWORD: '/password/changue-my-password',
   LOSTPASSWORD: '/password/lost-my-password',

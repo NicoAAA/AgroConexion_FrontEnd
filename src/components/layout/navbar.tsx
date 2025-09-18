@@ -12,6 +12,8 @@ import { ShoppingCart } from 'lucide-react'
 import { useState, useEffect } from 'react'
 import api from '@/lib/axios'
 import Notifications from '../notification/notification'
+import { GiFarmTractor } from 'react-icons/gi'
+import { ROUTES } from '@/lib/constants'
 
 // ⬇️ Importamos nuestro contexto de idioma
 import { useLanguage } from '@/context/LanguageContext'
@@ -89,6 +91,9 @@ export function Navbar() {
               {cartCount}
             </span>
           )}
+        </Link>
+        <Link href={ROUTES.FAVORITECATEGORIES} className='text-white'>
+          <GiFarmTractor className="text-4xl" />
         </Link>
         <Notifications />
         <NavUser />

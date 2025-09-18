@@ -175,7 +175,7 @@ const DetailProduct = () => {
                       setSelectedImage(img.image);
                       setImageLoaded(false);
                     }}
-                    className={`w-20 h-20 rounded-xl overflow-hidden border-2 shadow-black ${
+                    className={`w-20 h-20 rounded-xl overflow-hidden border-2 shadow-sm flex-shrink-0 ${
                       selectedImage === img.image
                         ? "border-blue-500 ring-2 ring-blue-200"
                         : "border-gray-200 hover:border-gray-400"
@@ -184,8 +184,9 @@ const DetailProduct = () => {
                     <Image
                       src={`http://127.0.0.1:8000${img.image}`}
                       alt={product.name}
-                      fill
-                      className="object-cover"
+                      width={80}
+                      height={80}
+                      className="object-cover rounded"
                     />
                   </button>
                 ))}

@@ -16,9 +16,10 @@
 import { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
 import ProductCard from "@/components/products/ProductCard";
-import { Leaf, ShoppingBag, Sprout } from "lucide-react";
+import { Leaf, ShoppingBag, Sprout, Heart } from "lucide-react";
 import Footer from "@/components/home/footer";
-
+import api from "@/lib/axios";
+import toast from "react-hot-toast";
 /** Tipado del producto */
 interface Product {
   id: number;
@@ -46,6 +47,7 @@ export default function CategoriaPage() {
   // Estado de carga mientras se obtiene la información
   const [loading, setLoading] = useState(true);
 
+  const [adding, setAdding] = useState(false);
   /**
    * Efecto que llama al backend para traer la información de la categoría
    * Cada vez que cambia el `id` se vuelve a ejecutar
@@ -71,6 +73,24 @@ export default function CategoriaPage() {
 
     if (id) fetchCategory();
   }, [id]);
+
+  const handleAddFavorite = async () => {
+    if (!id) return;
+    setAdding(true);
+    try {
+      await api.post("/cart/categories/", { category: Number(id) });
+      toast.success("✅ Categoría añadida a favoritos");
+    } catch (error: any) {
+      // Si la API devuelve error porque ya está añadida
+      if (error.response?.status === 400) {
+        toast.error("⚠️ Esta categoría ya está en favoritos");
+      } else {
+        toast.error("❌ Error al añadir a favoritos");
+      }
+    } finally {
+      setAdding(false);
+    }
+  };
 
   /** Renderizado cuando los datos están cargando */
   if (loading) {
@@ -173,12 +193,23 @@ export default function CategoriaPage() {
           comercio justo. Explora más categorías y descubre la riqueza del campo
           colombiano.
         </p>
-        <a
-          href="/"
-          className="inline-block bg-white text-orange-600 font-semibold px-6 py-3 rounded-xl shadow-md hover:bg-amber-100 transition mt-0"
-        >
-          Ver más productos
-        </a>
+        <section className="bg-gradient-to-r from-orange-500 via-amber-500 to-yellow-500 text-white text-center py-8 px-6 flex flex-col sm:flex-row items-center justify-center gap-4">
+            <a
+              href="/"
+              className="inline-block bg-white text-orange-600 font-semibold px-6 py-3 rounded-xl shadow-md hover:bg-amber-100 transition"
+            >
+              Ver más productos
+            </a>
+
+            <button
+              onClick={handleAddFavorite}
+              disabled={adding}
+              className="flex items-center gap-2 bg-red-600 text-white font-semibold px-6 py-3 rounded-xl shadow-md hover:bg-red-700 transition disabled:opacity-50"
+            >
+              <Heart className="w-5 h-5" />
+              {adding ? "Añadiendo..." : "Añadir a favoritos"}
+            </button>
+        </section>
       </section>
 
       {/* Footer */}
