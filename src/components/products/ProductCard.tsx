@@ -7,6 +7,7 @@ import { ProductCardProps } from '@/types/product.types'
 import { Heart, ShoppingCart, MessageSquare, Star } from 'lucide-react'
 import { toast } from 'sonner'
 import api from '@/lib/axios'
+import { useLanguage } from '@/context/LanguageContext';
 
 /**
  * ProductCard → Componente de tarjeta para mostrar información de productos.
@@ -27,6 +28,7 @@ const ProductCard: React.FC<ProductCardProps & { defaultFavorite?: boolean }> = 
   defaultFavorite = false, // Define si el producto inicia en favoritos
 }) => {
   // ---------------- Estados ----------------
+  const { t } = useLanguage();
   const [isHovered, setIsHovered] = useState(false)
   const [imageLoaded, setImageLoaded] = useState(false)
   const [isFavorite, setIsFavorite] = useState(defaultFavorite)
@@ -166,7 +168,7 @@ const ProductCard: React.FC<ProductCardProps & { defaultFavorite?: boolean }> = 
         {/* Comentarios */}
         <div className="flex items-center text-gray-500 dark:text-gray-400 text-sm space-x-2">
           <MessageSquare className="w-4 h-4" />
-          <span>{commentsCount} comentarios</span>
+          <span>{commentsCount} {t("comentarios")}</span>
         </div>
 
         {/* Botones */}
@@ -174,20 +176,19 @@ const ProductCard: React.FC<ProductCardProps & { defaultFavorite?: boolean }> = 
           {/* Carrito */}
           <button
             onClick={toggleCart}
-            className={`flex-1 flex items-center justify-center gap-2 py-2.5 px-4 rounded-xl font-semibold transition-all shadow-md ${
-              inCart
+            className={`flex-1 flex items-center justify-center gap-2 py-2.5 px-4 rounded-xl font-semibold transition-all shadow-md ${inCart
                 ? 'bg-red-500 text-white hover:bg-red-600'
                 : 'bg-gradient-to-r from-green-600 to-lime-600 text-white hover:from-green-700 hover:to-lime-700'
-            }`}
+              }`}
           >
             <ShoppingCart className="w-4 h-4" />
-            {inCart ? 'Quitar' : 'Añadir'}
+            {inCart ? t("quitarCarrito") : t("agregarCarrito") }
           </button>
 
           {/* Ver más */}
           <Link href={`/products/${id}`} className="flex-1">
             <button className="w-full bg-gray-100 hover:bg-gray-200 dark:bg-gray-700 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-200 font-semibold py-2.5 px-4 rounded-xl transition-all shadow-sm">
-              Ver más
+              {t("verMas")}
             </button>
           </Link>
         </div>

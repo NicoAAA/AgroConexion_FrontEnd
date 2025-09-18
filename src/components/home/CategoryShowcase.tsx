@@ -10,6 +10,7 @@ import {
   Milk,
   Leaf,
 } from 'lucide-react'
+import { useLanguage } from '@/context/LanguageContext';
 
 /**
  * Props para la tarjeta de categoría
@@ -30,12 +31,13 @@ interface CategoryCardProps {
  * - **Adaptado a modo oscuro**
  */
 const CategoryCard = ({ name, imageUrl, icon: Icon, href }: CategoryCardProps) => {
+ 
   return (
     <Link href={href} className="group">
       <div className="relative w-44 sm:w-56 h-72 sm:h-80 rounded-3xl overflow-hidden shadow-xl 
         bg-white dark:bg-gray-900 transition-transform transform 
         group-hover:scale-105 group-hover:shadow-2xl border border-green-100 dark:border-green-900">
-        
+
         {/* Imagen de fondo */}
         <Image
           src={imageUrl}
@@ -70,33 +72,35 @@ const CategoryCard = ({ name, imageUrl, icon: Icon, href }: CategoryCardProps) =
  * - **Con soporte a modo oscuro**
  */
 export const CategoryShowcase = () => {
+  const { t } = useLanguage();
   const categories: CategoryCardProps[] = [
+    
     {
-      name: 'Frutas 🍎',
+      name: t("frutas"),
       imageUrl: '/categories/frutas.jpg',
       icon: Apple,
       href: '/categories/1',
     },
     {
-      name: 'Verduras 🥕',
+      name: t("verduras"),
       imageUrl: '/categories/verduras.jpg',
       icon: Carrot,
       href: '/categories/2',
     },
     {
-      name: 'Lácteos 🧀',
+      name: t("lacteos"),
       imageUrl: '/categories/lacteos.jpg',
       icon: Milk,
       href: '/categories/4',
     },
     {
-      name: 'Pescados 🐟',
+      name: t("pescados"),
       imageUrl: '/categories/pescado.jpg',
       icon: Fish,
       href: '/categories/5',
     },
     {
-      name: 'Hierbas 🌿',
+      name: t("Hierbas"),
       imageUrl: '/categories/hierbasa.jpg',
       icon: Leaf,
       href: '/categories/15',
@@ -107,10 +111,10 @@ export const CategoryShowcase = () => {
     <section className="bg-gradient-to-br from-green-50 via-white to-green-100 
       dark:from-gray-900 dark:via-gray-950 dark:to-gray-900 
       py-10 px-6 sm:px-12 rounded-3xl shadow-inner mt-8 transition-colors duration-500">
-      
+
       <h2 className="text-3xl sm:text-4xl font-extrabold 
         text-green-800 dark:text-green-400 mb-10 text-center">
-        ✨ Explora por Categorías
+        {t("exploraPorCategorias")}
       </h2>
 
       <div className="flex justify-center flex-wrap gap-6">

@@ -4,6 +4,7 @@ import { Navbar } from "@/components/layout/navbar";
 import { Toaster } from "react-hot-toast";
 import ThemeToggleButton from "@/components/ui/ThemeToggleButton";
 import { AppInitializer } from "@/components/layout/AppInitializer";
+import { LanguageProvider } from "@/context/LanguageContext"; // ⬅️ Importamos nuestro Provider
 
 export const metadata: Metadata = {
   title: "AgroConexión",
@@ -37,30 +38,35 @@ export default function RootLayout({
         <script dangerouslySetInnerHTML={{ __html: themeInitScript }} />
       </head>
       <body className="m-0 p-0 bg-white text-black dark:bg-slate-900 dark:text-slate-100 transition-colors">
-        {/* Inicializador de autenticación */}
-        <AppInitializer>
-          {/* Barra de navegación presente en todas las páginas */}
-          <Navbar />
+        {/* ⬇️ Proveedor de idioma disponible en TODA la app */}
+        <LanguageProvider>
+          {/* Inicializador de autenticación */}
+          <AppInitializer>
+            {/* Barra de navegación presente en todas las páginas */}
+            <Navbar />
 
-          {/* Contenido dinámico (cada página) */}
-          <main className="w-full">{children}</main>
-        </AppInitializer>
+            {/* Contenido dinámico (cada página) */}
+            <main className="w-full">{children}</main>
+          </AppInitializer>
 
-        <Toaster
-          position="top-right"
-          reverseOrder={false}
-          toastOptions={{
-            style: {
-              borderRadius: "12px",
-              background: "#f0fff4",
-              color: "#065f46",
-              padding: "12px 16px",
-              fontWeight: "500",
-            },
-          }}
-        />
+          {/* Toaster de notificaciones */}
+          <Toaster
+            position="top-right"
+            reverseOrder={false}
+            toastOptions={{
+              style: {
+                borderRadius: "12px",
+                background: "#f0fff4",
+                color: "#065f46",
+                padding: "12px 16px",
+                fontWeight: "500",
+              },
+            }}
+          />
 
-        <ThemeToggleButton />
+          {/* Botón de cambio de tema */}
+          <ThemeToggleButton />
+        </LanguageProvider>
       </body>
     </html>
   );

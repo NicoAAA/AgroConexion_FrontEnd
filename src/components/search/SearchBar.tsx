@@ -3,6 +3,7 @@
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { Search } from 'lucide-react'
+import { useLanguage } from '@/context/LanguageContext';
 
 export default function SearchBar() {
   const router = useRouter()
@@ -10,6 +11,7 @@ export default function SearchBar() {
   const [category, setCategory] = useState('Todas')
   const [open, setOpen] = useState(false)
   const [showInput, setShowInput] = useState(false)
+  const { t } = useLanguage();
 
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault()
@@ -27,7 +29,7 @@ export default function SearchBar() {
         bg-green-100 dark:bg-gray-800 
         border border-green-300 dark:border-gray-700 
         rounded-lg shadow-sm overflow-hidden transition-colors">
-        
+
         {/* Botón categorías (solo desktop) */}
         <div className="relative hidden sm:block">
           <button
@@ -64,7 +66,7 @@ export default function SearchBar() {
               divide-y divide-gray-100 dark:divide-gray-700 
               rounded-lg shadow-md w-44 border border-green-200 dark:border-gray-700">
               <ul className="py-2 text-sm text-gray-700 dark:text-gray-200" role="listbox">
-                {['Todas', 'Frutas', 'Verduras', 'Granos', 'Lácteos'].map((cat) => (
+                {[t("todos"), t("frutas"), t("verduras"), t("granos"), t("lacteos")].map((cat) => (
                   <li key={cat}>
                     <button
                       type="button"
@@ -91,7 +93,7 @@ export default function SearchBar() {
             type="search"
             value={query}
             onChange={(e) => setQuery(e.target.value)}
-            placeholder="Buscar frutas, verduras, lácteos..."
+            placeholder={t('buscar')}
             className="block w-full p-2.5 text-sm 
               text-gray-900 dark:text-gray-100 
               bg-white dark:bg-gray-900 
@@ -105,7 +107,7 @@ export default function SearchBar() {
               text-white transition flex items-center justify-center"
           >
             <Search size={18} />
-            <span className="sr-only">Buscar</span>
+            <span className="sr-only">{t('buscar')}</span>
           </button>
         </div>
 

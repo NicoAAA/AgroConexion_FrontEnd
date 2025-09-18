@@ -5,11 +5,12 @@ import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import Link from 'next/link';
 import { Eye, EyeOff, LogIn } from 'lucide-react';
-
 import { useLogin } from '@/features/auth/hooks/useLogin';
 import { LoginFormData, loginSchema } from '@/features/auth/utils/validation';
 import { ROUTES } from '@/lib/constants';
 import Image from 'next/image';
+import { useLanguage } from '@/context/LanguageContext';
+
 // Funcion del login
 export function LoginForm() {
   const [showPassword, setShowPassword] = useState(false);
@@ -27,6 +28,8 @@ export function LoginForm() {
     await login(data);
   };
 
+  const { t } = useLanguage();
+
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-green-400 via-white to-green-500">
       <form
@@ -41,8 +44,8 @@ export function LoginForm() {
             width={80}
             className="rounded-full border-4 border-green-300 shadow-md bg-white"
           />
-          <h2 className="mt-4 text-3xl font-bold tracking-wide">Iniciar Sesión</h2>
-          <p className="text-gray-600 mt-2">Accede a tu cuenta</p>
+          <h2 className="mt-4 text-3xl font-bold tracking-wide">{t("iniciarSesion")}</h2>
+          <p className="text-gray-600 mt-2">{t("accedeCuenta")}</p>
         </div>
 
         {/* Errores generales */}
@@ -56,7 +59,7 @@ export function LoginForm() {
           {/* Username */}
           <div className="flex flex-col gap-1">
             <label htmlFor="username" className="font-semibold">
-              Nombre de usuario
+              {t("nombreUsuario")}
             </label>
             <input
               type="text"
@@ -80,7 +83,7 @@ export function LoginForm() {
           {/* Password */}
           <div className="flex flex-col gap-1 relative">
             <label htmlFor="password" className="font-semibold">
-              Contraseña
+              {t("contraseña")}
             </label>
             <input
               type={showPassword ? 'text' : 'password'}
@@ -120,16 +123,16 @@ export function LoginForm() {
             disabled={isLoading}
             className="mt-6 bg-green-500 hover:bg-green-600 text-white font-bold py-2 rounded-lg shadow-md transition disabled:opacity-50 disabled:cursor-not-allowed"
           >
-            {isLoading ? 'Cargando...' : 'Iniciar Sesión'}
+            {isLoading ? 'Cargando...' : t('iniciarSesion')}
           </button>
 
           {/* Links */}
           <div className="flex justify-between gap-4 mt-4">
             <Link href={ROUTES.REGISTER}>
-              <p className="text-blue-500 hover:text-blue-600">Crear Cuenta</p>
+              <p className="text-blue-500 hover:text-blue-600">{t("crearCuenta")}</p>
             </Link>
             <Link href={ROUTES.LOSTPASSWORD}>
-              <p className="text-blue-500 hover:text-blue-600">Recuperar Contraseña</p>
+              <p className="text-blue-500 hover:text-blue-600">{t("recuperarContraseña")}</p>
             </Link>
           </div>
         </div>

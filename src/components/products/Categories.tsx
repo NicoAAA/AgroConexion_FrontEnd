@@ -5,6 +5,7 @@ import { useEffect, useState, useRef } from 'react'
 import Link from 'next/link'
 import axios from 'axios'
 import { GiFarmTractor } from 'react-icons/gi'
+import { useLanguage } from '@/context/LanguageContext'
 
 const GetAllCategories = () => {
   const [category, setCategory] = useState<Categories[]>([])
@@ -42,6 +43,7 @@ const GetAllCategories = () => {
       document.removeEventListener('mousedown', handleClickOutside)
     }
   }, [open])
+  const { t } = useLanguage()
 
   return (
     <div className="relative inline-block" ref={dropdownRef}>
@@ -53,7 +55,8 @@ const GetAllCategories = () => {
         type="button"
       >
         <GiFarmTractor className="text-xl" />
-        <span className="hidden sm:inline">Categorías</span>
+        <span className="hidden sm:inline">
+          {t('categorias')}</span>
         <svg
           className={`hidden sm:block w-4 h-4 transform transition-transform ${
             open ? 'rotate-180' : ''

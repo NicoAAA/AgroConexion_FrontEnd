@@ -3,6 +3,7 @@ import axios, { AxiosError } from "axios"
 import { useState, useEffect, useRef } from "react"
 import { Bell, Trash2 } from "lucide-react"
 import Image from "next/image"
+import { useLanguage } from '@/context/LanguageContext'
 
 type NotificationData = Record<string, any>
 
@@ -108,7 +109,8 @@ const Notifications = () => {
       console.error("Error al eliminar notificación", err)
     }
   }
-
+ 
+  const { t } = useLanguage()
   return (
     <div className="relative inline-block" ref={dropdownRef}>
       {/* Botón */}
@@ -128,7 +130,7 @@ const Notifications = () => {
         </div>
 
         {/* Texto solo visible en pantallas medianas en adelante */}
-        <span className="hidden sm:inline">Notificaciones</span>
+        <span className="hidden sm:inline">{t("notificaciones")}</span>
 
         {/* Flecha también oculta en móviles */}
         <svg
@@ -157,16 +159,16 @@ const Notifications = () => {
           >
             {!token ? (
               <p className="text-gray-600 text-center py-6">
-                🔒 Inicia sesión para ver tus notificaciones
+                {t("iniciaSesionNotificaciones")}
               </p>
             ) : loading ? (
               <p className="text-gray-600 text-center py-6 animate-pulse">
-                ⏳ Cargando notificaciones...
+                ⏳ {t("cargandoNotificaciones")}...
               </p>
             ) : error ? (
               <p className="text-red-500 text-center py-6">{error}</p>
             ) : notifications.length === 0 ? (
-              <p className="text-gray-500 text-center py-6">📭 No tienes notificaciones aún</p>
+              <p className="text-gray-500 text-center py-6">{t("detallenotificacion")}</p>
             ) : (
               <ul className="space-y-3">
                 {notifications.map((n) => (

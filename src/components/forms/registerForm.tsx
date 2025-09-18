@@ -9,6 +9,9 @@ import { useRegister } from '@/features/auth/hooks/useRegister';
 import { RegisterFormData, registerSchema } from '@/features/auth/utils/validation';
 import { ROUTES } from '@/lib/constants';
 import Image from 'next/image';
+import { useLanguage } from '@/context/LanguageContext';
+
+
 export function RegisterForm() {
   const [showPassword, setShowPassword] = useState(false);
   const [showPassword2, setShowPassword2] = useState(false);
@@ -25,6 +28,8 @@ export function RegisterForm() {
   const onSubmit = async (data: RegisterFormData) => {
     await registerUser(data);
   };
+  
+  const { t } = useLanguage();
 
 return (
     <main className="min-h-screen flex items-center justify-center bg-gradient-to-br from-green-400 via-white to-green-500">
@@ -41,8 +46,8 @@ return (
             width={80}
             className="rounded-full border-4 border-green-300 shadow-md bg-white"
           />
-          <h2 className="mt-4 text-3xl font-bold tracking-wide text-gray-800">Crear Cuenta</h2>
-          <p className="text-gray-600 mt-1">Únete a nuestra plataforma</p>
+          <h2 className="mt-4 text-3xl font-bold tracking-wide text-gray-800">{t("crearCuenta")}</h2>
+          <p className="text-gray-600 mt-1">{t("unetePlataforma")}</p>
         </div>
 
         {/* Errores generales */}
@@ -57,7 +62,7 @@ return (
           {/* Username */}
           <div className="flex flex-col gap-1">
             <label htmlFor="username" className="font-semibold">
-              Nombre de usuario
+              {t("nombreUsuario")}
             </label>
             <input
               id="username"
@@ -77,7 +82,7 @@ return (
           {/* Email */}
           <div className="flex flex-col gap-1">
             <label htmlFor="email" className="font-semibold">
-              Email
+              {t("email")}
             </label>
             <input
               id="email"
@@ -95,13 +100,13 @@ return (
           {/* Password */}
           <div className="flex flex-col gap-1 relative">
             <label htmlFor="password" className="font-semibold">
-              Contraseña
+              {t("contraseña")}
             </label>
             <input
               id="password"
               type={showPassword ? 'text' : 'password'}
               {...register('password')}
-              placeholder="Mínimo 8 caracteres"
+              placeholder={t("minimo8Caracteres")}
               className={`rounded-lg border px-4 py-2 pr-12 focus:outline-none focus:ring-2 focus:ring-green-400 transition ${
                 formErrors.password || errors.password ? 'border-red-500' : 'border-green-200'
               }`}
@@ -122,13 +127,13 @@ return (
           {/* Confirm Password */}
           <div className="flex flex-col gap-1 relative">
             <label htmlFor="password2" className="font-semibold">
-              Confirmar contraseña
+              {t("confirmarContrasena")}
             </label>
             <input
               id="password2"
               type={showPassword2 ? 'text' : 'password'}
               {...register('password2')}
-              placeholder="Repite tu contraseña"
+              placeholder={t("repetirContrasena")}
               className={`rounded-lg border px-4 py-2 pr-12 focus:outline-none focus:ring-2 focus:ring-green-400 transition ${
                 formErrors.password2 || errors.password2 ? 'border-red-500' : 'border-green-200'
               }`}
@@ -157,7 +162,7 @@ return (
             ) : (
               <>
                 <UserPlus className="h-5 w-5 mr-2" />
-                Crear Cuenta
+                {t("crearCuenta")}
               </>
             )}
           </button>
@@ -165,10 +170,10 @@ return (
           {/* Links */}
           <div className="flex justify-between gap-4 mt-4 text-sm">
             <Link href={ROUTES.LOGIN} className="text-blue-500 hover:text-blue-600">
-              Ya tengo cuenta
+              {t("yaTengoCuenta")}
             </Link>
             <Link href={ROUTES.REGISTERAGROUP} className="text-blue-500 hover:text-blue-600">
-              Registrar agrupación
+              {t("registrarAgrupacion")}
             </Link>
           </div>
         </div>

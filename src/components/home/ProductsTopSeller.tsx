@@ -4,14 +4,17 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import Image from "next/image";
 import { ShoppingCart, ChevronLeft, ChevronRight } from "lucide-react";
-import {TopProducts} from '@/types/product.types'
+import { TopProducts } from '@/types/product.types'
 import Link from "next/link";
+import { useLanguage } from '@/context/LanguageContext';
+
+
 const formatPrice = (price: number) =>
     new Intl.NumberFormat("es-CO", {
-    style: "currency",
-    currency: "COP",
-    minimumFractionDigits: 0,
-}).format(price);
+        style: "currency",
+        currency: "COP",
+        minimumFractionDigits: 0,
+    }).format(price);
 
 const TopProductsBuy = () => {
     const [products, setProduct] = useState<TopProducts[]>([]);
@@ -45,6 +48,8 @@ const TopProductsBuy = () => {
         setCurrentSlide(index);
     };
 
+    const { t } = useLanguage();
+
     return (
         <div className="relative w-full max-w-4xl mx-auto bg-white rounded-2xl shadow-lg overflow-hidden">
             {/* Carousel Container */}
@@ -55,57 +60,57 @@ const TopProductsBuy = () => {
                 >
                     {products.map((product) => {
                         const imageUrl =
-                        product.images && product.images.length > 0
-                            ? `http://127.0.0.1:8000${product.images[0].image}`
-                            : `https://via.placeholder.com/800x400/10b981/ffffff?text=${encodeURIComponent(
-                                product.name
-                            )}`;
+                            product.images && product.images.length > 0
+                                ? `http://127.0.0.1:8000${product.images[0].image}`
+                                : `https://via.placeholder.com/800x400/10b981/ffffff?text=${encodeURIComponent(
+                                    product.name
+                                )}`;
 
                         return (
-                        <div
-                            key={product.id}
-                            className="w-full flex-shrink-0 relative"
-                        >
-                            {/* Product Image */}
-                            <div className="h-full relative">
-                                <Image
-                                    src={imageUrl}
-                                    alt={product.name}
-                                    fill
-                                    className="object-cover"
-                                    onError={(e) => {
-                                    (e.currentTarget as HTMLImageElement).src =
-                                        `https://via.placeholder.com/800x400/10b981/ffffff?text=${encodeURIComponent(
-                                        product.name
-                                        )}`;
-                                    }}
-                                />
-                            </div>
+                            <div
+                                key={product.id}
+                                className="w-full flex-shrink-0 relative"
+                            >
+                                {/* Product Image */}
+                                <div className="h-full relative">
+                                    <Image
+                                        src={imageUrl}
+                                        alt={product.name}
+                                        fill
+                                        className="object-cover"
+                                        onError={(e) => {
+                                            (e.currentTarget as HTMLImageElement).src =
+                                                `https://via.placeholder.com/800x400/10b981/ffffff?text=${encodeURIComponent(
+                                                    product.name
+                                                )}`;
+                                        }}
+                                    />
+                                </div>
 
-                            {/* Product Info Overlay */}
-                            <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent p-6 text-white">
-                                <h3 className="text-2xl font-bold mb-2">
-                                    {product.name}
-                                </h3>
-                            <p className="text-gray-200 mb-3 text-sm">
-                                {product.description}
-                            </p>
-                            <div className="flex items-center justify-between">
-                                <div className="flex items-center gap-4">
-                                    <span className="text-2xl font-bold text-green-400">
-                                        {formatPrice(product.price)}
-                                    </span>
-                                    <span className="text-sm text-gray-300">
-                                        Stock: {product.stock} Medida: {product.unit_of_measure}
-                                    </span>
-                                </div>
-                                    <Link href={`products/${product.id}`} className="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg font-semibold transition-colors duration-300 flex items-center gap-2">
-                                        <ShoppingCart size={16} />
-                                        Ver producto
-                                    </Link>
+                                {/* Product Info Overlay */}
+                                <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent p-6 text-white">
+                                    <h3 className="text-2xl font-bold mb-2">
+                                        {product.name}
+                                    </h3>
+                                    <p className="text-gray-200 mb-3 text-sm">
+                                        {product.description}
+                                    </p>
+                                    <div className="flex items-center justify-between">
+                                        <div className="flex items-center gap-4">
+                                            <span className="text-2xl font-bold text-green-400">
+                                                {formatPrice(product.price)}
+                                            </span>
+                                            <span className="text-sm text-gray-300">
+                                                Stock: {product.stock} Medida: {product.unit_of_measure}
+                                            </span>
+                                        </div>
+                                        <Link href={`products/${product.id}`} className="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg font-semibold transition-colors duration-300 flex items-center gap-2">
+                                            <ShoppingCart size={16} />
+                                            {t('viewProduct')}
+                                        </Link>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
                         );
                     })}
                 </div>
@@ -128,15 +133,14 @@ const TopProductsBuy = () => {
             {/* Dots Indicator */}
             <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-2 z-10">
                 {products.map((_, index) => (
-                <button
-                    key={index}
-                    onClick={() => goToSlide(index)}
-                    className={`w-2 h-2 rounded-full transition-all duration-300 ${
-                    index === currentSlide
-                        ? "bg-white w-6"
-                        : "bg-white/50 hover:bg-white/75"
-                    }`}
-                />
+                    <button
+                        key={index}
+                        onClick={() => goToSlide(index)}
+                        className={`w-2 h-2 rounded-full transition-all duration-300 ${index === currentSlide
+                                ? "bg-white w-6"
+                                : "bg-white/50 hover:bg-white/75"
+                            }`}
+                    />
                 ))}
             </div>
         </div>

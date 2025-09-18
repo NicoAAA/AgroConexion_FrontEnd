@@ -1,3 +1,5 @@
+// src/components/layout/navbar.tsx
+
 'use client'
 
 import { useAuth } from '@/features/auth/hooks/useAuth'
@@ -11,9 +13,15 @@ import { useState, useEffect } from 'react'
 import api from '@/lib/axios'
 import Notifications from '../notification/notification'
 
+// ⬇️ Importamos nuestro contexto de idioma
+import { useLanguage } from '@/context/LanguageContext'
+
 export function Navbar() {
   const [cartCount, setCartCount] = useState(0)
   const { isAuthenticated } = useAuth()
+
+  // ⬇️ Hook del contexto
+  const { t, language, toggleLanguage } = useLanguage()
 
   useEffect(() => {
     const fetchCart = async () => {
@@ -52,8 +60,9 @@ export function Navbar() {
             src="/AgroConexion.svg"
             alt="Logo"
           />
+          {/* 🔤 Nombre traducido */}
           <span className="text-white dark:text-gray-100 font-bold text-lg hidden md:inline">
-            AgroConexión
+            {t("AgroConexión")}
           </span>
         </Link>
 
@@ -82,8 +91,15 @@ export function Navbar() {
           )}
         </Link>
         <Notifications />
-        {/* Menú de usuario */}
         <NavUser />
+
+        {/* 🔤 Botón para cambiar idioma */}
+        <button
+          onClick={toggleLanguage}
+          className="text-xs text-white border px-2 py-1 rounded hover:bg-green-800"
+        >
+          {language === "es" ? "EN" : "ES"}
+        </button>
       </div>
     </nav>
   )
