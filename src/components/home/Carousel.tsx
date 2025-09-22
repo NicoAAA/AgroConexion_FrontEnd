@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
 import { ChevronLeft, ChevronRight } from 'lucide-react'
+import { useLanguage } from '@/context/LanguageContext';
 
 interface Slide {
   id: number
@@ -18,6 +19,7 @@ interface Props {
 export const Carousel = ({ slides }: Props) => {
   const [current, setCurrent] = useState(0)
   const [validSlides, setValidSlides] = useState<Slide[]>([])
+  const { t } = useLanguage();
 
   // Validar que las imágenes existan
   useEffect(() => {
@@ -84,7 +86,7 @@ export const Carousel = ({ slides }: Props) => {
                 Descubre lo mejor de nuestros productos campesinos 🌱
               </p>
               <button className="mt-4 bg-green-600 hover:bg-green-700 px-5 py-2 rounded-lg font-semibold transition-colors">
-                Ver más
+                {t("viewProduct")}
               </button>
             </div>
           </div>

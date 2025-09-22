@@ -105,7 +105,7 @@ const TopProductsBuy = () => {
                       className="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg font-semibold transition-colors duration-300 flex items-center gap-2"
                     >
                       <ShoppingCart size={16} />
-                      Ver producto
+                      {t("viewProduct")}
                     </Link>
                   </div>
                 </div>

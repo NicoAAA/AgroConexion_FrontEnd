@@ -4,14 +4,16 @@ import { useEffect, useRef, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import Image from 'next/image'
 import { toast } from 'react-hot-toast'
-import { 
-  LogOut, LogIn, UserPlus, ShoppingBag, FileText, BarChart, Apple 
-} from 'lucide-react'
+import {LogOut, LogIn, UserPlus, ShoppingBag, FileText, BarChart, Apple} from 'lucide-react'
 import { useAuth } from '@/features/auth/hooks/useAuth'
 import { ROUTES } from '@/lib/constants'
 import Link from 'next/link'
+import { useLanguage } from '@/context/LanguageContext';
+
+
 
 const NavUser = () => {
+  const { t } = useLanguage();
   const router = useRouter()
   const { user, isAuthenticated, isLoading, logout, initializeAuth } = useAuth()
   const [open, setOpen] = useState(false)
@@ -31,7 +33,7 @@ const NavUser = () => {
     return () => document.removeEventListener('mousedown', handleClickOutside)
   }, [open])
 
-  const handleLogout = async() => {
+  const handleLogout = async () => {
     await logout()
     toast.success('👋 Sesión cerrada correctamente')
     router.push('/login')
@@ -75,30 +77,30 @@ const NavUser = () => {
               <div className="p-4 bg-green-50 border-b text-sm text-gray-800 font-semibold flex items-center gap-2">
                 <Link href={ROUTES.PERFIL}>🌱 {user.username}</Link>
               </div>
-              
+
               {/* Opciones */}
               <ul className="text-sm text-gray-700">
                 <li className="px-4 py-3 hover:bg-green-50 flex items-center gap-2 cursor-pointer transition">
                   <ShoppingBag className="w-4 h-4 text-green-600" />
-                  <Link href={ROUTES.FAVORITOS}>Mis favoritos</Link>
+                  <Link href={ROUTES.FAVORITOS}>{t("misFavoritos")}</Link>
                 </li>
                 <li className="px-4 py-3 hover:bg-green-50 flex items-center gap-2 cursor-pointer transition">
                   <FileText className="w-4 h-4 text-green-600" />
-                  <Link href={ROUTES.FACTURACION}>Mis Facturas</Link>
+                  <Link href={ROUTES.FACTURACION}>{t("misFacturas")}</Link>
                 </li>
                 {user.is_seller && (
                   <>
                     <li className="px-4 py-3 hover:bg-green-50 flex items-center gap-2 cursor-pointer transition">
                       <Apple className="w-4 h-4 text-green-600" />
-                      <Link href={ROUTES.NEWPRODUCT}>Nuevo producto</Link>
+                      <Link href={ROUTES.NEWPRODUCT}>{t("nuevoProducto")}</Link>
                     </li>
                     <li className="px-4 py-3 hover:bg-green-50 flex items-center gap-2 cursor-pointer transition">
                       <Apple className="w-4 h-4 text-green-600" />
-                      <Link href={ROUTES.MYPRODUCTS}>Mis productos</Link>
+                      <Link href={ROUTES.MYPRODUCTS}>{t("misProductos")}</Link>
                     </li>
                     <li className="px-4 py-3 hover:bg-green-50 flex items-center gap-2 cursor-pointer transition">
                       <BarChart className="w-4 h-4 text-green-600" />
-                      <Link href={ROUTES.ESTADISTICAS}>Estadísticas</Link>
+                      <Link href={ROUTES.ESTADISTICAS}>{t("registrarse")}</Link>
                     </li>
                     {/* <li className="px-4 py-3 hover:bg-green-50 flex items-center gap-2 cursor-pointer transition">
                       <FileText className="w-4 h-4 text-green-600" />
@@ -112,7 +114,7 @@ const NavUser = () => {
                     className="w-full text-left px-4 py-3 hover:bg-red-50 flex items-center gap-2 text-red-600 transition"
                   >
                     <LogOut className="w-4 h-4" />
-                    Cerrar sesión
+                    {t("cerrarSesion")}
                   </button>
                 </li>
               </ul>
@@ -126,7 +128,7 @@ const NavUser = () => {
             className="flex items-center gap-2 px-4 py-2 text-sm font-medium text-white bg-green-600 hover:bg-green-700 rounded-lg shadow-md transition"
           >
             <LogIn className="w-4 h-4" />
-            Iniciar sesión
+            {t("iniciarSesion")}
           </button>
 
           <button
@@ -134,7 +136,7 @@ const NavUser = () => {
             className="bg-white flex items-center gap-2 px-4 py-2 text-sm font-medium text-green-700 border border-green-600 hover:bg-green-100 rounded-lg shadow-md transition"
           >
             <UserPlus className="w-4 h-4" />
-            Registrarse
+            {t("registrarse")}
           </button>
         </>
       )}

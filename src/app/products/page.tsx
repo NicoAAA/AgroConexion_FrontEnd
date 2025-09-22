@@ -7,6 +7,8 @@ import axios from 'axios'
 import { Product } from '@/types/product.types'
 import ProductCard from '@/components/products/ProductCard'
 import { Loader2 } from 'lucide-react'
+import { useLanguage } from '@/context/LanguageContext';
+
 
 /**
  * Página de listado de productos
@@ -29,7 +31,8 @@ const ListProducts = () => {
 
   // Estado para mostrar loader mientras se cargan los datos
   const [loading, setLoading] = useState(true)
-
+  
+  const { t } = useLanguage();
   /**
    * useEffect -> Se ejecuta al montar el componente
    * - Llama a la API para traer los productos.
@@ -63,10 +66,10 @@ const ListProducts = () => {
       {/* Encabezado atractivo */}
       <div className="text-center mb-10">
         <h1 className="text-4xl font-extrabold text-gray-800 bg-gradient-to-r from-green-600 to-emerald-500 bg-clip-text text-transparent">
-          🌱 Todos los productos
+          🌱 {t("VerTodos")}
         </h1>
         <p className="text-gray-500 mt-2">
-          Explora la variedad de productos campesinos disponibles en nuestra plataforma
+          {t("infproductos")}
         </p>
       </div>
 

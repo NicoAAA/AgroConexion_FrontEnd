@@ -6,6 +6,8 @@ import { useState } from 'react';
 import api from '@/lib/axios'; // cliente Axios configurado
 import { toast } from 'sonner'; // librería de notificaciones
 import { Loader2, ShoppingCart } from 'lucide-react'; // iconos (algunos no usados en el render final)
+import { useLanguage } from '@/context/LanguageContext';
+
 
 /**
  * Componente AgregarCarrito
@@ -27,6 +29,7 @@ const AgregarCarrito = ({
   onError?: (msg: string) => void 
 }) => {
   const [loading, setLoading] = useState(false); // estado de carga
+  const { t } = useLanguage();
 
   /**
    * handleAddToCart
@@ -42,9 +45,9 @@ const AgregarCarrito = ({
         product_id: productId,
         quantity: 1,
       });
-      toast.success('Producto agregado al carrito 🛒');
+      toast.success(t("productoAgregado")); // Notificación de éxito
     } catch (error: any) {
-      const msg = error?.response?.data?.detail || 'Error al agregar al carrito';
+      const msg = error?.response?.data?.detail || (t("errorAgregar")); // Mensaje de error
       toast.error(msg);
       if (onError) onError(msg); // 🔥 Avisamos al padre si mandó callback
     } finally {
@@ -69,7 +72,7 @@ const AgregarCarrito = ({
           <>
             {/* Spinner de carga */}
             <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
-            <span>Agregando...</span>
+            <span>{t("agregando")}</span>
             <div className="flex gap-1">
               <div className="w-1 h-1 bg-white/60 rounded-full animate-bounce"></div>
               <div className="w-1 h-1 bg-white/60 rounded-full animate-bounce" style={{ animationDelay: '0.1s' }}></div>
@@ -100,7 +103,7 @@ const AgregarCarrito = ({
             </div>
 
             <span className="group-hover:tracking-wide transition-all duration-200">
-              Agregar al carrito
+              {t("agregarAlCarrito")}
             </span>
 
             {/* Flecha decorativa */}

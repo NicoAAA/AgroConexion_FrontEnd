@@ -8,10 +8,10 @@ import api from "@/lib/axios";
 import Image from "next/image";
 import { Product } from "@/types/product.types";
 import { useParams } from "next/navigation";
-
 import AgregarCarrito from "@/components/cart/agregar";
 import BuyProduct from "@/components/cart/ComprarProducto";
 import ComentsProduct from "@/components/comments/comments";
+import { useLanguage } from '@/context/LanguageContext';
 
 import {
   Home,
@@ -33,7 +33,7 @@ const DetailProduct = () => {
   const [selectedImage, setSelectedImage] = useState<string>("");
   const [imageLoaded, setImageLoaded] = useState<boolean>(false);
   const [favorites, setFavorites] = useState<number[]>([]);
-
+  const { t } = useLanguage();
   const params = useParams();
   const productId = params.id;
 
@@ -92,7 +92,7 @@ const DetailProduct = () => {
     return (
       <div className="flex items-center justify-center h-[60vh]">
         <p className="text-lg text-gray-500 animate-pulse">
-          Cargando producto...
+          {t("cargandoProducto")}
         </p>
       </div>
     );
@@ -130,11 +130,11 @@ const DetailProduct = () => {
           <nav className="flex items-center space-x-2 text-sm text-gray-500 dark:text-gray-400">
             <Home className="w-4 h-4 text-gray-400 dark:text-gray-500" />
             <Link href="/" className="hover:text-blue-600 dark:hover:text-blue-400 transition-colors duration-200">
-              Inicio
+              {t("inicio")}
             </Link>
             <ChevronRight className="w-4 h-4 text-gray-400 dark:text-gray-500" />
             <Link href="/products" className="hover:text-blue-600 dark:hover:text-blue-400 transition-colors duration-200">
-              Productos
+              {t("productos")}
             </Link>
             <ChevronRight className="w-4 h-4 text-gray-400 dark:text-gray-500" />
             <span className="text-gray-800 dark:text-gray-200 font-medium truncate">
@@ -234,7 +234,7 @@ const DetailProduct = () => {
                       </p>
                       <p className="text-sm text-green-600 dark:text-green-400 font-semibold flex items-center gap-2">
                         <span className="w-2 h-2 bg-green-500 rounded-full"></span>
-                        ¡Ahorras ${ahorro.toLocaleString("es-CO")}!
+                        {t("¡ahorras")} ${ahorro.toLocaleString("es-CO")}!
                       </p>
                     </div>
                   )}
@@ -248,7 +248,7 @@ const DetailProduct = () => {
                   <div className="flex items-center gap-2">
                     <div className="w-3 h-3 bg-green-500 dark:bg-green-400 rounded-full animate-pulse"></div>
                     <p className="text-sm text-gray-600 dark:text-gray-400">
-                      Stock disponible:{" "}
+                      {t("stockDisponible")}{" "}
                       <span className="font-semibold text-green-600 dark:text-green-400">{product.stock}</span>
                     </p>
                   </div>
@@ -282,7 +282,7 @@ const DetailProduct = () => {
                 <div className="w-8 h-8 bg-gradient-to-r from-blue-500 to-purple-500 dark:from-blue-400 dark:to-purple-400 rounded-lg flex items-center justify-center">
                   <span className="text-white text-sm font-bold">📝</span>
                 </div>
-                <h2 className="text-xl font-semibold text-gray-800 dark:text-white">Descripción</h2>
+                <h2 className="text-xl font-semibold text-gray-800 dark:text-white">{t("descripcion")}</h2>
               </div>
               <p className="text-gray-700 dark:text-gray-300 leading-relaxed">{product.description}</p>
             </div>
@@ -297,7 +297,7 @@ const DetailProduct = () => {
                     </div>
                   </div>
                   <div className="flex-1 min-w-0">
-                    <h3 className="font-semibold text-purple-700 dark:text-purple-300 mb-1">¡Cupón disponible!</h3>
+                    <h3 className="font-semibold text-purple-700 dark:text-purple-300 mb-1">{t("cuponDisponible")}</h3>
                     <p className="text-sm text-gray-600 dark:text-gray-400 leading-relaxed">
                       Compra un mínimo de $
                       {parseFloat(product.coupon.min_purchase_amount).toLocaleString("es-CO")}
@@ -317,9 +317,9 @@ const DetailProduct = () => {
                     </div>
                   </div>
                   <div className="flex-1">
-                    <h3 className="font-semibold text-green-700 dark:text-green-300 mb-1">Productos premium</h3>
+                    <h3 className="font-semibold text-green-700 dark:text-green-300 mb-1">{t("productosPremium")}</h3>
                     <p className="text-sm text-gray-600 dark:text-gray-400">
-                      Disfruta de los mejores productos
+                      {t("disfrutaProductos")}
                     </p>
                   </div>
                 </div>
@@ -332,9 +332,9 @@ const DetailProduct = () => {
                   </div>
                 </div>
                 <div className="flex-1">
-                  <h3 className="font-semibold text-blue-700 dark:text-blue-300 mb-1">Garantía total</h3>
+                  <h3 className="font-semibold text-blue-700 dark:text-blue-300 mb-1">{t("garantiaTotal")}</h3>
                   <p className="text-sm text-gray-600 dark:text-gray-400">
-                    Garantía de calidad
+                    {t("garantiaCalidad")} 
                   </p>
                 </div>
               </div>
@@ -348,7 +348,7 @@ const DetailProduct = () => {
             <div className="w-10 h-10 bg-gradient-to-r from-orange-500 to-red-500 dark:from-orange-400 dark:to-red-400 rounded-xl flex items-center justify-center">
               <span className="text-white text-lg">💬</span>
             </div>
-            <h2 className="text-2xl font-bold text-gray-800 dark:text-white">Comentarios y reseñas</h2>
+            <h2 className="text-2xl font-bold text-gray-800 dark:text-white">{t("comentariosYResenas")}</h2>
           </div>
           <ComentsProduct productId={product.id} />
         </div>

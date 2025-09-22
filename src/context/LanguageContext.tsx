@@ -57,40 +57,22 @@ const translations: Record<string, [string, string]> = {
     "🧑‍🌾 Cada producto tiene una historia campesina detrás",
     "🧑‍🌾 Every product has a farmer’s story behind it",
   ],
-  welcome: ['Bienvenido a',
-    'Welcome to'
-  ],
+  welcome: ['Bienvenido a', 'Welcome to'],
   description: [
     'Conecta directamente con productos del campo colombiano. Calidad, frescura y apoyo al campesinado en un solo lugar.',
     'Connect directly with Colombian farm products. Quality, freshness, and support for farmers all in one place.'
   ],
-  viewProducts: ['Ver productos',
-    'View products'
-  ],
-  categorias: ['Categorías',
-    'Categories'
-  ],
-  notificaciones: ['Notificaciones',
-    'Notifications'
-  ],
-  detallenotificacion: ['📭 No tienes notificaciones aún',
-    '📭 You have no notifications yet'
-  ],
-  cargandoNotificaciones: ['Cargando notificaciones',
-    'Loading notifications'
-  ],
-  iniciaSesionNotificaciones: ["🔒 Inicia sesión para ver tus notificaciones",
-    "🔒 Log in to see your notifications"
-  ],
-  footerDescription: [
-    "Conectamos el campo colombiano con las familias, ofreciendo productos frescos, naturales y de calidad directamente de los campesinos.",
-    "We connect Colombian farmers with families, offering fresh, natural, and quality products directly from farmers.",
-  ],
+  viewProducts: ['Ver productos', 'View products'],
+  categorias: ['Categorías', 'Categories'],
+  notificaciones: ['Notificaciones', 'Notifications'],
+  detallenotificacion: ['📭 No tienes notificaciones aún', '📭 You have no notifications yet'],
+  cargandoNotificaciones: ['Cargando notificaciones', 'Loading notifications'],
+  iniciaSesionNotificaciones: ["🔒 Inicia sesión para ver tus notificaciones", "🔒 Log in to see your notifications"],
+  footerDescription: ["Conectamos el campo colombiano con las familias, ofreciendo productos frescos, naturales y de calidad directamente de los campesinos.", "We connect Colombian farmers with families, offering fresh, natural, and quality products directly from farmers.",],
   enlaces: ["Enlaces", "Links"],
   sobreNosotros: ["Sobre Nosotros", "About Us"],
   contacto: ["Contacto", "Contact"],
   politicaDePrivacidad: ["Política de Privacidad", "Privacy Policy"],
-  productos: ["Productos", "Products"],
   siguenos: ["Síguenos", "Follow Us"],
   contactoTitle: ["Contacto", "Contact"],
   todosLosDerechosReservados: ["Todos los derechos reservados.", "All rights reserved."], stock: ["Stock: ", "Stock: "],
@@ -115,15 +97,13 @@ const translations: Record<string, [string, string]> = {
   errorCarrito: ['❌ Error al actualizar el carrito', '❌ Error updating cart'],
 
   // Información de producto
-  comentarios: ['comentarios', 'comments'],
-
   exploraPorCategorias: ["✨ Explora por Categorías", "✨ Explore by Categories"],
   frutas: ["Frutas 🍎", "Fruits 🍎"],
   verduras: ["Verduras 🥕", "Vegetables 🥕"],
   lacteos: ["Lácteos 🧀", "Dairy 🧀"],
   pescados: ["Pescados 🐟", "Fish 🐟"],
   hierbas: ["Hierbas 🌿", "Herbs 🌿"],
-
+  infproductos: ["Explora la variedad de productos campesinos disponibles en nuestra plataforma", "Explore the variety of farmer products available on our platform."],
   buscar: ["Buscar frutas, verduras, lácteos...", "Search fruits, vegetables, dairy..."],
   todos: ["Todas", "All"],
 
@@ -158,6 +138,120 @@ const translations: Record<string, [string, string]> = {
   ventas: ["Ventas", "Sales"],
   cerrarSesion: ["Cerrar sesión", "Log out"],
   registrarse: ["Registrarse", "Register"],
+
+  // DetailProduct
+  cargandoProducto: ["Cargando producto...", "Loading product..."],
+  errorCargarProducto: ["No se pudo cargar el producto. Inténtalo más tarde.", "Could not load product. Please try again later."],
+  productoNoEncontrado: ["Producto no encontrado", "Product not found"],
+  inicio: ["Inicio", "Home"],
+  productos: ["Productos", "Products"],
+  ahorras: ["¡Ahorras", "You save"],
+  stockDisponible: ["Stock disponible:", "Available stock:"],
+  descripcion: ["Descripción", "Description"],
+  cuponDisponible: ["¡Cupón disponible!", "Coupon available!"],
+  productosPremium: ["Productos premium", "Premium products"],
+  disfrutaProductos: ["Disfruta de los mejores productos", "Enjoy the best products"],
+  garantiaTotal: ["Garantía total", "Full warranty"],
+  garantiaCalidad: ["Garantía de calidad", "Quality guarantee"],
+
+  comentariosYResenas: ["Comentarios y reseñas", "Comments & Reviews"],
+
+  // AgregarCarrito
+  productoAgregado: ["Producto agregado al carrito 🛒", "Product added to cart 🛒"],
+  errorAgregar: ["Error al agregar al carrito", "Error adding to cart"],
+
+  agregando: ["Agregando...", "Adding..."],
+  agregarAlCarrito: ["Agregar al carrito", "Add to cart"],
+
+  // ComprarProducto
+  cantidad: ["Cantidad", "Quantity"],
+  procesandoCompra: ["Procesando compra...", "Processing purchase..."],
+  comprarAhora: ["Comprar", "Buy now"],
+
+  errorCantidad: ["❌ La cantidad debe ser mayor a 0", "❌ Quantity must be greater than 0"],
+
+  // NewRating
+  comoCalificarias: [
+    "¿Cómo calificarías este producto?",
+    "How would you rate this product?"
+  ],
+  graciasCalificacion: [
+    "Gracias por tu calificación",
+    "Thanks for your rating"
+  ],
+  errorCalificacion: [
+    "Error al enviar la calificación. Intenta de nuevo.",
+    "Error sending rating. Please try again."
+  ],
+  enviando: ["Enviando...", "Sending..."],
+  calificarEstrellas: [
+    "Calificar {n} estrellas",
+    "Rate {n} stars"
+  ],
+  // Comments
+  opinionUsuarios: [
+    "Opiniones de usuarios",
+    "User reviews"
+  ],
+  comentarios: ["comentarios", "comments"],
+  noComentarios: [
+    "Aún no hay comentarios",
+    "No comments yet"
+  ],
+  sePrimeroOpinar: [
+    "¡Sé el primero en compartir tu opinión!",
+    "Be the first to share your opinion!"
+  ],
+  escribeOpinion: [
+    "Escribe tu opinión",
+    "Write your opinion"
+  ],
+  placeholderComentario: [
+    "Comparte tu experiencia con este producto...",
+    "Share your experience with this product..."
+  ],
+  imagenesAdjuntas: [
+    "Imágenes adjuntas",
+    "Attached images"
+  ],
+  agregarFotos: ["Agregar fotos", "Add photos"],
+  publicar: ["Publicar", "Post"],
+
+  // Toasts
+  errorCargarComentarios: [
+    "No se pudieron cargar los comentarios.",
+    "Failed to load comments."
+  ],
+  comentarioAgregado: [
+    "Comentario agregado 🌱",
+    "Comment added 🌱"
+  ],
+  errorAgregarComentario: [
+    "No se pudo agregar el comentario.",
+    "Failed to add comment."
+  ],
+  comentarioActualizado: [
+    "Comentario actualizado ✨",
+    "Comment updated ✨"
+  ],
+  errorActualizarComentario: [
+    "No se pudo actualizar el comentario.",
+    "Failed to update comment."
+  ],
+  comentarioEliminado: [
+    "Comentario eliminado 🗑️",
+    "Comment deleted 🗑️"
+  ],
+  errorEliminarComentario: [
+    "No se pudo eliminar el comentario.",
+    "Failed to delete comment."
+  ],
+  guardar: ["Guardar", "Save"],
+  cancelar: ["Cancelar", "Cancel"],
+  eliminar: ["Eliminar", "Delete"],
+  editar: ["Editar", "Edit"],
+
+
 };
 
 /* ============================================================

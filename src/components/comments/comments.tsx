@@ -1,11 +1,12 @@
 // src/components/comments/comments.tsx
 "use client";
-
+import React from "react";
 import { useEffect, useState } from "react";
 import { Send, Trash2, Edit2, Check, X } from "lucide-react";
 import api from "@/lib/axios";
 import { toast } from "sonner";
 import { useAuth } from "@/features/auth/hooks/useAuth";
+import { useLanguage } from "@/context/LanguageContext";
 
 interface CommentImage {
   id: number;
@@ -30,12 +31,11 @@ interface ComentsProductProps {
 const ComentsProduct: React.FC<ComentsProductProps> = ({ productId }) => {
   const auth = useAuth();
   const currentUser = (auth as any)?.user;
-
+  const { t } = useLanguage();
   const [comments, setComments] = useState<Comment[]>([]);
   const [newComment, setNewComment] = useState("");
   const [newImages, setNewImages] = useState<File[]>([]);
   const [loading, setLoading] = useState(false);
-
   const [editingId, setEditingId] = useState<number | null>(null);
   const [editingText, setEditingText] = useState("");
   const [editingImages, setEditingImages] = useState<File[]>([]);
@@ -51,7 +51,7 @@ const ComentsProduct: React.FC<ComentsProductProps> = ({ productId }) => {
       );
       setComments(res.data);
     } catch {
-      toast.error("No se pudieron cargar los comentarios.");
+      toast.error(t("errorCargarComentarios"));
     }
   };
 
@@ -77,10 +77,10 @@ const ComentsProduct: React.FC<ComentsProductProps> = ({ productId }) => {
 
       setNewComment("");
       setNewImages([]);
-      toast.success("Comentario agregado 🌱");
+      toast.success(t("comentarioAgregado"));
       fetchComments();
     } catch {
-      toast.error("No se pudo agregar el comentario.");
+      toast.error(t("errorAgregarComentario"));
     } finally {
       setLoading(false);
     }
@@ -110,14 +110,14 @@ const ComentsProduct: React.FC<ComentsProductProps> = ({ productId }) => {
         headers: { "Content-Type": "multipart/form-data" },
       });
 
-      toast.success("Comentario actualizado ✨");
+      toast.success(t("comentarioActualizado"));
       setEditingId(null);
       setEditingText("");
       setEditingImages([]);
       setDeleteImages([]);
       fetchComments();
     } catch {
-      toast.error("No se pudo actualizar el comentario.");
+      toast.error(t("errorActualizarComentario"));
     }
   };
 
@@ -132,10 +132,10 @@ const ComentsProduct: React.FC<ComentsProductProps> = ({ productId }) => {
   const handleDeleteComment = async (commentId: number) => {
     try {
       await api.delete(`/comments/delete-comment/${commentId}/`);
-      toast.success("Comentario eliminado 🗑️");
+      toast.success(t("comentarioEliminado"));
       setComments(comments.filter((c) => c.id !== commentId));
     } catch {
-      toast.error("No se pudo eliminar el comentario.");
+      toast.error(t("errorEliminarComentario"));
     }
   };
 
@@ -167,10 +167,10 @@ const ComentsProduct: React.FC<ComentsProductProps> = ({ productId }) => {
           <span className="text-white text-lg">🌿</span>
         </div>
         <h2 className="text-2xl font-bold bg-gradient-to-r from-green-700 to-green-600 dark:from-green-400 dark:to-green-300 bg-clip-text text-transparent">
-          Opiniones de usuarios
+          {t("opinionUsuario")}
         </h2>
         <div className="ml-auto px-3 py-1 bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-400 text-sm rounded-full font-medium">
-          {comments.length} comentarios
+          {comments.length} {("comentarios")}
         </div>
       </div>
 

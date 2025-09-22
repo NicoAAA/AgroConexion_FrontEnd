@@ -6,6 +6,8 @@ import axios from 'axios'
 import { Star } from 'lucide-react'
 import { useAuth } from '@/features/auth/hooks/useAuth'
 import api from '@/lib/axios'
+import { useLanguage } from '@/context/LanguageContext'
+
 interface Props {
   productId: number
 }
@@ -15,7 +17,7 @@ export default function NewRating({ productId }: Props) {
   const [hovered, setHovered] = useState<number | null>(null)
   const [submitting, setSubmitting] = useState(false)
   const [message, setMessage] = useState<string | null>(null)
-
+  const { t } = useLanguage()
   const submitRating = async (rating: number) => {
 
     setSubmitting(true)
@@ -31,10 +33,10 @@ export default function NewRating({ productId }: Props) {
         new CustomEvent('ratingUpdated', { detail: { productId } })
       )
 
-      setMessage('Gracias por tu calificación')
+      setMessage(t("graciasCalificacion"))
       setTimeout(() => setMessage(null), 3000) 
     } catch (err) {
-      setMessage('Error al enviar la calificación. Intenta de nuevo.')
+      setMessage(t("errorEnvioCalificacion"))
       setTimeout(() => setMessage(null), 3000) 
     } finally {
       setSubmitting(false)
@@ -47,7 +49,7 @@ export default function NewRating({ productId }: Props) {
       <div className="flex items-center gap-3 mb-3">
         <div className="w-2 h-2 bg-yellow-400 rounded-full animate-pulse"></div>
         <p className="text-sm font-medium text-gray-800 dark:text-gray-200">
-          ¿Cómo calificarías este producto?
+          {t("comoCalificarias")}
         </p>
       </div>
       
@@ -75,7 +77,7 @@ export default function NewRating({ productId }: Props) {
         {submitting && (
           <div className="ml-3 flex items-center gap-2 text-sm text-gray-600 dark:text-gray-400">
             <div className="w-4 h-4 border-2 border-yellow-400 border-t-transparent rounded-full animate-spin"></div>
-            <span>Enviando...</span>
+            <span>{t("enviando")}</span>
           </div>
         )}
       </div>

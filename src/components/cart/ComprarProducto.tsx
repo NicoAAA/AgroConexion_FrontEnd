@@ -6,6 +6,8 @@ import api from "@/lib/axios"; // cliente Axios con configuración base
 import { toast } from "sonner"; // notificaciones modernas
 import { ShoppingBasket, Minus, Plus } from "lucide-react"; // íconos
 import { useRouter } from 'next/navigation';
+import { useLanguage } from "@/context/LanguageContext";
+
 /**
  * Props del componente BuyProduct
  * - productId: identificador único del producto a comprar
@@ -14,6 +16,7 @@ const BuyProduct = ({ productId }: { productId: number }) => {
   const [quantity, setQuantity] = useState(1); // cantidad de productos seleccionada
   const [loading, setLoading] = useState(false); // estado de carga de la compra
   const router = useRouter()
+  const { t } = useLanguage();
   /**
    * handleBuy
    * -----------------------------------------------------
@@ -25,52 +28,11 @@ const BuyProduct = ({ productId }: { productId: number }) => {
 
   const handleGoCheckout = () => {
     if (quantity < 1) {
-      toast.error("❌ La cantidad debe ser mayor a 0");
+      toast.error(t("errorCantidad"));
       return;
     }
     router.push(`/checkout/${productId}?qty=${quantity}`);
   };
-
-  // const handleBuy = async () => {
-  //   if (quantity < 1) {
-  //     toast.error("❌ La cantidad debe ser mayor a 0");
-  //     return;
-  //   }
-
-  //   setLoading(true);
-  //   try {
-  //     // 1. Crear factura con el producto seleccionado
-  //     const response = await api.post("/invoices/create/", {
-  //       method: "efectivo", // método de pago simulado
-  //       items: [{ product_id: productId, quantity }],
-  //     });
-
-  //     // 2. Éxito
-  //     toast.success("🌾 ¡Producto comprado con éxito!");
-  //     console.log("✅ Respuesta del backend:", response.data);
-  //   } catch (error: any) {
-  //     // 3. Manejo de errores detallado
-  //     if (error.response) {
-  //       const status = error.response.status;
-  //       const data = error.response.data;
-
-  //       if (status === 400)
-  //         toast.error("⚠️ Datos inválidos. Verifica la cantidad o el producto");
-  //       else if (status === 401)
-  //         toast.error("🔒 Debes iniciar sesión para comprar");
-  //       else if (status === 404)
-  //         toast.error("❌ Producto no encontrado");
-  //       else
-  //         toast.error(
-  //           `❌ Error inesperado: ${data?.message || data || error.message}`
-  //         );
-  //     } else {
-  //       toast.error(`❌ Error de conexión: ${error.message}`);
-  //     }
-  //   } finally {
-  //     setLoading(false);
-  //   }
-  // };
 
   // Aumentar cantidad
   const increaseQty = () => setQuantity((prev) => prev + 1);
@@ -85,7 +47,7 @@ const BuyProduct = ({ productId }: { productId: number }) => {
       {/* Selector de cantidad */}
       <div className="space-y-3">
         <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 text-center">
-          Cantidad
+          {t("cantidad")}
         </label>
         <div className="flex items-center justify-center gap-4">
           <button
@@ -128,12 +90,12 @@ const BuyProduct = ({ productId }: { productId: number }) => {
           {loading ? (
             <>
               <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
-              <span>Procesando compra...</span>
+              <span>{t("procesandoCompra")}</span>
             </>
           ) : (
             <>
               <ShoppingBasket className="w-5 h-5 group-hover:scale-110 transition-transform duration-200" />
-              <span>Comprar ahora</span>
+              <span>{t("comprarAhora")}</span>
               <div className="w-2 h-2 bg-white/50 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-200"></div>
             </>
           )}
