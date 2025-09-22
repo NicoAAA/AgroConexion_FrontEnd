@@ -4,13 +4,15 @@
 
 import { useEffect, useState } from 'react';
 import api from '@/lib/axios';
-import { toast } from 'sonner';
 import { useAuth } from '@/features/auth/hooks/useAuth';
 import { useRouter } from 'next/navigation';
 import { isAuthenticated as checkAuth, getStoredTokens } from '@/lib/auth';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ChevronDown, ChevronUp, ReceiptText } from 'lucide-react';
 import Link from 'next/link';
+import { toast } from 'react-hot-toast';
+import NotAuthenticated from "@/components/errores/Authorization";
+
 /**
  * Componente principal que lista todas las facturas del usuario.
  * 
@@ -59,7 +61,6 @@ const ListInvoices = () => {
 
     const { access } = getStoredTokens();
     if (!access || !checkAuth()) {
-      setError('No estás autenticado. Serás redirigido al login...');
       setIsClientAuthenticated(false);
       setTimeout(() => router.push('/login'), 3000);
     } else {
@@ -133,9 +134,7 @@ const ListInvoices = () => {
 
   if (!isClientAuthenticated) {
     return (
-      <div className="text-center text-red-600 font-semibold mt-10">
-        {error || 'Debes iniciar sesión para ver tus facturas.'}
-      </div>
+      <NotAuthenticated/>
     );
   }
 

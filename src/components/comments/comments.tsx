@@ -160,81 +160,115 @@ const ComentsProduct: React.FC<ComentsProductProps> = ({ productId }) => {
   };
 
   return (
-    <div className="bg-white rounded-2xl shadow-lg p-6 mt-6 border border-gray-100">
-      <h2 className="text-2xl font-bold mb-6 text-green-700">Opiniones de usuarios 🌿</h2>
+    <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-6 mt-6 border border-gray-100 dark:border-gray-700 transition-colors duration-300">
+      {/* Header */}
+      <div className="flex items-center gap-3 mb-6">
+        <div className="w-8 h-8 bg-gradient-to-r from-green-500 to-emerald-500 dark:from-green-400 dark:to-emerald-400 rounded-xl flex items-center justify-center">
+          <span className="text-white text-lg">🌿</span>
+        </div>
+        <h2 className="text-2xl font-bold bg-gradient-to-r from-green-700 to-green-600 dark:from-green-400 dark:to-green-300 bg-clip-text text-transparent">
+          Opiniones de usuarios
+        </h2>
+        <div className="ml-auto px-3 py-1 bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-400 text-sm rounded-full font-medium">
+          {comments.length} comentarios
+        </div>
+      </div>
 
       {/* Lista de comentarios */}
       {comments.length > 0 ? (
         <ul className="space-y-6">
-          {comments.map((c) => (
-            <li key={c.id} className="p-5 bg-gray-50 rounded-2xl border hover:shadow transition">
+          {comments.map((c, index) => (
+            <li 
+              key={c.id} 
+              className="p-6 bg-gray-50 dark:bg-gray-700 rounded-2xl border border-gray-200 dark:border-gray-600 hover:shadow-md hover:border-gray-300 dark:hover:border-gray-500 transition-all duration-300"
+              style={{ animationDelay: `${index * 100}ms` }}
+            >
               <div className="flex items-start space-x-4">
                 {/* Avatar */}
-                {c.user?.profile_image ? (
-                  <img
-                    src={getFullImageUrl(c.user.profile_image)}
-                    alt={c.user.username}
-                    className="w-12 h-12 rounded-full border-2 border-green-400 object-cover"
-                  />
-                ) : (
-                  <div className="w-12 h-12 rounded-full bg-green-600 flex items-center justify-center text-white font-bold text-lg">
-                    {c.user?.username?.charAt(0).toUpperCase() ?? "U"}
-                  </div>
-                )}
+                <div className="flex-shrink-0">
+                  {c.user?.profile_image ? (
+                    <div className="relative">
+                      <img
+                        src={getFullImageUrl(c.user.profile_image)}
+                        alt={c.user.username}
+                        className="w-12 h-12 rounded-full border-2 border-green-400 dark:border-green-500 object-cover"
+                      />
+                      <div className="absolute -bottom-1 -right-1 w-4 h-4 bg-green-500 rounded-full border-2 border-white dark:border-gray-700"></div>
+                    </div>
+                  ) : (
+                    <div className="w-12 h-12 rounded-full bg-gradient-to-r from-green-600 to-emerald-600 dark:from-green-500 dark:to-emerald-500 flex items-center justify-center text-white font-bold text-lg shadow-lg">
+                      {c.user?.username?.charAt(0).toUpperCase() ?? "U"}
+                    </div>
+                  )}
+                </div>
 
-                <div className="flex-1">
-                  <div className="flex justify-between items-center mb-1">
-                    <span className="font-semibold text-gray-800">{c.user?.username || "Usuario"}</span>
-                    <span className="text-xs text-gray-500">{new Date().toLocaleDateString()}</span>
+                <div className="flex-1 min-w-0">
+                  <div className="flex justify-between items-center mb-3">
+                    <div className="flex items-center gap-2">
+                      <span className="font-semibold text-gray-800 dark:text-gray-200">
+                        {c.user?.username || "Usuario"}
+                      </span>
+                      <span className="w-1 h-1 bg-gray-400 rounded-full"></span>
+                      <span className="text-xs text-gray-500 dark:text-gray-400">
+                        {new Date().toLocaleDateString('es-ES', { 
+                          day: 'numeric', 
+                          month: 'short',
+                          hour: '2-digit',
+                          minute: '2-digit'
+                        })}
+                      </span>
+                    </div>
                   </div>
 
                   {/* Modo edición */}
                   {editingId === c.id ? (
-                    <>
+                    <div className="space-y-4">
                       <textarea
                         value={editingText}
                         onChange={(e) => setEditingText(e.target.value)}
-                        className="w-full px-3 py-2 border rounded-xl focus:outline-none focus:ring-2 focus:ring-green-500 text-sm mb-2"
+                        className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-xl focus:outline-none focus:ring-2 focus:ring-green-500 dark:focus:ring-green-400 text-sm bg-white dark:bg-gray-600 text-gray-900 dark:text-gray-100 transition-colors duration-200"
                       />
 
                       {/* Imágenes existentes con opción de borrar */}
-                      <div className="flex flex-wrap gap-2 mb-2">
-                        {c.images.map((img) => (
-                          <div key={img.id} className="relative">
-                            <img
-                              src={getFullImageUrl(img.image)}
-                              alt="comment-img"
-                              className="w-20 h-20 rounded-lg object-cover border"
-                            />
-                            <button
-                              type="button"
-                              onClick={() => setDeleteImages([...deleteImages, img.id])}
-                              className="absolute top-0 right-0 bg-red-600 text-white rounded-full p-1"
-                              title="Eliminar imagen"
-                            >
-                              <X size={14} />
-                            </button>
-                          </div>
-                        ))}
-                      </div>
+                      {c.images.length > 0 && (
+                        <div className="flex flex-wrap gap-3">
+                          {c.images.map((img) => (
+                            <div key={img.id} className="relative group">
+                              <img
+                                src={getFullImageUrl(img.image)}
+                                alt="comment-img"
+                                className="w-20 h-20 rounded-lg object-cover border border-gray-300 dark:border-gray-600"
+                              />
+                              <button
+                                type="button"
+                                onClick={() => setDeleteImages([...deleteImages, img.id])}
+                                className="absolute -top-2 -right-2 bg-red-500 hover:bg-red-600 text-white rounded-full p-1.5 opacity-0 group-hover:opacity-100 transition-all duration-200 shadow-lg"
+                                title="Eliminar imagen"
+                              >
+                                <X size={12} />
+                              </button>
+                            </div>
+                          ))}
+                        </div>
+                      )}
 
                       {/* Previsualización nuevas imágenes */}
                       {editingImages.length > 0 && (
-                        <div className="flex flex-wrap gap-2 mb-2">
+                        <div className="flex flex-wrap gap-3">
                           {editingImages.map((file, i) => (
-                            <div key={i} className="relative">
+                            <div key={i} className="relative group">
                               <img
                                 src={URL.createObjectURL(file)}
                                 alt="new-img"
-                                className="w-20 h-20 rounded-lg object-cover border"
+                                className="w-20 h-20 rounded-lg object-cover border border-gray-300 dark:border-gray-600"
                               />
                               <button
                                 type="button"
                                 onClick={() => handleRemoveNewImage(i, true)}
-                                className="absolute top-0 right-0 bg-red-600 text-white rounded-full p-1"
+                                className="absolute -top-2 -right-2 bg-red-500 hover:bg-red-600 text-white rounded-full p-1.5 opacity-0 group-hover:opacity-100 transition-all duration-200 shadow-lg"
                                 title="Eliminar"
                               >
-                                <X size={14} />
+                                <X size={12} />
                               </button>
                             </div>
                           ))}
@@ -245,37 +279,41 @@ const ComentsProduct: React.FC<ComentsProductProps> = ({ productId }) => {
                       <input
                         type="file"
                         multiple
+                        accept="image/*"
                         onChange={(e) => handleNewImagesChange(e.target.files, true)}
-                        className="text-sm text-gray-600 mb-2"
+                        className="text-sm text-gray-600 dark:text-gray-400 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-green-50 file:text-green-700 hover:file:bg-green-100 dark:file:bg-green-900/30 dark:file:text-green-400 dark:hover:file:bg-green-800/50"
                       />
 
-                      <div className="flex gap-2">
+                      <div className="flex gap-3">
                         <button
                           onClick={() => handleSaveEdit(c.id)}
-                          className="px-3 py-1 text-white bg-green-600 rounded-lg hover:bg-green-700"
+                          className="px-4 py-2 text-white bg-green-600 hover:bg-green-700 dark:bg-green-500 dark:hover:bg-green-600 rounded-xl transition-all duration-200 font-medium shadow-lg hover:shadow-xl"
                         >
                           Guardar
                         </button>
                         <button
                           onClick={handleCancelEdit}
-                          className="px-3 py-1 text-white bg-gray-500 rounded-lg hover:bg-gray-600"
+                          className="px-4 py-2 text-gray-700 dark:text-gray-300 bg-gray-200 hover:bg-gray-300 dark:bg-gray-600 dark:hover:bg-gray-500 rounded-xl transition-all duration-200 font-medium"
                         >
                           Cancelar
                         </button>
                       </div>
-                    </>
+                    </div>
                   ) : (
                     <>
-                      <p className="text-gray-700 mb-2">{c.comment}</p>
+                      <p className="text-gray-700 dark:text-gray-300 mb-4 leading-relaxed">{c.comment}</p>
                       {c.images.length > 0 && (
-                        <div className="flex flex-wrap gap-2">
-                          {c.images.map((img) => (
-                            <img
-                              key={img.id}
-                              src={getFullImageUrl(img.image)}
-                              alt="comment-img"
-                              className="w-24 h-24 rounded-lg object-cover border"
-                            />
+                        <div className="flex flex-wrap gap-3 mt-3">
+                          {c.images.map((img, imgIndex) => (
+                            <div key={img.id} className="relative group">
+                              <img
+                                src={getFullImageUrl(img.image)}
+                                alt="comment-img"
+                                className="w-24 h-24 rounded-lg object-cover border border-gray-300 dark:border-gray-600 hover:scale-105 transition-transform duration-200 cursor-pointer"
+                                style={{ animationDelay: `${imgIndex * 100}ms` }}
+                              />
+                              <div className="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity duration-200 rounded-lg"></div>
+                            </div>
                           ))}
                         </div>
                       )}
@@ -284,22 +322,22 @@ const ComentsProduct: React.FC<ComentsProductProps> = ({ productId }) => {
                 </div>
               </div>
 
-              {/* Acciones solo creador */}
+              {/* Acciones solo para el creador */}
               {c.user?.id === currentUser?.id && editingId !== c.id && (
-                <div className="flex space-x-2 mt-3 justify-end">
+                <div className="flex justify-end space-x-2 mt-4 pt-4 border-t border-gray-200 dark:border-gray-600">
                   <button
                     onClick={() => handleDeleteComment(c.id)}
-                    className="p-2 rounded-full text-red-500 hover:bg-red-100 transition"
+                    className="p-2 rounded-full text-red-500 hover:text-red-600 hover:bg-red-50 dark:hover:bg-red-900/20 transition-all duration-200 group"
                     title="Eliminar"
                   >
-                    <Trash2 size={18} />
+                    <Trash2 size={18} className="group-hover:scale-110 transition-transform" />
                   </button>
                   <button
                     onClick={() => handleEditComment(c.id, c.comment)}
-                    className="p-2 rounded-full text-blue-500 hover:bg-blue-100 transition"
+                    className="p-2 rounded-full text-blue-500 hover:text-blue-600 hover:bg-blue-50 dark:hover:bg-blue-900/20 transition-all duration-200 group"
                     title="Editar"
                   >
-                    <Edit2 size={18} />
+                    <Edit2 size={18} className="group-hover:scale-110 transition-transform" />
                   </button>
                 </div>
               )}
@@ -307,55 +345,102 @@ const ComentsProduct: React.FC<ComentsProductProps> = ({ productId }) => {
           ))}
         </ul>
       ) : (
-        <p className="text-gray-500 italic text-sm">Aún no hay comentarios. ¡Sé el primero en opinar! ✨</p>
+        <div className="text-center py-12">
+          <div className="w-16 h-16 mx-auto mb-4 bg-gray-100 dark:bg-gray-700 rounded-full flex items-center justify-center">
+            <span className="text-2xl">💬</span>
+          </div>
+          <p className="text-gray-500 dark:text-gray-400 text-lg font-medium mb-2">
+            Aún no hay comentarios
+          </p>
+          <p className="text-gray-400 dark:text-gray-500 text-sm">
+            ¡Sé el primero en compartir tu opinión!
+          </p>
+        </div>
       )}
 
+      {/* Separador */}
+      <div className="flex items-center gap-3 my-8">
+        <div className="flex-1 h-px bg-gradient-to-r from-transparent via-gray-300 dark:via-gray-600 to-transparent"></div>
+        <div className="px-3 py-1 bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-400 text-xs rounded-full font-medium">
+          Escribe tu opinión
+        </div>
+        <div className="flex-1 h-px bg-gradient-to-r from-transparent via-gray-300 dark:via-gray-600 to-transparent"></div>
+      </div>
+
       {/* Formulario nuevo comentario */}
-      <form onSubmit={handleAddComment} className="mt-6 space-y-3">
-        <textarea
-          value={newComment}
-          onChange={(e) => setNewComment(e.target.value)}
-          placeholder="Escribe tu comentario..."
-          className="w-full px-4 py-2 border rounded-xl focus:outline-none focus:ring-2 focus:ring-green-500 text-sm"
-        />
+      <form onSubmit={handleAddComment} className="space-y-4">
+        <div className="relative">
+          <textarea
+            value={newComment}
+            onChange={(e) => setNewComment(e.target.value)}
+            placeholder="Comparte tu experiencia con este producto..."
+            className="w-full px-4 py-4 border border-gray-300 dark:border-gray-600 rounded-xl focus:outline-none focus:ring-2 focus:ring-green-500 dark:focus:ring-green-400 text-sm bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-500 dark:placeholder-gray-400 transition-all duration-200 min-h-[100px] resize-none"
+          />
+          <div className="absolute bottom-3 right-3 text-xs text-gray-400 dark:text-gray-500">
+            {newComment.length}/500
+          </div>
+        </div>
 
         {/* Previsualización nuevas imágenes */}
         {newImages.length > 0 && (
-          <div className="flex flex-wrap gap-2 mb-2">
-            {newImages.map((file, i) => (
-              <div key={i} className="relative">
-                <img
-                  src={URL.createObjectURL(file)}
-                  alt="new-img"
-                  className="w-20 h-20 rounded-lg object-cover border"
-                />
-                <button
-                  type="button"
-                  onClick={() => handleRemoveNewImage(i)}
-                  className="absolute top-0 right-0 bg-red-600 text-white rounded-full p-1"
-                  title="Eliminar"
-                >
-                  <X size={14} />
-                </button>
-              </div>
-            ))}
+          <div className="bg-gray-50 dark:bg-gray-700 p-4 rounded-xl">
+            <div className="flex items-center gap-2 mb-3">
+              <div className="w-2 h-2 bg-blue-500 rounded-full"></div>
+              <span className="text-sm font-medium text-gray-700 dark:text-gray-300">
+                Imágenes adjuntas ({newImages.length})
+              </span>
+            </div>
+            <div className="flex flex-wrap gap-3">
+              {newImages.map((file, i) => (
+                <div key={i} className="relative group">
+                  <img
+                    src={URL.createObjectURL(file)}
+                    alt="new-img"
+                    className="w-20 h-20 rounded-lg object-cover border border-gray-300 dark:border-gray-600"
+                  />
+                  <button
+                    type="button"
+                    onClick={() => handleRemoveNewImage(i)}
+                    className="absolute -top-2 -right-2 bg-red-500 hover:bg-red-600 text-white rounded-full p-1.5 opacity-0 group-hover:opacity-100 transition-all duration-200 shadow-lg"
+                    title="Eliminar"
+                  >
+                    <X size={12} />
+                  </button>
+                </div>
+              ))}
+            </div>
           </div>
         )}
 
-        <input
-          type="file"
-          multiple
-          onChange={(e) => handleNewImagesChange(e.target.files)}
-          className="text-sm text-gray-600"
-        />
-        <button
-          type="submit"
-          disabled={loading}
-          className="bg-green-600 hover:bg-green-700 text-white px-5 py-2 rounded-xl flex items-center space-x-2 transition disabled:opacity-50"
-        >
-          <Send size={18} />
-          <span>{loading ? "Enviando..." : "Enviar"}</span>
-        </button>
+        <div className="flex items-center justify-between">
+          <label className="flex items-center gap-2 cursor-pointer">
+            <input
+              type="file"
+              multiple
+              accept="image/*"
+              onChange={(e) => handleNewImagesChange(e.target.files)}
+              className="hidden"
+            />
+            <div className="px-4 py-2 bg-gray-100 dark:bg-gray-600 hover:bg-gray-200 dark:hover:bg-gray-500 text-gray-700 dark:text-gray-300 rounded-xl transition-all duration-200 flex items-center gap-2 font-medium">
+              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+              </svg>
+              Agregar fotos
+            </div>
+          </label>
+
+          <button
+            type="submit"
+            disabled={loading || !newComment.trim()}
+            className="bg-gradient-to-r from-green-600 to-green-700 dark:from-green-500 dark:to-green-600 hover:from-green-700 hover:to-green-800 dark:hover:from-green-600 dark:hover:to-green-700 text-white px-6 py-3 rounded-xl flex items-center space-x-2 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed font-semibold shadow-lg hover:shadow-xl hover:scale-105 group"
+          >
+            <Send size={18} className="group-hover:scale-110 transition-transform" />
+            <span>{loading ? "Enviando..." : "Publicar"}</span>
+            {loading && (
+              <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin ml-1"></div>
+            )}
+          </button>
+        </div>
       </form>
     </div>
   );

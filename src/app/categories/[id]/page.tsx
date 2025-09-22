@@ -113,9 +113,9 @@ export default function CategoriaPage() {
   }
 
   return (
-    <div className="w-full">
+    <div className="w-full dark:bg-gray-900 transition-colors duration-300">
       {/* HERO - Encabezado con degradado cálido */}
-      <section className="relative bg-gradient-to-r from-amber-600 via-yellow-400 to-orange-600 text-white py-10 px-6 text-center shadow-md">
+      <section className=" dark:bg-black/20 relative bg-gradient-to-r from-amber-600 via-yellow-400 to-orange-600 text-white py-10 px-6 text-center shadow-md dark:from-amber-700 dark:via-yellow-500 dark:to-orange-700">
         <h1 className="text-4xl sm:text-5xl font-extrabold drop-shadow-lg flex justify-center items-center gap-3">
           <Sprout className="w-10 h-10" />
           {category.name}
@@ -126,11 +126,11 @@ export default function CategoriaPage() {
       </section>
 
       {/* SECCIÓN INTRODUCTORIA */}
-      <section className="px-6 md:px-12 py-6 bg-amber-50 text-center">
-        <h2 className="text-2xl font-semibold text-amber-800 mb-3">
+      <section className="px-6 md:px-12 py-6 bg-amber-50 text-center dark:bg-gray-800">
+        <h2 className="text-2xl font-semibold text-amber-800 mb-3 dark:text-amber-200">
           Conoce nuestros productos campesinos
         </h2>
-        <p className="max-w-3xl mx-auto text-gray-700">
+        <p className="max-w-3xl mx-auto text-gray-700 dark:text-gray-300">
           Cada producto en esta categoría proviene directamente de campesinos
           locales, cultivado con dedicación y respeto por la tierra. Comprar aquí
           significa apoyar a las comunidades rurales y disfrutar de alimentos
@@ -144,8 +144,8 @@ export default function CategoriaPage() {
           <>
             {/* Encabezado de productos */}
             <div className="flex items-center gap-2 mb-8">
-              <Leaf className="text-green-700 w-7 h-7" />
-              <h2 className="text-3xl font-bold text-green-800">
+              <Leaf className="text-green-700 w-7 h-7 dark:text-green-400" />
+              <h2 className="text-3xl font-bold text-green-800 dark:text-green-400 dark:to-green-300">
                 Productos disponibles
               </h2>
             </div>

@@ -47,41 +47,111 @@ export default function RatingStats({ productId }: Props) {
       : 0
 
   return (
-    <div className="p-4 bg-white rounded-xl shadow-md w-full">
-      <div className="flex items-center gap-4">
-        <div>
-          <div className="text-3xl font-semibold">{average.toFixed(1)}</div>
-          <div className="text-sm text-gray-500">({total} votos)</div>
-        </div>
+    <div className="p-6 bg-white dark:bg-gray-800 rounded-2xl shadow-lg border border-gray-200 dark:border-gray-700 w-full transition-all duration-300 hover:shadow-xl">
+      {/* Header con rating promedio */}
+      <div className="flex items-center justify-between mb-6">
+        <div className="flex items-center gap-6">
+          <div className="text-center">
+            <div className="text-4xl font-bold bg-gradient-to-r from-yellow-500 to-orange-500 dark:from-yellow-400 dark:to-orange-400 bg-clip-text text-transparent">
+              {average.toFixed(1)}
+            </div>
+            <div className="text-sm text-gray-500 dark:text-gray-400 mt-1">
+              ({total} {total === 1 ? 'voto' : 'votos'})
+            </div>
+          </div>
 
-        {/* mini visual de estrellas */}
-        <div className="flex items-center gap-1">
-          {Array.from({ length: 5 }).map((_, i) => {
-            const starNumber = i + 1
-            return (
-              <svg key={i} className="w-5 h-5" viewBox="0 0 24 24" fill={average >= starNumber ? 'currentColor' : 'none'} stroke="currentColor">
-                <path d="M12 .587l3.668 7.431L23.5 9.75l-5.75 5.602L19.335 24 12 19.897 4.665 24 6.25 15.352 0.5 9.75l7.832-1.732L12 .587z" />
-              </svg>
-            )
-          })}
+          {/* Visual de estrellas mejorado */}
+          <div className="flex items-center gap-1">
+            {Array.from({ length: 5 }).map((_, i) => {
+              const starNumber = i + 1
+              const isFilled = average >= starNumber
+              const isPartial = average > starNumber - 1 && average < starNumber
+              
+              return (
+                <div key={i} className="relative">
+                  <svg 
+                    className={`w-6 h-6 transition-all duration-200 ${
+                      isFilled 
+                        ? 'text-yellow-400 drop-shadow-sm' 
+                        : 'text-gray-300 dark:text-gray-600'
+                    }`}
+                    viewBox="0 0 24 24" 
+                    fill={isFilled ? 'currentColor' : 'none'} 
+                    stroke="currentColor"
+                    strokeWidth="1.5"
+                  >
+                    <path d="M12 .587l3.668 7.431L23.5 9.75l-5.75 5.602L19.335 24 12 19.897 4.665 24 6.25 15.352 0.5 9.75l7.832-1.732L12 .587z" />
+                  </svg>
+                  
+                  {/* Estrella parcial para decimales */}
+                  {isPartial && (
+                    <div className="absolute inset-0 overflow-hidden" style={{ width: `${(average - (starNumber - 1)) * 100}%` }}>
+                      <svg 
+                        className="w-6 h-6 text-yellow-400"
+                        viewBox="0 0 24 24" 
+                        fill="currentColor"
+                      >
+                        <path d="M12 .587l3.668 7.431L23.5 9.75l-5.75 5.602L19.335 24 12 19.897 4.665 24 6.25 15.352 0.5 9.75l7.832-1.732L12 .587z" />
+                      </svg>
+                    </div>
+                  )}
+                </div>
+              )
+            })}
+          </div>
+        </div>
+        
+        {/* Badge de calidad */}
+        <div className={`px-3 py-1 rounded-full text-xs font-semibold ${
+          average >= 4.5 
+            ? 'bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-400' 
+            : average >= 3.5 
+            ? 'bg-yellow-100 dark:bg-yellow-900/30 text-yellow-700 dark:text-yellow-400'
+            : 'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300'
+        }`}>
+          {average >= 4.5 ? 'Excelente' : average >= 3.5 ? 'Bueno' : 'Regular'}
         </div>
       </div>
 
-      {/* Distribución */}
-      <div className="mt-4 space-y-2">
+      {/* Distribución de calificaciones */}
+      <div className="space-y-3">
         {stats.stars
           .slice()
           .reverse()
-          .map((s) => (
-            <div key={s.star} className="flex items-center gap-3">
-              <span className="w-10 text-sm">{s.star} ⭐</span>
-              <div className="flex-1 h-2 bg-gray-200 rounded overflow-hidden">
-                <div
-                  className="h-2 bg-yellow-400"
-                  style={{ width: `${s.percentage}%` }}
-                />
+          .map((s, index) => (
+            <div 
+              key={s.star} 
+              className="flex items-center gap-4 group hover:bg-gray-50 dark:hover:bg-gray-700/50 p-2 rounded-lg transition-all duration-200"
+              style={{ animationDelay: `${index * 100}ms` }}
+            >
+              <div className="flex items-center gap-2 w-16">
+                <span className="text-sm font-medium text-gray-700 dark:text-gray-300">{s.star}</span>
+                <svg className="w-4 h-4 text-yellow-400" fill="currentColor" viewBox="0 0 24 24">
+                  <path d="M12 .587l3.668 7.431L23.5 9.75l-5.75 5.602L19.335 24 12 19.897 4.665 24 6.25 15.352 0.5 9.75l7.832-1.732L12 .587z" />
+                </svg>
               </div>
-              <span className="w-10 text-sm text-gray-500 text-right">{s.count}</span>
+              
+              <div className="flex-1 relative">
+                <div className="h-3 bg-gray-200 dark:bg-gray-600 rounded-full overflow-hidden">
+                  <div
+                    className="h-3 bg-gradient-to-r from-yellow-400 to-orange-400 dark:from-yellow-500 dark:to-orange-500 rounded-full transition-all duration-1000 ease-out relative overflow-hidden"
+                    style={{ width: `${s.percentage}%` }}
+                  >
+                    {/* Efecto de brillo en la barra */}
+                    <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent -skew-x-12 animate-shimmer"></div>
+                  </div>
+                </div>
+                {/* Porcentaje flotante */}
+                <div className="absolute -top-6 text-xs text-gray-500 dark:text-gray-400" style={{ left: `${Math.min(s.percentage, 90)}%` }}>
+                  {s.percentage.toFixed(1)}%
+                </div>
+              </div>
+              
+              <div className="w-12 text-right">
+                <span className="text-sm font-semibold text-gray-600 dark:text-gray-400 group-hover:text-gray-800 dark:group-hover:text-gray-200 transition-colors">
+                  {s.count}
+                </span>
+              </div>
             </div>
           ))}
       </div>

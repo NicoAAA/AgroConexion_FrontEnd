@@ -2,7 +2,7 @@
 import axios from 'axios';
 import { error } from 'console';
 // Libreria de notificaciones temporales
-import { Toast } from 'react-hot-toast';
+import { toast } from 'react-hot-toast';
 
 // Componente API para hacer peticiones 
 const api = axios.create({
@@ -84,7 +84,10 @@ api.interceptors.response.use(
                 localStorage.removeItem('user');
 
                 // Redirigimos al usuario a la página de login
-                window.location.href = '/login';
+                toast.error("⚠️ Tu sesión ha expirado. Por favor inicia sesión.");
+                setTimeout(() => {
+                    window.location.href = '/login';
+                }, 2000);
             }
         }
 
