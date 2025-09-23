@@ -32,7 +32,7 @@ export default function MyProductsPage() {
     
   return (
     <div className="p-6">
-      <h1 className="text-2xl font-bold mb-6">Mis productos</h1>
+      <h1 className="text-2xl font-bold mb-6 text-center">Mis productos</h1>
       {products.length > 0 ? (
         <UserProducts products={products} />
       ) : (

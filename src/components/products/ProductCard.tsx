@@ -8,7 +8,7 @@ import { Heart, ShoppingCart, MessageSquare, Star } from 'lucide-react'
 import { toast } from 'sonner'
 import api from '@/lib/axios'
 import { useLanguage } from '@/context/LanguageContext';
-
+import axios from 'axios'
 /**
  * ProductCard → Componente de tarjeta para mostrar información de productos.
  *
@@ -99,7 +99,7 @@ const ProductCard: React.FC<ProductCardProps & { defaultFavorite?: boolean }> = 
   /** Obtener calificación promedio */
   const fetchRating = async () => {
     try {
-      const res = await api.get(`/products/stats_rating/${id}/`)
+      const res = await axios.get(`http://127.0.0.1:8000/api/products/stats_rating/${id}/`)
       setRating(res.data.average || 0)
     } catch (error) {
       console.error('Error obteniendo rating:', error)
@@ -109,7 +109,7 @@ const ProductCard: React.FC<ProductCardProps & { defaultFavorite?: boolean }> = 
   /** Obtener cantidad de comentarios */
   const fetchComments = async () => {
     try {
-      const res = await api.get(`/comments/product-comments/${id}/`)
+      const res = await api.get(`http://127.0.0.1:8000/api/comments/product-comments/${id}/`)
       setCommentsCount(res.data.length || 0)
     } catch (error) {
       console.error('Error obteniendo comentarios:', error)

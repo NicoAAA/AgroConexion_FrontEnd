@@ -94,8 +94,8 @@ const FavoritesPage = () => {
   return (
     <div className="px-6 py-10">
       {/* Título de la página */}
-      <div className="text-center mb-10">
-        <h1 className="text-4xl font-extrabold text-gray-800 bg-gradient-to-r from-green-600 to-emerald-500 bg-clip-text">
+      <div className="dark:text-white text-center mb-10">
+        <h1 className=" dark:text-white text-4xl font-extrabold text-gray-800 bg-gradient-to-r from-green-600 to-emerald-500 bg-clip-text ">
           ❤️ Mis favoritos
         </h1>
         <p className="text-gray-500 mt-2">

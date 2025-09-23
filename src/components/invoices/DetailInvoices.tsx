@@ -63,30 +63,56 @@ export default function InvoicePageClient({ id }: { id: string }) {
     fetchInvoice()
   }, [id])
 
-  if (loading) return <p className="text-center">Cargando factura...</p>
-  if (!invoice) return <p className="text-center text-red-500">Factura no encontrada</p>
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-green-50 via-emerald-50 to-lime-50 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900 flex items-center justify-center">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-16 w-16 border-b-2 border-green-600 dark:border-green-400 mx-auto mb-4"></div>
+          <p className="text-gray-600 dark:text-gray-300 text-lg">Cargando factura...</p>
+        </div>
+      </div>
+    )
+  }
+
+  if (!invoice) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-green-50 via-emerald-50 to-lime-50 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900 flex items-center justify-center">
+        <div className="text-center max-w-md mx-auto px-4">
+          <div className="bg-red-100 dark:bg-red-900 rounded-full p-6 w-24 h-24 mx-auto mb-6">
+            <Receipt className="w-12 h-12 text-red-600 dark:text-red-400 mx-auto" />
+          </div>
+          <h2 className="text-2xl font-bold text-gray-800 dark:text-white mb-3">
+            Factura no encontrada
+          </h2>
+          <p className="text-red-500 dark:text-red-400">
+            No pudimos encontrar la factura solicitada. Verifica el ID e intenta nuevamente.
+          </p>
+        </div>
+      </div>
+    )
+  }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-green-50 via-emerald-50 to-lime-50 p-4 sm:p-6 lg:p-8">
+    <div className="min-h-screen bg-gradient-to-br from-green-50 via-emerald-50 to-lime-50 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900 p-4 sm:p-6 lg:p-8 transition-colors duration-300">
       <div className="max-w-4xl mx-auto">
         {/* Contenedor principal de la factura */}
-        <div className="bg-white shadow-2xl rounded-3xl overflow-hidden border-2 border-green-100">
+        <div className="bg-white dark:bg-gray-800 shadow-2xl rounded-3xl overflow-hidden border-2 border-green-100 dark:border-gray-700 transition-colors duration-300">
           
           {/* Header premium con diseño campesino */}
-          <div className="bg-gradient-to-r from-green-600 via-emerald-600 to-green-700 px-6 sm:px-8 py-8 text-white relative overflow-hidden">
-            <div className="absolute inset-0 bg-black opacity-10"></div>
-            <div className="absolute top-0 right-0 w-32 h-32 bg-white opacity-5 rounded-full transform translate-x-16 -translate-y-16"></div>
-            <div className="absolute bottom-0 left-0 w-24 h-24 bg-white opacity-5 rounded-full transform -translate-x-12 translate-y-12"></div>
+          <div className="bg-gradient-to-r from-green-600 via-emerald-600 to-green-700 dark:from-green-700 dark:via-emerald-700 dark:to-green-800 px-6 sm:px-8 py-8 text-white relative overflow-hidden">
+            <div className="absolute inset-0 bg-black opacity-10 dark:opacity-20"></div>
+            <div className="absolute top-0 right-0 w-32 h-32 bg-white opacity-5 dark:opacity-10 rounded-full transform translate-x-16 -translate-y-16"></div>
+            <div className="absolute bottom-0 left-0 w-24 h-24 bg-white opacity-5 dark:opacity-10 rounded-full transform -translate-x-12 translate-y-12"></div>
             
             <div className="relative z-10">
               <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
                 <div className="flex items-center gap-4">
-                  <div className="w-16 h-16 bg-white bg-opacity-20 rounded-2xl flex items-center justify-center">
+                  <div className="w-16 h-16 bg-white bg-opacity-20 dark:bg-opacity-30 rounded-2xl flex items-center justify-center shadow-lg">
                     <Receipt className="w-8 h-8 text-white" />
                   </div>
                   <div>
                     <h1 className="text-2xl sm:text-3xl font-bold">Factura #{invoice.id}</h1>
-                    <p className="text-green-100 flex items-center gap-2 mt-1">
+                    <p className="text-green-100 dark:text-green-200 flex items-center gap-2 mt-1">
                       <Sprout className="w-4 h-4" />
                       Productos del Campo
                     </p>
@@ -94,7 +120,7 @@ export default function InvoicePageClient({ id }: { id: string }) {
                 </div>
                 
                 <div className="text-sm sm:text-right space-y-1">
-                  <div className="flex items-center gap-2 text-green-100">
+                  <div className="flex items-center gap-2 text-green-100 dark:text-green-200">
                     <Calendar className="w-4 h-4" />
                     {new Date(invoice.date_created).toLocaleDateString('es-CO', {
                       year: 'numeric',
@@ -104,11 +130,11 @@ export default function InvoicePageClient({ id }: { id: string }) {
                       minute: '2-digit'
                     })}
                   </div>
-                  <div className="flex items-center gap-2 text-green-100">
+                  <div className="flex items-center gap-2 text-green-100 dark:text-green-200">
                     <User className="w-4 h-4" />
                     {invoice.user}
                   </div>
-                  <div className="flex items-center gap-2 text-green-100">
+                  <div className="flex items-center gap-2 text-green-100 dark:text-green-200">
                     <CreditCard className="w-4 h-4" />
                     {invoice.method}
                   </div>
@@ -120,16 +146,16 @@ export default function InvoicePageClient({ id }: { id: string }) {
           <div className="p-6 sm:p-8">
             {/* Tabla responsiva con mejor diseño */}
             <div className="mb-8">
-              <h2 className="text-lg font-semibold text-gray-800 mb-4 flex items-center gap-2">
-                <Package className="w-5 h-5 text-green-600" />
+              <h2 className="text-lg font-semibold text-gray-800 dark:text-gray-200 mb-4 flex items-center gap-2">
+                <Package className="w-5 h-5 text-green-600 dark:text-green-400" />
                 Detalles de la Compra
               </h2>
               
               {/* Vista de tabla para desktop */}
               <div className="hidden md:block">
-                <div className="overflow-hidden rounded-xl border border-gray-200">
+                <div className="overflow-hidden rounded-xl border border-gray-200 dark:border-gray-600 shadow-lg">
                   <table className="w-full">
-                    <thead className="bg-gradient-to-r from-green-500 to-emerald-500 text-white">
+                    <thead className="bg-gradient-to-r from-green-500 to-emerald-500 dark:from-green-600 dark:to-emerald-600 text-white">
                       <tr>
                         <th className="px-6 py-4 text-left text-sm font-semibold">Producto</th>
                         <th className="px-6 py-4 text-left text-sm font-semibold">Vendedor</th>
@@ -138,24 +164,24 @@ export default function InvoicePageClient({ id }: { id: string }) {
                         <th className="px-6 py-4 text-right text-sm font-semibold">Subtotal</th>
                       </tr>
                     </thead>
-                    <tbody className="divide-y divide-gray-200">
+                    <tbody className="divide-y divide-gray-200 dark:divide-gray-600">
                       {invoice.details.map((item, i) => (
-                        <tr key={i} className="hover:bg-green-50 transition-colors duration-200">
+                        <tr key={i} className="hover:bg-green-50 dark:hover:bg-gray-700 transition-colors duration-200 bg-white dark:bg-gray-800">
                           <td className="px-6 py-4">
-                            <div className="font-semibold text-gray-900">{item.product_name}</div>
+                            <div className="font-semibold text-gray-900 dark:text-gray-100">{item.product_name}</div>
                           </td>
                           <td className="px-6 py-4">
-                            <div className="text-green-700 font-medium">{item.seller_name}</div>
+                            <div className="text-green-700 dark:text-green-400 font-medium">{item.seller_name}</div>
                           </td>
                           <td className="px-6 py-4 text-center">
-                            <span className="inline-flex items-center justify-center w-8 h-8 bg-green-100 text-green-800 rounded-full text-sm font-semibold">
+                            <span className="inline-flex items-center justify-center w-8 h-8 bg-green-100 dark:bg-green-800 text-green-800 dark:text-green-200 rounded-full text-sm font-semibold">
                               {item.quantity}
                             </span>
                           </td>
-                          <td className="px-6 py-4 text-right font-semibold text-gray-900">
+                          <td className="px-6 py-4 text-right font-semibold text-gray-900 dark:text-gray-100">
                             ${item.unit_price}
                           </td>
-                          <td className="px-6 py-4 text-right font-bold text-green-700 text-lg">
+                          <td className="px-6 py-4 text-right font-bold text-green-700 dark:text-green-400 text-lg">
                             ${item.subtotal}
                           </td>
                         </tr>
@@ -168,17 +194,17 @@ export default function InvoicePageClient({ id }: { id: string }) {
               {/* Vista de cards para móvil */}
               <div className="md:hidden space-y-4">
                 {invoice.details.map((item, i) => (
-                  <div key={i} className="bg-gradient-to-r from-green-50 to-emerald-50 rounded-xl p-4 border-l-4 border-green-500 shadow-sm">
+                  <div key={i} className="bg-gradient-to-r from-green-50 to-emerald-50 dark:from-gray-700 dark:to-gray-600 rounded-xl p-4 border-l-4 border-green-500 dark:border-green-400 shadow-sm">
                     <div className="flex justify-between items-start mb-2">
-                      <h3 className="font-bold text-gray-900 text-sm">{item.product_name}</h3>
-                      <span className="text-lg font-bold text-green-700">${item.subtotal}</span>
+                      <h3 className="font-bold text-gray-900 dark:text-gray-100 text-sm">{item.product_name}</h3>
+                      <span className="text-lg font-bold text-green-700 dark:text-green-400">${item.subtotal}</span>
                     </div>
-                    <div className="text-sm text-green-600 mb-2 flex items-center gap-1">
+                    <div className="text-sm text-green-600 dark:text-green-400 mb-2 flex items-center gap-1">
                       <Sprout className="w-3 h-3" />
                       {item.seller_name}
                     </div>
                     <div className="flex justify-between items-center text-sm">
-                      <span className="text-gray-600">
+                      <span className="text-gray-600 dark:text-gray-300">
                         <span className="font-semibold">{item.quantity}</span> × ${item.unit_price}
                       </span>
                     </div>
@@ -191,8 +217,8 @@ export default function InvoicePageClient({ id }: { id: string }) {
             <div className="mb-8">
               {invoice.details.some(item => item.offer || item.coupon) && (
                 <>
-                  <h2 className="text-lg font-semibold text-gray-800 mb-4 flex items-center gap-2">
-                    <Gift className="w-5 h-5 text-orange-600" />
+                  <h2 className="text-lg font-semibold text-gray-800 dark:text-gray-200 mb-4 flex items-center gap-2">
+                    <Gift className="w-5 h-5 text-orange-600 dark:text-orange-400" />
                     Descuentos Aplicados
                   </h2>
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -201,29 +227,29 @@ export default function InvoicePageClient({ id }: { id: string }) {
                         (item.offer || item.coupon) && (
                           <div key={i} className="relative overflow-hidden">
                             {item.offer && (
-                              <div className="bg-gradient-to-r from-green-500 to-emerald-500 rounded-xl p-4 text-white shadow-lg">
+                              <div className="bg-gradient-to-r from-green-500 to-emerald-500 dark:from-green-600 dark:to-emerald-600 rounded-xl p-4 text-white shadow-lg">
                                 <div className="flex items-center gap-2 mb-1">
                                   <Tag className="w-4 h-4" />
                                   <span className="font-semibold text-sm">OFERTA ESPECIAL</span>
                                 </div>
                                 <p className="font-bold">{item.offer.title}</p>
-                                <p className="text-green-100 text-sm">
+                                <p className="text-green-100 dark:text-green-200 text-sm">
                                   Descuento del {item.offer.percentage}%
                                 </p>
-                                <div className="absolute top-0 right-0 w-16 h-16 bg-white bg-opacity-10 rounded-full transform translate-x-8 -translate-y-8"></div>
+                                <div className="absolute top-0 right-0 w-16 h-16 bg-white bg-opacity-10 dark:bg-opacity-20 rounded-full transform translate-x-8 -translate-y-8"></div>
                               </div>
                             )}
                             {item.coupon && (
-                              <div className="bg-gradient-to-r from-orange-500 to-amber-500 rounded-xl p-4 text-white shadow-lg">
+                              <div className="bg-gradient-to-r from-orange-500 to-amber-500 dark:from-orange-600 dark:to-amber-600 rounded-xl p-4 text-white shadow-lg">
                                 <div className="flex items-center gap-2 mb-1">
                                   <Gift className="w-4 h-4" />
                                   <span className="font-semibold text-sm">CUPÓN</span>
                                 </div>
                                 <p className="font-bold">Código: {item.coupon.code}</p>
-                                <p className="text-orange-100 text-sm">
+                                <p className="text-orange-100 dark:text-orange-200 text-sm">
                                   Descuento del {item.coupon.percentage}%
                                 </p>
-                                <div className="absolute top-0 right-0 w-16 h-16 bg-white bg-opacity-10 rounded-full transform translate-x-8 -translate-y-8"></div>
+                                <div className="absolute top-0 right-0 w-16 h-16 bg-white bg-opacity-10 dark:bg-opacity-20 rounded-full transform translate-x-8 -translate-y-8"></div>
                               </div>
                             )}
                           </div>
@@ -235,31 +261,31 @@ export default function InvoicePageClient({ id }: { id: string }) {
             </div>
 
             {/* Total con diseño premium */}
-            <div className="bg-gradient-to-r from-gray-50 to-green-50 rounded-2xl p-6 border-2 border-green-200">
+            <div className="bg-gradient-to-r from-gray-50 to-green-50 dark:from-gray-700 dark:to-gray-600 rounded-2xl p-6 border-2 border-green-200 dark:border-gray-600 shadow-lg">
               <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
                 <div className="flex items-center gap-3">
-                  <div className="w-12 h-12 bg-green-600 rounded-xl flex items-center justify-center">
+                  <div className="w-12 h-12 bg-green-600 dark:bg-green-500 rounded-xl flex items-center justify-center shadow-lg">
                     <ShoppingCart className="w-6 h-6 text-white" />
                   </div>
                   <div>
-                    <h3 className="text-lg font-semibold text-gray-800">Total a Pagar</h3>
-                    <p className="text-sm text-gray-600">Productos frescos del campo</p>
+                    <h3 className="text-lg font-semibold text-gray-800 dark:text-gray-200">Total a Pagar</h3>
+                    <p className="text-sm text-gray-600 dark:text-gray-400">Productos frescos del campo</p>
                   </div>
                 </div>
                 <div className="text-right">
-                  <div className="text-3xl sm:text-4xl font-bold text-green-700">
+                  <div className="text-3xl sm:text-4xl font-bold text-green-700 dark:text-green-400">
                     ${invoice.total}
                   </div>
-                  <p className="text-sm text-gray-600 mt-1">Pesos colombianos</p>
+                  <p className="text-sm text-gray-600 dark:text-gray-400 mt-1">Pesos colombianos</p>
                 </div>
               </div>
             </div>
 
             {/* Footer con información adicional */}
-            <div className="mt-8 pt-6 border-t border-gray-200">
-              <div className="bg-green-50 rounded-xl p-4 flex items-start gap-3">
-                <Sprout className="w-5 h-5 text-green-600 mt-0.5 flex-shrink-0" />
-                <div className="text-sm text-green-700">
+            <div className="mt-8 pt-6 border-t border-gray-200 dark:border-gray-600">
+              <div className="bg-green-50 dark:bg-gray-700 rounded-xl p-4 flex items-start gap-3 shadow-sm">
+                <Sprout className="w-5 h-5 text-green-600 dark:text-green-400 mt-0.5 flex-shrink-0" />
+                <div className="text-sm text-green-700 dark:text-green-300">
                   <p className="font-semibold mb-1">🌱 Gracias por apoyar a nuestros campesinos</p>
                   <p>Con tu compra apoyas directamente a las familias rurales y contribuyes al desarrollo sostenible del campo colombiano.</p>
                 </div>

@@ -9,6 +9,7 @@ export interface User {
   is_seller: boolean;
   address?: string;
   phone_number?: string;
+  two_factor_enabled?: Boolean
   group_profile?: GroupProfile
 }
 

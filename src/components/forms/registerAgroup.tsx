@@ -285,161 +285,193 @@ const RegisterAgropu = () => {
 
     // Componente que retorna la funcion XMl
     return (
-        <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-green-400 via-white to-green-500">
+        <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-green-400 via-white to-green-500 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900 py-8 transition-colors duration-300">
             <form
                 onSubmit={handleSubmit}
-                className="bg-white/90 shadow-2xl rounded-3xl px-10 py-10 w-full max-w-3xl mx-auto m-10"
+                className="bg-white/90 dark:bg-gray-800/95 shadow-2xl rounded-3xl px-10 py-10 w-full max-w-4xl mx-auto m-6 backdrop-blur-sm border border-white/20 dark:border-gray-700/50"
             >
+                {/* Header */}
                 <div className="flex flex-col items-center mb-8">
-                    <Image
-                        src="/AgroConexion.svg"
-                        alt="Logo"
-                        height={80}
-                        width={80}
-                        className="rounded-full border-4 border-green-300 shadow-md bg-white"
-                    />
-                    <h2 className="mt-4 text-3xl font-bold tracking-wide">
-                        Sign Up Agroup
+                    <div className="relative">
+                        <Image
+                            src="/AgroConexion.svg"
+                            alt="Logo"
+                            height={80}
+                            width={80}
+                            className="rounded-full border-4 border-green-300 dark:border-green-500 shadow-lg bg-white dark:bg-gray-700 transition-colors duration-300"
+                        />
+                        <div className="absolute -top-1 -right-1 w-6 h-6 bg-green-500 dark:bg-green-400 rounded-full flex items-center justify-center">
+                            <div className="w-2 h-2 bg-white rounded-full animate-pulse"></div>
+                        </div>
+                    </div>
+                    <h2 className="mt-6 text-3xl font-bold tracking-wide text-gray-800 dark:text-white transition-colors duration-300">
+                        Registro de Organización
                     </h2>
+                    <p className="text-gray-600 dark:text-gray-400 mt-2 text-center max-w-2xl">
+                        Únete a nuestra plataforma y conecta directamente con consumidores
+                    </p>
+                    <div className="mt-3 h-1 w-24 bg-gradient-to-r from-green-400 to-green-600 dark:from-green-500 dark:to-green-400 rounded-full"></div>
                 </div>
 
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-                <div className="flex flex-col gap-1">
-                    <label htmlFor="username" className="font-semibold">
-                        Username
-                    </label>
-                    <input
-                        type="text"
-                        id="username"
-                        placeholder="Username"
-                        value={form.username}
-                        onChange={handleChange}
-                        className="rounded-lg border border-green-200 px-4 py-2 focus:outline-none focus:ring-2 focus:ring-green-400 transition"
-                    />
-                </div>
-                <div className="flex flex-col gap-1">
-                    <label htmlFor="email" className=" font-semibold">
-                        Email
-                    </label>
-                    <input
-                        type="email"
-                        id="email"
-                        placeholder="Email"
-                        value={form.email}
-                        onChange={handleChange}
-                        className="rounded-lg border border-green-200 px-4 py-2 focus:outline-none focus:ring-2 focus:ring-green-400 transition"
-                    />
-                </div>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    {/* Username */}
+                    <div className="flex flex-col gap-2">
+                        <label htmlFor="username" className="font-semibold text-gray-700 dark:text-gray-300 flex items-center gap-2">
+                            <svg className="w-4 h-4 text-green-500 dark:text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                            </svg>
+                            Nombre de usuario
+                        </label>
+                        <input
+                            type="text"
+                            id="username"
+                            placeholder="Ingresa tu nombre de usuario"
+                            value={form.username}
+                            onChange={handleChange}
+                            className="rounded-xl border-2 border-green-200 dark:border-gray-600 px-4 py-3 focus:outline-none focus:ring-2 focus:ring-green-400 dark:focus:ring-green-500 transition-all bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400"
+                        />
+                    </div>
 
-                <div className="flex flex-col gap-1">
-                    <label htmlFor="phone_number" className="font-semibold">
-                        Phone Number
-                    </label>
-                    <input
-                        type="text"
-                        id="phone_number"
-                        placeholder="Phone Number"
-                        value={form.phone_number}
-                        onChange={handleChange}
-                        className="rounded-lg border border-green-200 px-4 py-2 focus:outline-none focus:ring-2 focus:ring-green-400 transition"
-                    />
-                </div>
+                    {/* Email */}
+                    <div className="flex flex-col gap-2">
+                        <label htmlFor="email" className="font-semibold text-gray-700 dark:text-gray-300 flex items-center gap-2">
+                            <svg className="w-4 h-4 text-green-500 dark:text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 12a4 4 0 10-8 0 4 4 0 008 0zm0 0v1.5a2.5 2.5 0 005 0V12a9 9 0 10-9 9m4.5-1.206a8.959 8.959 0 01-4.5 1.207" />
+                            </svg>
+                            Correo electrónico
+                        </label>
+                        <input
+                            type="email"
+                            id="email"
+                            placeholder="ejemplo@correo.com"
+                            value={form.email}
+                            onChange={handleChange}
+                            className="rounded-xl border-2 border-green-200 dark:border-gray-600 px-4 py-3 focus:outline-none focus:ring-2 focus:ring-green-400 dark:focus:ring-green-500 transition-all bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400"
+                        />
+                    </div>
 
-                <div className="flex flex-col gap-1">
-                    <label htmlFor="address" className="font-semibold">
-                        Address
-                    </label>
-                    <input
-                        type="text"
-                        id="address"
-                        placeholder="Address"
-                        value={form.address}
-                        onChange={handleChange}
-                        className="rounded-lg border border-green-200 px-4 py-2 focus:outline-none focus:ring-2 focus:ring-green-400 transition"
-                    />
-                </div>
+                    {/* Phone */}
+                    <div className="flex flex-col gap-2">
+                        <label htmlFor="phone_number" className="font-semibold text-gray-700 dark:text-gray-300 flex items-center gap-2">
+                            <svg className="w-4 h-4 text-green-500 dark:text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
+                            </svg>
+                            Número de teléfono
+                        </label>
+                        <input
+                            type="text"
+                            id="phone_number"
+                            placeholder="+57 300 123 4567"
+                            value={form.phone_number}
+                            onChange={handleChange}
+                            className="rounded-xl border-2 border-green-200 dark:border-gray-600 px-4 py-3 focus:outline-none focus:ring-2 focus:ring-green-400 dark:focus:ring-green-500 transition-all bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400"
+                        />
+                    </div>
 
-                <div className="flex flex-col gap-1">
-                    <label htmlFor="organization_type" className="font-semibold">
-                        Tipo de organización
-                    </label>
-                    <select
-                        id="organization_type"
-                        value={form.group_profile?.organization_type || ""}
-                        onChange={handleChange}
-                        className="rounded-lg border border-green-200 px-4 py-2 focus:outline-none focus:ring-2 focus:ring-green-400 transition"
-                    >
-                        <option value="">Selecciona una opción</option>
-                        {Object.entries(organization_type).map(([key, label]) => (
-                            <option key={key} value={key}>
-                            {label}
-                            </option>
-                        ))}
-                    </select>
-                </div>
+                    {/* Address */}
+                    <div className="flex flex-col gap-2">
+                        <label htmlFor="address" className="font-semibold text-gray-700 dark:text-gray-300 flex items-center gap-2">
+                            <svg className="w-4 h-4 text-green-500 dark:text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                            </svg>
+                            Dirección
+                        </label>
+                        <input
+                            type="text"
+                            id="address"
+                            placeholder="Tu dirección completa"
+                            value={form.address}
+                            onChange={handleChange}
+                            className="rounded-xl border-2 border-green-200 dark:border-gray-600 px-4 py-3 focus:outline-none focus:ring-2 focus:ring-green-400 dark:focus:ring-green-500 transition-all bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400"
+                        />
+                    </div>
 
-                <div className="flex flex-col gap-1">
-                    <label htmlFor="nit" className="font-semibold">
-                        NIT
-                    </label>
-                    <input
-                        type="text"
-                        id="nit"
-                        placeholder="NIT"
-                        value={form.group_profile?.nit || ""}
-                        onChange={handleChange}
-                        className="rounded-lg border border-green-200 px-4 py-2 focus:outline-none focus:ring-2 focus:ring-green-400 transition"
-                    />
-                </div>
-
-                <div className="flex flex-col gap-1">
-                    <label htmlFor="legal_representative" className="font-semibold">
-                        Representante legal
-                    </label>
-                    <input
-                        type="text"
-                        id="legal_representative"
-                        placeholder="Representante legal"
-                        value={form.group_profile?.legal_representative || ""}
-                        onChange={handleChange}
-                        className="rounded-lg border border-green-200 px-4 py-2 focus:outline-none focus:ring-2 focus:ring-green-400 transition"
-                    />
-                </div>
-
-                <div className="flex flex-col gap-1">
-                    <label htmlFor="representative_cedula" className="font-semibold">
-                        Cédula del representante
-                    </label>
-                    <input
-                        type="text"
-                        id="representative_cedula"
-                        placeholder="Cédula del representante"
-                        value={form.group_profile?.representative_cedula || ""}
-                        onChange={handleChange}
-                        className="rounded-lg border border-green-200 px-4 py-2 focus:outline-none focus:ring-2 focus:ring-green-400 transition"
-                    />
-                </div>
-
-                {/* Inputs de imagen y PDF, mejorados visualmente */}
-                <div className="col-span-1 md:col-span-2 flex flex-col gap-6">
-                    {/* Imagen de perfil */}
-                    <div className="flex flex-col gap-2 w-full bg-green-50 border-2 border-green-200 rounded-xl p-4 shadow-sm hover:border-green-400 transition">
-                        <label
-                            htmlFor="profile_image"
-                            className="font-semibold flex items-center gap-2"
+                    {/* Organization Type */}
+                    <div className="flex flex-col gap-2">
+                        <label htmlFor="organization_type" className="font-semibold text-gray-700 dark:text-gray-300 flex items-center gap-2">
+                            <svg className="w-4 h-4 text-green-500 dark:text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
+                            </svg>
+                            Tipo de organización
+                        </label>
+                        <select
+                            id="organization_type"
+                            value={form.group_profile?.organization_type || ""}
+                            onChange={handleChange}
+                            className="rounded-xl border-2 border-green-200 dark:border-gray-600 px-4 py-3 focus:outline-none focus:ring-2 focus:ring-green-400 dark:focus:ring-green-500 transition-all bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
                         >
-                            <svg
-                                className="w-5 h-5 text-green-500"
-                                fill="none"
-                                stroke="currentColor"
-                                strokeWidth="2"
-                                viewBox="0 0 24 24"
-                            >
-                                <path
-                                    strokeLinecap="round"
-                                    strokeLinejoin="round"
-                                    d="M12 4v16m8-8H4"
-                                />
+                            <option value="">Selecciona una opción</option>
+                            {Object.entries(organization_type).map(([key, label]) => (
+                                <option key={key} value={key} className="bg-white dark:bg-gray-700">
+                                    {label}
+                                </option>
+                            ))}
+                        </select>
+                    </div>
+
+                    {/* NIT */}
+                    <div className="flex flex-col gap-2">
+                        <label htmlFor="nit" className="font-semibold text-gray-700 dark:text-gray-300 flex items-center gap-2">
+                            <svg className="w-4 h-4 text-green-500 dark:text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                            </svg>
+                            NIT
+                        </label>
+                        <input
+                            type="text"
+                            id="nit"
+                            placeholder="123456789-0"
+                            value={form.group_profile?.nit || ""}
+                            onChange={handleChange}
+                            className="rounded-xl border-2 border-green-200 dark:border-gray-600 px-4 py-3 focus:outline-none focus:ring-2 focus:ring-green-400 dark:focus:ring-green-500 transition-all bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400"
+                        />
+                    </div>
+
+                    {/* Legal Representative */}
+                    <div className="flex flex-col gap-2">
+                        <label htmlFor="legal_representative" className="font-semibold text-gray-700 dark:text-gray-300 flex items-center gap-2">
+                            <svg className="w-4 h-4 text-green-500 dark:text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                            </svg>
+                            Representante legal
+                        </label>
+                        <input
+                            type="text"
+                            id="legal_representative"
+                            placeholder="Nombre del representante legal"
+                            value={form.group_profile?.legal_representative || ""}
+                            onChange={handleChange}
+                            className="rounded-xl border-2 border-green-200 dark:border-gray-600 px-4 py-3 focus:outline-none focus:ring-2 focus:ring-green-400 dark:focus:ring-green-500 transition-all bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400"
+                        />
+                    </div>
+
+                    {/* Representative Cedula */}
+                    <div className="flex flex-col gap-2">
+                        <label htmlFor="representative_cedula" className="font-semibold text-gray-700 dark:text-gray-300 flex items-center gap-2">
+                            <svg className="w-4 h-4 text-green-500 dark:text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V8a2 2 0 00-2-2h-5m-4 0V5a2 2 0 114 0v1m-4 0a2 2 0 104 0m-5 8a2 2 0 100-4 2 2 0 000 4zm0 0c1.306 0 2.417.835 2.83 2M9 14a3.001 3.001 0 00-2.83 2M15 11h3m-3 4h2" />
+                            </svg>
+                            Cédula del representante
+                        </label>
+                        <input
+                            type="text"
+                            id="representative_cedula"
+                            placeholder="Número de cédula"
+                            value={form.group_profile?.representative_cedula || ""}
+                            onChange={handleChange}
+                            className="rounded-xl border-2 border-green-200 dark:border-gray-600 px-4 py-3 focus:outline-none focus:ring-2 focus:ring-green-400 dark:focus:ring-green-500 transition-all bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400"
+                        />
+                    </div>
+                </div>
+
+                {/* File Upload Sections */}
+                <div className="mt-8 space-y-6">
+                    {/* Profile Image */}
+                    <div className="bg-green-50 dark:bg-gray-700/50 border-2 border-green-200 dark:border-green-700/50 rounded-2xl p-6 hover:border-green-400 dark:hover:border-green-500 transition-all duration-200">
+                        <label htmlFor="profile_image" className="font-semibold text-gray-700 dark:text-gray-300 flex items-center gap-2 mb-3">
+                            <svg className="w-5 h-5 text-green-500 dark:text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
                             </svg>
                             Imagen de perfil
                         </label>
@@ -448,53 +480,32 @@ const RegisterAgropu = () => {
                             id="profile_image"
                             accept="image/*"
                             onChange={(e) => handleImageInput(e, "profile")}
-                            className="file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-green-100 file:text-green-700 hover:file:bg-green-200 w-full cursor-pointer bg-white border border-green-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-400 transition"
+                            className="file:mr-4 file:py-3 file:px-6 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-green-100 dark:file:bg-green-900/30 file:text-green-700 dark:file:text-green-400 hover:file:bg-green-200 dark:hover:file:bg-green-800/50 w-full cursor-pointer bg-white dark:bg-gray-600 border-2 border-green-200 dark:border-gray-500 rounded-xl focus:outline-none focus:ring-2 focus:ring-green-400 dark:focus:ring-green-500 transition-all text-gray-700 dark:text-gray-300"
                         />
                         {profileImagePreview && (
-                            <div className="relative mt-2 w-40 h-40 rounded-lg overflow-hidden border-2 border-green-300 shadow group">
-                            <img
-                                src={profileImagePreview}
-                                alt="Previsualización perfil"
-                                className="w-full h-full object-cover"
-                            />
-                            {/* Overlay de cuadrícula */}
-                            <div
-                                className="absolute inset-0 pointer-events-none"
-                                style={{
-                                backgroundImage:
-                                    "linear-gradient(to right, rgba(0,0,0,0.12) 1px, transparent 1px), linear-gradient(to bottom, rgba(0,0,0,0.12) 1px, transparent 1px)",
-                                backgroundSize: "20px 20px",
-                                }}
-                            />
-                            <button
-                                type="button"
-                                onClick={removeProfileImage}
-                                className="absolute top-2 right-2 bg-red-500 text-white rounded-full w-7 h-7 flex items-center justify-center text-base shadow hover:bg-red-700"
-                            >
-                                ✕
-                            </button>
+                            <div className="relative mt-4 w-40 h-40 rounded-xl overflow-hidden border-2 border-green-300 dark:border-green-600 shadow-lg group">
+                                <img
+                                    src={profileImagePreview}
+                                    alt="Previsualización perfil"
+                                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                                />
+                                <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                                <button
+                                    type="button"
+                                    onClick={removeProfileImage}
+                                    className="absolute top-2 right-2 bg-red-500 hover:bg-red-600 text-white rounded-full w-8 h-8 flex items-center justify-center text-sm shadow-lg hover:scale-110 transition-all duration-200"
+                                >
+                                    ✕
+                                </button>
                             </div>
                         )}
                     </div>
 
-                    {/* Imagen de cédula */}
-                    <div className="flex flex-col gap-2 w-full bg-green-50 border-2 border-green-200 rounded-xl p-4 shadow-sm hover:border-green-400 transition">
-                        <label
-                            htmlFor="image_cedula"
-                            className="font-semibold flex items-center gap-2"
-                        >
-                            <svg
-                                className="w-5 h-5 text-green-500"
-                                fill="none"
-                                stroke="currentColor"
-                                strokeWidth="2"
-                                viewBox="0 0 24 24"
-                            >
-                            <path
-                                strokeLinecap="round"
-                                strokeLinejoin="round"
-                                d="M12 4v16m8-8H4"
-                            />
+                    {/* Cedula Image */}
+                    <div className="bg-blue-50 dark:bg-gray-700/50 border-2 border-blue-200 dark:border-blue-700/50 rounded-2xl p-6 hover:border-blue-400 dark:hover:border-blue-500 transition-all duration-200">
+                        <label htmlFor="image_cedula" className="font-semibold text-gray-700 dark:text-gray-300 flex items-center gap-2 mb-3">
+                            <svg className="w-5 h-5 text-blue-500 dark:text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V8a2 2 0 00-2-2h-5m-4 0V5a2 2 0 114 0v1m-4 0a2 2 0 104 0m-5 8a2 2 0 100-4 2 2 0 000 4zm0 0c1.306 0 2.417.835 2.83 2M9 14a3.001 3.001 0 00-2.83 2M15 11h3m-3 4h2" />
                             </svg>
                             Imagen de cédula
                         </label>
@@ -503,43 +514,32 @@ const RegisterAgropu = () => {
                             id="image_cedula"
                             accept="image/*"
                             onChange={(e) => handleImageInput(e, "cedula")}
-                            className="file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-green-100 file:text-green-700 hover:file:bg-green-200 w-full cursor-pointer bg-white border border-green-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-400 transition"
+                            className="file:mr-4 file:py-3 file:px-6 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-blue-100 dark:file:bg-blue-900/30 file:text-blue-700 dark:file:text-blue-400 hover:file:bg-blue-200 dark:hover:file:bg-blue-800/50 w-full cursor-pointer bg-white dark:bg-gray-600 border-2 border-blue-200 dark:border-gray-500 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-400 dark:focus:ring-blue-500 transition-all text-gray-700 dark:text-gray-300"
                         />
                         {cedulaImagePreview && (
-                        <div className="relative mt-2 w-40 h-40 rounded-lg overflow-hidden border-2 border-green-300 shadow group">
-                            <img
-                                src={cedulaImagePreview}
-                                alt="Previsualización cédula"
-                                className="w-full h-full object-cover"
-                            />
-                            <button
-                                type="button"
-                                onClick={removeCedulaImage}
-                                className="absolute top-2 right-2 bg-red-500 text-white rounded-full w-7 h-7 flex items-center justify-center text-base shadow hover:bg-red-700"
-                            >
-                                ✕
-                            </button>
-                        </div>
-                    )}
+                            <div className="relative mt-4 w-40 h-40 rounded-xl overflow-hidden border-2 border-blue-300 dark:border-blue-600 shadow-lg group">
+                                <img
+                                    src={cedulaImagePreview}
+                                    alt="Previsualización cédula"
+                                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                                />
+                                <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                                <button
+                                    type="button"
+                                    onClick={removeCedulaImage}
+                                    className="absolute top-2 right-2 bg-red-500 hover:bg-red-600 text-white rounded-full w-8 h-8 flex items-center justify-center text-sm shadow-lg hover:scale-110 transition-all duration-200"
+                                >
+                                    ✕
+                                </button>
+                            </div>
+                        )}
                     </div>
-                    {/* PDF RUT */}
-                    <div className="flex flex-col gap-2 w-full bg-green-50 border-2 border-green-200 rounded-xl p-4 shadow-sm hover:border-green-400 transition">
-                        <label
-                            htmlFor="rut_document"
-                            className="font-semibold flex items-center gap-2"
-                        >
-                            <svg
-                                className="w-5 h-5 text-green-500"
-                                fill="none"
-                                stroke="currentColor"
-                                strokeWidth="2"
-                                viewBox="0 0 24 24"
-                            >
-                            <path
-                                strokeLinecap="round"
-                                strokeLinejoin="round"
-                                d="M12 4v16m8-8H4"
-                            />
+
+                    {/* RUT Document */}
+                    <div className="bg-purple-50 dark:bg-gray-700/50 border-2 border-purple-200 dark:border-purple-700/50 rounded-2xl p-6 hover:border-purple-400 dark:hover:border-purple-500 transition-all duration-200">
+                        <label htmlFor="rut_document" className="font-semibold text-gray-700 dark:text-gray-300 flex items-center gap-2 mb-3">
+                            <svg className="w-5 h-5 text-purple-500 dark:text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
                             </svg>
                             Documento RUT (PDF)
                         </label>
@@ -548,173 +548,141 @@ const RegisterAgropu = () => {
                             id="rut_document"
                             accept="application/pdf"
                             onChange={handleChange}
-                            className="file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-green-100 file:text-green-700 hover:file:bg-green-200 w-full cursor-pointer bg-white border border-green-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-400 transition"
+                            className="file:mr-4 file:py-3 file:px-6 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-purple-100 dark:file:bg-purple-900/30 file:text-purple-700 dark:file:text-purple-400 hover:file:bg-purple-200 dark:hover:file:bg-purple-800/50 w-full cursor-pointer bg-white dark:bg-gray-600 border-2 border-purple-200 dark:border-gray-500 rounded-xl focus:outline-none focus:ring-2 focus:ring-purple-400 dark:focus:ring-purple-500 transition-all text-gray-700 dark:text-gray-300"
                         />
                         {rutPreview && (
-                            <div className="mt-2 w-full rounded-lg overflow-hidden border-2 border-green-300 shadow">
-                            <embed
-                                src={rutPreview}
-                                type="application/pdf"
-                                width="100%"
-                                height="220px"
-                                className="rounded border-none"
-                            />
+                            <div className="mt-4 w-full rounded-xl overflow-hidden border-2 border-purple-300 dark:border-purple-600 shadow-lg">
+                                <embed
+                                    src={rutPreview}
+                                    type="application/pdf"
+                                    width="100%"
+                                    height="220px"
+                                    className="rounded-lg bg-white dark:bg-gray-700"
+                                />
                             </div>
                         )}
                     </div>
                 </div>
 
-                {/* Contraseña y confirmar contraseña en la misma fila, con botón de ver contraseña dentro del input y centrado visualmente */}
-                <div className="col-span-1 md:col-span-2 flex flex-col md:flex-row gap-5">
-                    <div className="flex flex-col gap-1 w-full relative">
-                        <label htmlFor="password" className="font-semibold">
+                {/* Password Section */}
+                <div className="mt-8 grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div className="flex flex-col gap-2">
+                        <label htmlFor="password" className="font-semibold text-gray-700 dark:text-gray-300 flex items-center gap-2">
+                            <svg className="w-4 h-4 text-green-500 dark:text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+                            </svg>
                             Contraseña
                         </label>
                         <div className="relative">
                             <input
                                 type={showPassword ? "text" : "password"}
                                 id="password"
-                                placeholder="Password"
+                                placeholder="Crea una contraseña segura"
                                 value={form.password}
                                 onChange={handleChange}
-                                className="rounded-lg border border-green-200 px-4 py-2 w-full focus:outline-none focus:ring-2 focus:ring-green-400 transition pr-12"
+                                className="rounded-xl border-2 border-green-200 dark:border-gray-600 px-4 py-3 w-full focus:outline-none focus:ring-2 focus:ring-green-400 dark:focus:ring-green-500 transition-all pr-12 bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400"
                             />
                             <button
                                 type="button"
                                 onClick={() => setShowPassword((v) => !v)}
-                                className="absolute right-3 top-1/2 -translate-y-1/2 text-xl focus:outline-none"
+                                className="absolute right-3 top-1/2 -translate-y-1/2 p-1 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-600 transition-colors duration-200 focus:outline-none"
                                 tabIndex={-1}
-                                aria-label={
-                                    showPassword ? "Ocultar contraseña" : "Mostrar contraseña"
-                                }
                             >
                                 {showPassword ? (
-                                    <svg
-                                        xmlns="http://www.w3.org/2000/svg"
-                                        fill="none"
-                                        viewBox="0 0 24 24"
-                                        strokeWidth={1.5}
-                                        stroke="currentColor"
-                                        className="w-6 h-6 text-green-500"
-                                    >
-                                        <path
-                                            strokeLinecap="round"
-                                            strokeLinejoin="round"
-                                            d="M3.98 8.223A10.477 10.477 0 0 0 2.25 12c2.083 3.61 6.017 6 9.75 6 1.662 0 3.26-.368 4.646-1.022M6.423 6.423A9.956 9.956 0 0 1 12 6c3.733 0 7.667 2.39 9.75 6a10.477 10.477 0 0 1-1.227 1.977M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0ZM3 3l18 18"
-                                        />
+                                    <svg className="w-5 h-5 text-green-500 dark:text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.878 9.878L3 3m6.878 6.878L12 12m-3.122-3.122L21 21" />
                                     </svg>
                                 ) : (
-                                    <svg
-                                        xmlns="http://www.w3.org/2000/svg"
-                                        fill="none"
-                                        viewBox="0 0 24 24"
-                                        strokeWidth={1.5}
-                                        stroke="currentColor"
-                                        className="w-6 h-6 text-green-500"
-                                    >
-                                        <path
-                                            strokeLinecap="round"
-                                            strokeLinejoin="round"
-                                            d="M2.25 12C3.735 7.943 7.523 5.25 12 5.25c4.477 0 8.265 2.693 9.75 6.75-1.485 4.057-5.273 6.75-9.75 6.75-4.477 0-8.265-2.693-9.75-6.75z"
-                                        />
-                                        <path
-                                            strokeLinecap="round"
-                                            strokeLinejoin="round"
-                                            d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0z"
-                                        />
+                                    <svg className="w-5 h-5 text-green-500 dark:text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
                                     </svg>
                                 )}
                             </button>
                         </div>
                     </div>
-                    <div className="flex flex-col gap-1 w-full relative">
-                        <label htmlFor="password2" className="font-semibold">
+
+                    <div className="flex flex-col gap-2">
+                        <label htmlFor="password2" className="font-semibold text-gray-700 dark:text-gray-300 flex items-center gap-2">
+                            <svg className="w-4 h-4 text-green-500 dark:text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                            </svg>
                             Confirmar contraseña
                         </label>
                         <div className="relative">
                             <input
                                 type={showPassword2 ? "text" : "password"}
                                 id="password2"
-                                placeholder="Confirm Password"
+                                placeholder="Confirma tu contraseña"
                                 value={form.password2}
                                 onChange={handleChange}
-                                className="rounded-lg border border-green-200 px-4 py-2 w-full focus:outline-none focus:ring-2 focus:ring-green-400 transition pr-12"
+                                className="rounded-xl border-2 border-green-200 dark:border-gray-600 px-4 py-3 w-full focus:outline-none focus:ring-2 focus:ring-green-400 dark:focus:ring-green-500 transition-all pr-12 bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400"
                             />
                             <button
                                 type="button"
                                 onClick={() => setShowPassword2((v) => !v)}
-                                className="absolute right-3 top-1/2 -translate-y-1/2 text-xl focus:outline-none"
+                                className="absolute right-3 top-1/2 -translate-y-1/2 p-1 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-600 transition-colors duration-200 focus:outline-none"
                                 tabIndex={-1}
-                                aria-label={
-                                    showPassword2 ? "Ocultar contraseña" : "Mostrar contraseña"
-                                }
                             >
                                 {showPassword2 ? (
-                                    <svg
-                                        xmlns="http://www.w3.org/2000/svg"
-                                        fill="none"
-                                        viewBox="0 0 24 24"
-                                        strokeWidth={1.5}
-                                        stroke="currentColor"
-                                        className="w-6 h-6 text-green-500"
-                                    >
-                                        <path
-                                            strokeLinecap="round"
-                                            strokeLinejoin="round"
-                                            d="M3.98 8.223A10.477 10.477 0 0 0 2.25 12c2.083 3.61 6.017 6 9.75 6 1.662 0 3.26-.368 4.646-1.022M6.423 6.423A9.956 9.956 0 0 1 12 6c3.733 0 7.667 2.39 9.75 6a10.477 10.477 0 0 1-1.227 1.977M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0ZM3 3l18 18"
-                                        />
+                                    <svg className="w-5 h-5 text-green-500 dark:text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.878 9.878L3 3m6.878 6.878L12 12m-3.122-3.122L21 21" />
                                     </svg>
                                 ) : (
-                                    <svg
-                                        xmlns="http://www.w3.org/2000/svg"
-                                        fill="none"
-                                        viewBox="0 0 24 24"
-                                        strokeWidth={1.5}
-                                        stroke="currentColor"
-                                        className="w-6 h-6 text-green-500"
-                                    >
-                                        <path
-                                            strokeLinecap="round"
-                                            strokeLinejoin="round"
-                                            d="M2.25 12C3.735 7.943 7.523 5.25 12 5.25c4.477 0 8.265 2.693 9.75 6.75-1.485 4.057-5.273 6.75-9.75 6.75-4.477 0-8.265-2.693-9.75-6.75z"
-                                        />
-                                        <path
-                                            strokeLinecap="round"
-                                            strokeLinejoin="round"
-                                            d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0z"
-                                        />
+                                    <svg className="w-5 h-5 text-green-500 dark:text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
                                     </svg>
                                 )}
-                                </button>
-                            </div>
+                            </button>
                         </div>
                     </div>
-                    {error && (
-                        <div className="text-red-600 text-sm font-semibold text-center mt-2">
-                            {error}
-                        </div>
-                    )}
-                    {success && (
-                        <div className="text-green-600 text-sm font-semibold text-center mt-2">
-                            {success}
-                        </div>
-                    )}
-                {/* Centrar el botón de enviar */}
-                <div className="col-span-1 md:col-span-2 flex justify-center mt-6">
-                    <button
-                        type="submit"
-                        className="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-8 rounded-lg shadow-md transition text-lg"
-                    >
-                        Sign Up
-                    </button>
-                </div>
                 </div>
 
-                {/* Cropper modal */}
+                {/* Error/Success Messages */}
+                {error && (
+                    <div className="mt-6 p-4 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-700 rounded-xl">
+                        <div className="flex items-center gap-3">
+                            <svg className="w-5 h-5 text-red-500 dark:text-red-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L4.082 16.5c-.77.833.192 2.5 1.732 2.5z" />
+                            </svg>
+                            <span className="text-red-600 dark:text-red-400 font-semibold">{error}</span>
+                        </div>
+                    </div>
+                )}
+
+                {success && (
+                    <div className="mt-6 p-4 bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-700 rounded-xl">
+                        <div className="flex items-center gap-3">
+                            <svg className="w-5 h-5 text-green-500 dark:text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                            </svg>
+                            <span className="text-green-600 dark:text-green-400 font-semibold">{success}</span>
+                        </div>
+                    </div>
+                )}
+
+                {/* Submit Button */}
+                <div className="flex justify-center mt-8">
+                    <button
+                        type="submit"
+                        className="bg-gradient-to-r from-green-500 to-green-600 dark:from-green-600 dark:to-green-700 hover:from-green-600 hover:to-green-700 dark:hover:from-green-700 dark:hover:to-green-800 text-white font-bold py-4 px-12 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105 active:scale-95 flex items-center gap-3 group"
+                    >
+                        <svg className="w-5 h-5 group-hover:scale-110 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z" />
+                        </svg>
+                        <span>Crear Cuenta</span>
+                    </button>
+                </div>
+
+                {/* Cropper Modal */}
                 {showCropper && tempImage && (
-                    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60">
-                        <div className="bg-white rounded-xl shadow-lg p-6 w-[90vw] max-w-md flex flex-col items-center">
-                            <div className="relative w-64 h-64 bg-gray-200">
+                    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 backdrop-blur-sm">
+                        <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-2xl p-8 w-[90vw] max-w-lg m-4 border border-gray-200 dark:border-gray-700">
+                            <h3 className="text-xl font-bold text-gray-800 dark:text-white mb-4 text-center">
+                                Recortar imagen
+                            </h3>
+                            <div className="relative w-80 h-80 bg-gray-200 dark:bg-gray-600 rounded-xl mx-auto mb-6 overflow-hidden">
                                 <Cropper
                                     image={tempImage}
                                     crop={crop}
@@ -725,7 +693,10 @@ const RegisterAgropu = () => {
                                     onCropComplete={onCropComplete}
                                 />
                             </div>
-                            <div className="flex gap-4 mt-4 w-full items-center">
+                            <div className="mb-6">
+                                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                                    Zoom
+                                </label>
                                 <input
                                     type="range"
                                     min={1}
@@ -733,34 +704,52 @@ const RegisterAgropu = () => {
                                     step={0.01}
                                     value={zoom}
                                     onChange={(e) => setZoom(Number(e.target.value))}
-                                    className="w-full"
+                                    className="w-full h-2 bg-gray-200 dark:bg-gray-600 rounded-lg appearance-none cursor-pointer"
                                 />
                             </div>
-                            <div className="flex gap-4 mt-6">
+                            <div className="flex gap-4 justify-center">
                                 <button
                                     type="button"
                                     onClick={handleCropSave}
-                                    className="bg-green-500 text-white px-4 py-2 rounded-lg font-semibold hover:bg-green-600"
+                                    className="bg-green-500 hover:bg-green-600 text-white px-6 py-3 rounded-xl font-semibold shadow-lg hover:shadow-xl transition-all duration-200 flex items-center gap-2"
                                 >
+                                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                                    </svg>
                                     Recortar
                                 </button>
                                 <button
                                     type="button"
                                     onClick={handleCropCancel}
-                                    className="bg-gray-300 text-gray-700 px-4 py-2 rounded-lg font-semibold hover:bg-gray-400"
+                                    className="bg-gray-300 dark:bg-gray-600 text-gray-700 dark:text-gray-300 hover:bg-gray-400 dark:hover:bg-gray-500 px-6 py-3 rounded-xl font-semibold shadow-lg hover:shadow-xl transition-all duration-200 flex items-center gap-2"
                                 >
+                                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                                    </svg>
                                     Cancelar
                                 </button>
                             </div>
                         </div>
                     </div>
                 )}
-                <div className="flex justify-between gap-4 mt-4">
+
+                {/* Footer Links */}
+                <div className="flex flex-col sm:flex-row justify-center gap-4 mt-8 pt-6 border-t border-gray-200 dark:border-gray-700">
                     <Link href={ROUTES.LOGIN}>
-                        <p className="text-blue-500 hover:text-blue-600">Iniciar Sesion</p>
+                        <div className="flex items-center gap-2 text-blue-500 dark:text-blue-400 hover:text-blue-600 dark:hover:text-blue-300 transition-colors duration-200 justify-center">
+                            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h7a3 3 0 013 3v1" />
+                            </svg>
+                            <span className="font-medium">Iniciar Sesión</span>
+                        </div>
                     </Link>
                     <Link href={ROUTES.REGISTER}>
-                        <p className="text-blue-500 hover:text-blue-600">Registrarme como Uusuario</p>
+                        <div className="flex items-center gap-2 text-blue-500 dark:text-blue-400 hover:text-blue-600 dark:hover:text-blue-300 transition-colors duration-200 justify-center">
+                            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                            </svg>
+                            <span className="font-medium">Registro como Usuario</span>
+                        </div>
                     </Link>
                 </div>
             </form>

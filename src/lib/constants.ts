@@ -20,6 +20,7 @@ export const ROUTES = {
 
   PRODUCTOS: '/products',
   CARRITO: '/cart',
+  COUPOND: '/products/Offert_And_Coupon/List-coupons',
   NEWPRODUCT: '/products/new',
   FACTURACION: '/invoices',
   ESTADISTICAS: '/finansas',

@@ -74,17 +74,17 @@ const Notifications = () => {
         console.log(notif)
         setNotifications(prev => [notif, ...prev])
       } catch (err) {
-        console.error("❌ Error al parsear mensaje:", err)
+        // console.error("❌ Error al parsear mensaje:", err)
       }
     }
 
-    socket.onerror = (error) => {
-      console.error("❌ Error en WebSocket:", error)
-    }
+    // socket.onerror = (error) => {
+    //   console.error("❌ Error en WebSocket:", error)
+    // }
 
-    socket.onclose = (event) => {
-      console.log("🔌 WebSocket desconectado", event.reason)
-    }
+    // socket.onclose = (event) => {
+    //   console.log("🔌 WebSocket desconectado", event.reason)
+    // }
 
     return () => {
       socket.close()

@@ -6,10 +6,11 @@
 import { useState, useEffect } from 'react'
 import api from '@/lib/axios'
 import Image from 'next/image'
-import { Minus, Plus, Trash2, Loader2 } from 'lucide-react'
+import { Minus, Plus, Trash2, Loader2, Router } from 'lucide-react'
 import BuyCart from '@/components/cart/ComprarCarrito'
-import { toast } from 'sonner'
-
+import { toast } from 'react-hot-toast'
+import { useRouter } from 'next/navigation'
+import { ROUTES } from '@/lib/constants'
 /* 
  📑 Tipado local para un producto dentro del carrito.
  Esto asegura que cada item tenga la forma correcta.
@@ -40,7 +41,7 @@ const GetCarrito = () => {
   const [loading, setLoading] = useState<boolean>(true) // estado de carga inicial
   const [updatingId, setUpdatingId] = useState<number | null>(null) // id del producto en actualización
   const [refreshKey, setRefreshKey] = useState(0) // trigger para recargar datos
-
+  const router =  useRouter()
   // 📥 Obtener productos del carrito desde el backend
   const fetchCart = async () => {
     setLoading(true)
@@ -57,8 +58,8 @@ const GetCarrito = () => {
 
       setCartProducts(items)
     } catch (err: any) {
-      console.error('Error al obtener el carrito', err?.response?.data ?? err?.message ?? err)
-      toast.error('No se pudo cargar el carrito. Intenta recargar la página.')
+      // console.error('Error al obtener el carrito', err?.response?.data ?? err?.message ?? err)
+      toast.error('No se pudo cargar el carrito. Intenta recargar la página o verifica que estes logeado.')
     } finally {
       setLoading(false)
     }
@@ -69,6 +70,9 @@ const GetCarrito = () => {
     fetchCart()
   }, [refreshKey])
 
+  const Comprar=() =>{
+    router.push(ROUTES.HOME)
+  }
   // 🔔 Escuchar evento global "cartUpdated"
   useEffect(() => {
     const handler = () => setRefreshKey((k) => k + 1)
@@ -146,7 +150,7 @@ const GetCarrito = () => {
                   Explora nuestros productos y agrégalos al carrito.
                 </p>
                 <div className="mt-6">
-                  <button className="px-6 py-3 bg-gradient-to-r from-green-500 to-green-600 dark:from-green-600 dark:to-green-700 text-white rounded-full font-medium hover:shadow-lg hover:scale-105 transition-all duration-200">
+                  <button onClick={Comprar} className="px-6 py-3 bg-gradient-to-r from-green-500 to-green-600 dark:from-green-600 dark:to-green-700 text-white rounded-full font-medium hover:shadow-lg hover:scale-105 transition-all duration-200">
                     Ir a comprar
                   </button>
                 </div>
@@ -304,24 +308,6 @@ const GetCarrito = () => {
                 totalPrice={totalPrice}
                 onCartCleared={() => setCartProducts([])} // 🗑️ limpiar carrito al comprar
               />
-            </div>
-
-            {/* Footer de beneficios */}
-            <div className="mt-6 p-4 bg-gradient-to-r from-green-50 to-blue-50 dark:from-green-900/20 dark:to-blue-900/20 rounded-xl border border-green-200 dark:border-green-700">
-              <div className="flex flex-col gap-2 text-xs text-gray-600 dark:text-gray-400">
-                <div className="flex items-center gap-2">
-                  <div className="w-2 h-2 bg-green-500 rounded-full"></div>
-                  <span>Pago seguro</span>
-                </div>
-                <div className="flex items-center gap-2">
-                  <div className="w-2 h-2 bg-blue-500 rounded-full"></div>
-                  <span>Entrega directa de productores</span>
-                </div>
-                <div className="flex items-center gap-2">
-                  <div className="w-2 h-2 bg-purple-500 rounded-full"></div>
-                  <span>Cambios en 7 días</span>
-                </div>
-              </div>
             </div>
           </aside>
         </div>

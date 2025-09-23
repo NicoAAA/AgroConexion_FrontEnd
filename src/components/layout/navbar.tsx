@@ -14,7 +14,7 @@ import api from '@/lib/axios'
 import Notifications from '../notification/notification'
 import { GiFarmTractor } from 'react-icons/gi'
 import { ROUTES } from '@/lib/constants'
-
+import { Ticket } from 'lucide-react';
 // ⬇️ Importamos nuestro contexto de idioma
 import { useLanguage } from '@/context/LanguageContext'
 
@@ -73,14 +73,17 @@ export function Navbar() {
         </div>
       </div>
 
-      {/* Sección central: Barra de búsqueda */}
+      {/* Sección central: Barra de búsqueda
       <div className="flex-grow flex justify-center">
         <SearchBar />
-      </div>
+      </div> */}
 
       {/* Sección derecha: Usuario + Carrito */}
-      <div className="flex items-center gap-4">
+      <div className="flex items-center gap-6">
         {/* Botón Carrito con contador */}
+        
+        <Link href={ROUTES.COUPOND}>
+          <Ticket className="w-8 h-8 text-white text-4xl" /></Link>
         <Link href="/cart" className="relative">
           <ShoppingCart
             size={28}
@@ -93,7 +96,7 @@ export function Navbar() {
           )}
         </Link>
         <Link href={ROUTES.FAVORITECATEGORIES} className='text-white'>
-          <GiFarmTractor className="text-4xl" />
+          <GiFarmTractor className="text-3xl" />
         </Link>
         <Notifications />
         <NavUser />

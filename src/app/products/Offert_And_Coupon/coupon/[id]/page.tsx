@@ -7,8 +7,8 @@ export default function OffersPage() {
   const { id } = useParams(); // id del producto en la URL
   const productId = Number(id);
 
-  return (
-    <div className="p-6 space-y-8">
+return (
+    <div className="p-6 space-y-8 bg-white dark:bg-gray-900 min-h-screen">
       <CreateCouponForm productId={productId} />
     </div>
   );

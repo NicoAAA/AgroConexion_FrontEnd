@@ -85,7 +85,6 @@ export default function NewRating({ productId }: Props) {
       {message && (
         <div className="mt-3 p-3 bg-gray-50 dark:bg-gray-700 rounded-lg border-l-4 border-green-400 dark:border-green-500">
           <p className="text-sm text-gray-700 dark:text-gray-300 flex items-center gap-2">
-            <div className="w-2 h-2 bg-green-500 rounded-full"></div>
             {message}
           </p>
         </div>

@@ -19,7 +19,7 @@ type LanguageContextType = {
 ============================================================ */
 
 const translations: Record<string, [string, string]> = {
-  offers: ["🛒 Ofertas", "🛒 Offers"],
+  offers: ["Te pueden gustar", "You may like"],
   recommended: ["🌱 Recomendados", "🌱 Recommended"],
   messages1: [
     "🛒 ¡Compra directo del campesino sin intermediarios!",

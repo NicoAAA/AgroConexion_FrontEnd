@@ -1,5 +1,3 @@
-//src/app/invoices/page.tsx
-
 'use client';
 
 import { useEffect, useState } from 'react';
@@ -8,7 +6,7 @@ import { useAuth } from '@/features/auth/hooks/useAuth';
 import { useRouter } from 'next/navigation';
 import { isAuthenticated as checkAuth, getStoredTokens } from '@/lib/auth';
 import { motion, AnimatePresence } from 'framer-motion';
-import { ChevronDown, ChevronUp, ReceiptText } from 'lucide-react';
+import { ChevronDown, ChevronUp, ReceiptText, Moon, Sun, FileText } from 'lucide-react';
 import Link from 'next/link';
 import { toast } from 'react-hot-toast';
 import NotAuthenticated from "@/components/errores/Authorization";
@@ -23,6 +21,7 @@ import NotAuthenticated from "@/components/errores/Authorization";
  * - Muestra las facturas ordenadas por fecha de creación (más recientes primero).
  * - Cada factura puede expandirse para mostrar el detalle de productos.
  * - Incluye animaciones con Framer Motion al expandir/colapsar.
+ * - Soporte completo para modo oscuro con Tailwind CSS.
  */
 const ListInvoices = () => {
   const router = useRouter();
@@ -44,13 +43,9 @@ const ListInvoices = () => {
   // Estado que indica si el cliente está autenticado correctamente
   const [isClientAuthenticated, setIsClientAuthenticated] = useState(false);
 
-  /**
-   * Marca que el componente ya se montó en el cliente.
-   */
   useEffect(() => {
     setHasMounted(true);
   }, []);
-
   /**
    * Verifica si el usuario está autenticado.
    * Si no lo está, muestra un error y lo redirige al login en 3 segundos.
@@ -126,128 +121,237 @@ const ListInvoices = () => {
     });
   };
 
+  // --- COMPONENTES INTERNOS ---
+
+  /**
+   * Componente de carga
+   */
+  const LoadingSpinner = () => (
+    <div className="min-h-screen bg-gradient-to-br from-green-50 to-amber-50 dark:from-gray-900 dark:to-gray-800 flex items-center justify-center">
+      <div className="text-center">
+        <div className="animate-spin rounded-full h-16 w-16 border-b-2 border-green-600 dark:border-green-400 mx-auto mb-4"></div>
+        <p className="text-gray-600 dark:text-gray-300 text-lg">Cargando facturas...</p>
+      </div>
+    </div>
+  );
+
+  /**
+   * Componente de estado vacío
+   */
+  const EmptyState = () => (
+    <div className="min-h-screen bg-gradient-to-br from-green-50 to-amber-50 dark:from-gray-900 dark:to-gray-800 flex items-center justify-center">
+      <div className="text-center max-w-md mx-auto px-4">
+        <div className="bg-white dark:bg-gray-800 rounded-full p-6 w-24 h-24 mx-auto mb-6 shadow-lg">
+          <FileText className="w-12 h-12 text-gray-400 dark:text-gray-500 mx-auto" />
+        </div>
+        <h2 className="text-2xl font-bold text-gray-800 dark:text-white mb-3">
+          No tienes facturas
+        </h2>
+        <p className="text-gray-600 dark:text-gray-400 mb-6">
+          Aún no has registrado ninguna factura. Cuando realices tu primera compra, aparecerá aquí.
+        </p>
+        <Link 
+          href="/productos" 
+          className="inline-flex items-center px-6 py-3 bg-green-600 dark:bg-green-500 text-white font-medium rounded-lg hover:bg-green-700 dark:hover:bg-green-600 transition-colors duration-200"
+        >
+          Explorar productos
+        </Link>
+      </div>
+    </div>
+  );
+
+  /**
+   * Componente de cabecera de factura
+   */
+  const InvoiceHeader = ({ invoice }: { invoice: Invoice }) => (
+    <div
+      className="bg-gradient-to-r from-green-600 to-green-700 dark:from-green-700 dark:to-green-800 p-6 flex justify-between items-center cursor-pointer text-white hover:from-green-700 hover:to-green-800 dark:hover:from-green-800 dark:hover:to-green-900 transition-all duration-200"
+      onClick={() => toggleDetails(invoice.id)}
+    >
+      <div className="flex items-center gap-4">
+        <div className="bg-white dark:bg-gray-100 p-3 rounded-full shadow-lg hover:shadow-xl transition-shadow duration-200">
+          <ReceiptText className="text-green-700 dark:text-green-600 w-6 h-6" />
+        </div>
+        <div>
+          <Link href={`/invoices/${invoice.id}`}>
+            <h2 className="text-lg font-bold hover:text-green-100 transition-colors duration-200">
+              Factura #{invoice.id}
+            </h2>
+          </Link>
+          <p className="text-sm opacity-90 text-green-100">
+            {formatDate(invoice.date_created)}
+          </p>
+        </div>
+      </div>
+      <div className="flex items-center gap-4">
+        <span className="bg-white dark:bg-gray-100 text-green-700 dark:text-green-600 px-4 py-2 rounded-full font-bold shadow-lg text-sm">
+          {formatCurrency(invoice.total)}
+        </span>
+        <div className="bg-green-500 dark:bg-green-600 p-2 rounded-full">
+          {expandedInvoice === invoice.id ? (
+            <ChevronUp className="w-5 h-5" />
+          ) : (
+            <ChevronDown className="w-5 h-5" />
+          )}
+        </div>
+      </div>
+    </div>
+  );
+
+  /**
+   * Componente de detalles de productos
+   */
+  const ProductDetails = ({ invoice }: { invoice: Invoice }) => (
+    <motion.div
+      initial={{ opacity: 0, height: 0 }}
+      animate={{ opacity: 1, height: 'auto' }}
+      exit={{ opacity: 0, height: 0 }}
+      transition={{ duration: 0.4, ease: "easeInOut" }}
+      className="overflow-hidden bg-gradient-to-b from-green-50 to-amber-50 dark:from-gray-800 dark:to-gray-900 border-t border-green-200 dark:border-gray-700"
+    >
+      <div className="p-6">
+        {invoice.details.length > 0 ? (
+          <div className="overflow-x-auto">
+            <table className="w-full text-sm rounded-lg overflow-hidden shadow-sm">
+              <thead>
+                <tr className="bg-green-200 dark:bg-gray-700 text-green-900 dark:text-gray-100">
+                  <th className="py-3 px-4 text-left font-semibold">🌽 Producto</th>
+                  <th className="py-3 px-4 text-left font-semibold">👨‍🌾 Vendedor</th>
+                  <th className="py-3 px-4 text-left font-semibold">📦 Cantidad</th>
+                  <th className="py-3 px-4 text-left font-semibold">💲 Precio Unitario</th>
+                  <th className="py-3 px-4 text-left font-semibold">🧾 Subtotal</th>
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-green-100 dark:divide-gray-600">
+                {invoice.details.map((item, index) => (
+                  <tr
+                    key={index}
+                    className={`${
+                      index % 2 === 0 
+                        ? 'bg-white dark:bg-gray-800' 
+                        : 'bg-green-50 dark:bg-gray-750'
+                    } text-gray-800 dark:text-gray-200 hover:bg-green-100 dark:hover:bg-gray-600 transition-colors duration-150`}
+                  >
+                    <td className="py-3 px-4 font-medium text-gray-900 dark:text-white">
+                      {item.product_name}
+                    </td>
+                    <td className="py-3 px-4 text-gray-700 dark:text-gray-300">
+                      {item.seller_name}
+                    </td>
+                    <td className="py-3 px-4 text-gray-700 dark:text-gray-300">
+                      {item.quantity}
+                    </td>
+                    <td className="py-3 px-4 text-gray-700 dark:text-gray-300">
+                      {formatCurrency(item.unit_price)}
+                    </td>
+                    <td className="py-3 px-4 font-semibold text-green-700 dark:text-green-400">
+                      {formatCurrency(item.subtotal)}
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        ) : (
+          <div className="text-center py-8">
+            <FileText className="w-12 h-12 text-gray-400 dark:text-gray-500 mx-auto mb-3" />
+            <p className="text-gray-600 dark:text-gray-400 italic">
+              Esta factura no tiene productos registrados.
+            </p>
+          </div>
+        )}
+      </div>
+    </motion.div>
+  );
+
   // --- VISTAS SEGÚN EL ESTADO DEL COMPONENTE ---
 
   if (!hasMounted) {
-    return <div className="text-center py-10 text-gray-500">Cargando...</div>;
-  }
-
-  if (!isClientAuthenticated) {
     return (
-      <NotAuthenticated/>
-    );
-  }
-
-  if (loading) {
-    return (
-      <div className="text-center py-10 text-gray-500">Cargando facturas...</div>
-    );
-  }
-
-  if (invoices.length === 0) {
-    return (
-      <div className="text-center py-10 text-gray-500">
-        No tienes facturas registradas.
+      <div className="min-h-screen bg-gradient-to-br from-green-50 to-amber-50 flex items-center justify-center">
+        <div className="animate-pulse text-gray-500 text-lg">Inicializando...</div>
       </div>
     );
   }
 
+  if (!isClientAuthenticated) {
+    return <NotAuthenticated />;
+  }
+
+  if (loading) {
+    return <LoadingSpinner />;
+  }
+
+  if (invoices.length === 0) {
+    return <EmptyState />;
+  }
+
   // --- RENDER PRINCIPAL ---
   return (
-    <div className="max-w-5xl mx-auto py-10 px-4">
-      {/* Título de la página */}
-      <h1 className="text-4xl font-extrabold mb-8 text-green-900 text-center">
-        🌾 Mis Facturas
-      </h1>
-
-      {/* Listado de facturas */}
-      {invoices.map((invoice) => (
-        <motion.div
-          key={invoice.id}
-          className="rounded-2xl mb-6 overflow-hidden shadow-xl"
-          whileHover={{ scale: 1.01 }}
-        >
-          {/* Cabecera con resumen de la factura */}
-          <div
-            className="bg-green-600 p-6 flex justify-between items-center cursor-pointer text-white"
-            onClick={() => toggleDetails(invoice.id)}
-          >
-            <div className="flex items-center gap-4">
-              {/* Icono de factura */}
-              <div className="bg-white p-3 rounded-full shadow-md">
-                <ReceiptText className="text-green-700 w-6 h-6" />
-              </div>
-              <div>
-                <Link href={`/invoices/${invoice.id}`}><h2 className="text-lg font-bold">Factura #{invoice.id}</h2></Link>
-                <p className="text-sm opacity-90">
-                  {formatDate(invoice.date_created)}
-                </p>
-              </div>
-            </div>
-            <div className="flex items-center gap-4">
-              {/* Monto total */}
-              <span className="bg-white text-green-700 px-3 py-1 rounded-full font-bold shadow">
-                {formatCurrency(invoice.total)}
-              </span>
-              {/* Icono de expandir/colapsar */}
-              {expandedInvoice === invoice.id ? (
-                <ChevronUp className="w-6 h-6" />
-              ) : (
-                <ChevronDown className="w-6 h-6" />
-              )}
-            </div>
+    <div className="min-h-screen bg-gradient-to-br from-green-50 to-amber-50 dark:from-gray-900 dark:to-gray-800 transition-colors duration-300">
+      <div className="max-w-6xl mx-auto py-10 px-4 sm:px-6 lg:px-8">
+        {/* Header con título y botón de modo oscuro */}
+        <div className="flex justify-between items-center mb-10">
+          <div className="text-center flex-1">
+            <h1 className="text-4xl sm:text-5xl font-extrabold text-green-900 dark:text-green-100 mb-2">
+              🌾 Mis Facturas
+            </h1>
+            <p className="text-green-700 dark:text-green-300 text-lg">
+              Historial completo de tus compras
+            </p>
           </div>
+        </div>
 
-          {/* Detalles expandibles de la factura */}
-          <AnimatePresence>
-            {expandedInvoice === invoice.id && (
-              <motion.div
-                initial={{ opacity: 0, height: 0 }}
-                animate={{ opacity: 1, height: 'auto' }}
-                exit={{ opacity: 0, height: 0 }}
-                transition={{ duration: 0.4 }}
-                className="overflow-hidden bg-gradient-to-b from-green-50 to-amber-50 p-6"
-              >
-                {invoice.details.length > 0 ? (
-                  <table className="w-full text-sm rounded-lg overflow-hidden">
-                    <thead>
-                      <tr className="bg-green-200 text-green-900">
-                        <th className="py-2 px-3 text-left">🌽 Producto</th>
-                        <th className="py-2 px-3 text-left">👨‍🌾 Vendedor</th>
-                        <th className="py-2 px-3 text-left">📦 Cantidad</th>
-                        <th className="py-2 px-3 text-left">💲 Precio Unitario</th>
-                        <th className="py-2 px-3 text-left">🧾 Subtotal</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {invoice.details.map((item, index) => (
-                        <tr
-                          key={index}
-                          className={`${
-                            index % 2 === 0 ? 'bg-white' : 'bg-green-100'
-                          } text-gray-800`}
-                        >
-                          <td className="py-2 px-3 font-medium">{item.product_name}</td>
-                          <td className="py-2 px-3">{item.seller_name}</td>
-                          <td className="py-2 px-3">{item.quantity}</td>
-                          <td className="py-2 px-3">{formatCurrency(item.unit_price)}</td>
-                          <td className="py-2 px-3 font-semibold text-green-700">
-                            {formatCurrency(item.subtotal)}
-                          </td>
-                        </tr>
-                      ))}
-                    </tbody>
-                  </table>
-                ) : (
-                  <p className="text-sm text-gray-600 mt-2 italic">
-                    Esta factura no tiene productos.
-                  </p>
+        {/* Estadísticas rápidas */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+          <div className="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-lg border border-green-100 dark:border-gray-700">
+            <h3 className="text-sm font-medium text-gray-600 dark:text-gray-400 mb-2">Total de Facturas</h3>
+            <p className="text-2xl font-bold text-green-600 dark:text-green-400">{invoices.length}</p>
+          </div>
+          <div className="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-lg border border-green-100 dark:border-gray-700">
+            <h3 className="text-sm font-medium text-gray-600 dark:text-gray-400 mb-2">Última Compra</h3>
+            <p className="text-lg font-semibold text-gray-800 dark:text-gray-200">
+              {formatDate(invoices[0]?.date_created)}
+            </p>
+          </div>
+          <div className="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-lg border border-green-100 dark:border-gray-700">
+            <h3 className="text-sm font-medium text-gray-600 dark:text-gray-400 mb-2">Monto Total</h3>
+            <p className="text-lg font-bold text-green-600 dark:text-green-400">
+              {formatCurrency(
+                invoices.reduce((sum, invoice) => sum + parseFloat(invoice.total), 0).toString()
+              )}
+            </p>
+          </div>
+        </div>
+
+        {/* Listado de facturas */}
+        <div className="space-y-6">
+          {invoices.map((invoice) => (
+            <motion.div
+              key={invoice.id}
+              className="rounded-2xl overflow-hidden shadow-xl bg-white dark:bg-gray-800 border border-gray-100 dark:border-gray-700"
+              whileHover={{ scale: 1.01, y: -2 }}
+              transition={{ duration: 0.2 }}
+            >
+              <InvoiceHeader invoice={invoice} />
+              
+              <AnimatePresence>
+                {expandedInvoice === invoice.id && (
+                  <ProductDetails invoice={invoice} />
                 )}
-              </motion.div>
-            )}
-          </AnimatePresence>
-        </motion.div>
-      ))}
+              </AnimatePresence>
+            </motion.div>
+          ))}
+        </div>
+
+        {/* Footer con información adicional */}
+        <div className="mt-12 text-center">
+          <p className="text-gray-600 dark:text-gray-400 text-sm">
+            Mostrando {invoices.length} factura{invoices.length !== 1 ? 's' : ''} • 
+            Última actualización: {new Date().toLocaleDateString('es-CO')}
+          </p>
+        </div>
+      </div>
     </div>
   );
 };

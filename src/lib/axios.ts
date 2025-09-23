@@ -82,12 +82,11 @@ api.interceptors.response.use(
                 localStorage.removeItem('access_token');
                 localStorage.removeItem('refresh_token');
                 localStorage.removeItem('user');
-
-                // Redirigimos al usuario a la página de login
-                toast.error("⚠️ Tu sesión ha expirado. Por favor inicia sesión.");
                 setTimeout(() => {
                     window.location.href = '/login';
                 }, 2000);
+                // Redirigimos al usuario a la página de login
+                // toast.error("⚠️ Tu sesión ha expirado. Por favor inicia sesión.");
             }
         }
 
