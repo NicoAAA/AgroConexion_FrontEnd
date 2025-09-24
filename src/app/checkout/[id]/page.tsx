@@ -31,7 +31,7 @@ export default function CheckoutPage() {
   useEffect(() => {
     const fetchProduct = async () => {
       try {
-        const res = await axios.get(`http://127.0.0.1:8000/api/products/detail/${productId}/`);
+        const res = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/products/detail/${productId}/`);
         setProduct(res.data);
       } catch (err) {
         toast.error("No se pudo cargar el producto.");

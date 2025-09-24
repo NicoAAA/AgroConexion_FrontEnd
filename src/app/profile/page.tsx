@@ -5,6 +5,8 @@
 import Image from 'next/image'
 import { Mail, Phone, MapPin, Shield, User, Lock } from 'lucide-react'
 import { useAuth } from '@/features/auth/hooks/useAuth'
+import Link from 'next/link'
+import { ROUTES } from '@/lib/constants'
 
 const ProfilePage = () => {
   const auth = useAuth()
@@ -30,7 +32,7 @@ const ProfilePage = () => {
 
   const getFullImageUrl = (path?: string) => {
     if (!path) return undefined
-    return path.startsWith('http') ? path : `http://127.0.0.1:8000${path}`
+    return path.startsWith('http') ? path : `${process.env.NEXT_PUBLIC_MEDIA_URL}${path}`
   }
 
   if (!isAuthenticated || !rawUser) {
@@ -81,6 +83,7 @@ const ProfilePage = () => {
               : '👤 Usuario común'}
           </p>
         </div>
+        <Link href={ROUTES.EDITINFO} className='text-lg text-gray-600 dark:text-gray-400 mt-2'>Editar</Link>
       </div>
 
       {/* ----------------- INFORMACIÓN PRINCIPAL ----------------- */}

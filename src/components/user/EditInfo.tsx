@@ -6,6 +6,7 @@ import api from "@/lib/axios";
 import { useAuth } from "@/features/auth/hooks/useAuth";
 import { authService } from '@/features/auth/services/authService';
 import { toast } from "react-hot-toast";
+import ChangePassword from "@/components/user/ChanguePassword";
 import { 
   User, 
   Phone, 
@@ -86,7 +87,7 @@ export default function EditInfo() {
               setPreviewImage(imageUrl);
             } else {
               // Si es una URL relativa, agregar el dominio del backend
-              setPreviewImage(`http://127.0.0.1:8000${imageUrl}`);
+              setPreviewImage(`${process.env.NEXT_PUBLIC_MEDIA_URL}${imageUrl}`);
             }
           }
         })
@@ -175,7 +176,7 @@ export default function EditInfo() {
       if (originalImageUrl.startsWith('http')) {
         setPreviewImage(originalImageUrl);
       } else {
-        setPreviewImage(`http://127.0.0.1:8000${originalImageUrl}`);
+        setPreviewImage(`${process.env.NEXT_PUBLIC_MEDIA_URL}${originalImageUrl}`);
       }
     } else {
       setPreviewImage(null);
@@ -458,6 +459,9 @@ export default function EditInfo() {
                   </>
                 )}
               </button>
+                <div className="mt-8">
+                  <ChangePassword/>
+                </div>
             </div>
           </form>
         </div>

@@ -42,7 +42,7 @@ const ComentsProduct: React.FC<ComentsProductProps> = ({ productId }) => {
   const [deleteImages, setDeleteImages] = useState<number[]>([]);
 
   const getFullImageUrl = (path: string) =>
-    path?.startsWith("http") ? path : `http://127.0.0.1:8000${path}`;
+    path?.startsWith("http") ? path : `${process.env.NEXT_PUBLIC_MEDIA_URL}${path}`;
 
   const fetchComments = async () => {
     try {
