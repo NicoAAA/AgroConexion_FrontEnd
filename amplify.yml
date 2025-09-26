@@ -3,10 +3,8 @@ frontend:
   phases:
     preBuild:
       commands:
-        # Añadimos sudo para ejecutar con privilegios de administrador
         - sudo yum install -y gcc-c++ make
-        - rm package-lock.json
-        - npm ci
+        - npm install
     build:
       commands:
         - npm run build
