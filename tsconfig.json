@@ -1,5 +1,6 @@
 {
   "compilerOptions": {
+    // Configuracion de compilacion
     "target": "ES2017",
     "lib": ["dom", "dom.iterable", "esnext"],
     "allowJs": true,
