@@ -1,17 +1,22 @@
-'use client'
-import VerifyAccount from '@/components/forms/codeCount'
-import { useSearchParams } from 'next/navigation';
+// Archivo: app/(auth)/login/2fa/page.tsx
 
-// Funcion que permite inciar sesion en dos pasos
-const Login2FA = () => {
-    // Obtenemos el parametro pasado en la url
-    const searchParams = useSearchParams();
-    // Obtenemos el parametro
-    const email = searchParams.get('email') || '';
-    // Url a la cual se le ara la peticion
-    const URL = '/users/login/step2/'
-    // Llamamos la componente para hacer la peticion
-    return <VerifyAccount email={email} URL={URL}/>;
+import { Suspense } from 'react';
+import TwoFactorForm from './TwoFactorForm'; // Importamos el componente que acabamos de crear
+
+// Este es el componente que se mostrará mientras el formulario de cliente carga.
+function LoadingState() {
+    return (
+        <div>
+            <p>Cargando formulario...</p>
+        </div>
+    );
 }
 
-export default Login2FA
+export default function TwoFactorPage() {
+    return (
+        // Suspense se encarga de esperar por los componentes de cliente.
+        <Suspense fallback={<LoadingState />}>
+            <TwoFactorForm />
+        </Suspense>
+    );
+}
