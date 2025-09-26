@@ -3,11 +3,9 @@ frontend:
   phases:
     preBuild:
       commands:
-        # Instala dependencias para node-gyp
-        - yum install -y gcc-c++ make
-        # Elimina el lockfile para asegurar una instalación limpia
+        # Añadimos sudo para ejecutar con privilegios de administrador
+        - sudo yum install -y gcc-c++ make
         - rm package-lock.json
-        # Instala dependencias del proyecto
         - npm ci
     build:
       commands:
